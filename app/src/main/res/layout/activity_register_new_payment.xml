@@ -24,7 +24,7 @@
         android:layout_marginTop="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="@string/newpay_name" />
 
     <EditText
         android:id="@+id/paymentQuantity"
@@ -33,7 +33,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Quantità" />
+        android:text="@string/newpay_quant" />
 
     <EditText
         android:id="@+id/paymentDate"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Pagato da"
+        android:text="@string/newpay_pagatoda"
         android:textAlignment="center" />
 
     <RadioGroup
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Per chi"
+        android:text="@string/newpay_perchi"
         android:textAlignment="center" />
 
     <RadioGroup
@@ -74,6 +74,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Aggiungi spesa" />
+        android:text="@string/newpay_addspesa" />
 
 </LinearLayout>
