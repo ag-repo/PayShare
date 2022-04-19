@@ -1,79 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="8dp"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
     android:orientation="vertical"
+    android:fillViewport="false"
+    android:background="@color/design_default_color_secondary"
     android:id="@+id/registerLinearLayout"
     tools:context=".RegisterNewPaymentActivity">
 
-    <TextView
-        android:id="@+id/paymentRegisterHeader"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Registra una nuova spesa"
-        android:textAlignment="center" />
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/paymentName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/newpay_name" />
+        <TextView
+            android:id="@+id/paymentRegisterHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Registra una nuova spesa"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_on_primary"
+            android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/paymentQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/newpay_quant" />
+        <EditText
+            android:id="@+id/paymentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/input_bg"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/newpay_name"
+            android:textColor="@color/design_default_color_on_primary" />
 
-    <EditText
-        android:id="@+id/paymentDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="date" />
+        <EditText
+            android:id="@+id/paymentQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/input_bg"
+            android:ems="10"
+            android:inputType="number"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/newpay_quant"
+            android:textColor="@color/design_default_color_on_primary" />
 
-    <TextView
-        android:id="@+id/tv_paymentSubject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/newpay_pagatoda"
-        android:textAlignment="center" />
+        <DatePicker
+            android:id="@+id/paymentDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/input_bg"
+            android:calendarTextColor="@color/design_default_color_on_primary"
+            android:ems="10"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false" />
 
-    <RadioGroup
-        android:id="@+id/paymentSubjectRG"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        <TextView
+            android:id="@+id/tv_paymentSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/newpay_pagatoda"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_on_primary"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/tv_paymentGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/newpay_perchi"
-        android:textAlignment="center" />
+        <RadioGroup
+            android:id="@+id/paymentSubjectRG"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/input_bg"/>
 
-    <RadioGroup
-        android:id="@+id/paymentGroupRG"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        <TextView
+            android:id="@+id/tv_paymentGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/newpay_perchi"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_on_primary"
+            android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/newpay_addspesa" />
+        <RadioGroup
+            android:id="@+id/paymentGroupRG"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/input_bg"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/newpay_addspesa"
+            android:background="@drawable/button_bg"/>
+
+    </LinearLayout>
+</ScrollView>

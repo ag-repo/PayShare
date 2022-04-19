@@ -3,13 +3,43 @@ package com.example.payshare
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import androidx.core.view.get
+import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.android.synthetic.main.activity_register_new_payment.*
+import java.util.*
 
 class RegisterNewPaymentActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_new_payment)
+
+        val today = Calendar.getInstance()
+
+        val title = paymentName         //riferimento titolo della spesa
+        val tot = paymentQuantity       //riferimento quantità della spesa
+        val datePicker = paymentDate    //riferimento al datePicker
+
+
+        //datePicker?.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
+
+
+        //Metodi per salvare i dati inseriti da aggiungere ad db per calcoli
+
+        /*
+        val dateYear = datePicker.get(Calendar.YEAR)
+        val dateMonth = datePicker.get(Calendar.MONTH)
+        val dateDay = datePicker.get(Calendar.DAY_OF_MONTH)
+         */
+
+
+
+
+
+
 
 
         /*
