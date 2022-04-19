@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
+    android:padding="16dp"
     android:orientation="vertical"
     android:fillViewport="false"
     android:background="@color/design_default_color_secondary"
@@ -16,15 +16,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/paymentRegisterHeader"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Registra una nuova spesa"
-            android:textAlignment="center"
-            android:textColor="@color/design_default_color_on_primary"
-            android:textSize="20sp" />
+            android:orientation="horizontal" >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingBackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_back_arrow" />
+
+            <TextView
+                android:id="@+id/paymentRegisterHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Registra una nuova spesa"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_on_primary"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/paymentName"
@@ -109,6 +122,5 @@
             android:layout_marginTop="32dp"
             android:text="@string/newpay_addspesa"
             android:background="@drawable/button_bg"/>
-
     </LinearLayout>
 </ScrollView>

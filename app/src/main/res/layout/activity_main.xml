@@ -11,22 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PAY SHARE"
-        app:layout_constraintBottom_toTopOf="@+id/bufferingLogo"
+        app:layout_constraintBottom_toTopOf="@+id/appEnterBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/bufferingLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Carimanto app"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LogoAppTv" />
 
     <Button
         android:id="@+id/appEnterBtn"
@@ -35,7 +24,8 @@
         android:text="ENTRA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bufferingLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/LogoAppTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

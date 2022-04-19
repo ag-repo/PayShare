@@ -5,11 +5,11 @@
       <map>
         <entry key="app/src/main/res/drawable/button_bg.xml" value="0.2775" />
         <entry key="app/src/main/res/drawable/input_bg.xml" value="0.2775" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_register_new_payment.xml" value="0.22336769759450173" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.23439483642578127" />
+        <entry key="app/src/main/res/layout/activity_register_new_payment.xml" value="0.353415559772296" />
         <entry key="app/src/main/res/layout/activity_summary.xml" value="0.35074615478515636" />
         <entry key="app/src/main/res/layout/fragment_summary_group.xml" value="0.2572463768115942" />
-        <entry key="app/src/main/res/layout/fragment_summary_top.xml" value="0.2572463768115942" />
+        <entry key="app/src/main/res/layout/fragment_summary_top.xml" value="0.24975280761718754" />
         <entry key="app/src/main/res/layout/fragment_summary_top2.xml" value="0.2572463768115942" />
       </map>
     </option>

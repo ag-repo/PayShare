@@ -1,5 +1,6 @@
 package com.example.payshare
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
@@ -17,6 +18,11 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_new_payment)
 
+        floatingBackButton.setOnClickListener{
+            val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
+        }
+
         val today = Calendar.getInstance()
 
         val title = paymentName         //riferimento titolo della spesa
@@ -24,51 +30,6 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         val datePicker = paymentDate    //riferimento al datePicker
 
 
-        //datePicker?.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
-
-
-        //Metodi per salvare i dati inseriti da aggiungere ad db per calcoli
-
-        /*
-        val dateYear = datePicker.get(Calendar.YEAR)
-        val dateMonth = datePicker.get(Calendar.MONTH)
-        val dateDay = datePicker.get(Calendar.DAY_OF_MONTH)
-         */
-
-
-
-
-
-
-
-
-        /*
-        val linearLayout = R.id.registerLinearLayout
-        /* PaymentSubject sarà la lista da cui selezionare chi ha pagato
-        PaymentGroup sarà il gruppo di persone per cui il Subject ha pagato, compreso chi ha pagato */
-        val radioButtonPaymentSubject = RadioButton(this)
-        val radioButtonPaymentGroup = RadioButton(this)
-
-        val radioButton1 = RadioButton(this)
-        radioButton1.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
-            radioButton1.setText("numero 1")
-            // radioButtonPaymentGroup.id
-
-        val radioButton2 = RadioButton(this)
-        radioButton2.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
-            radioButton2.setText("numero 2")
-        //radioButtonPaymentGroup.id = 2
-
-        val radioGroup = R.id.paymentSubjectRG
-        if(radioGroup != null){
-            radioGroup.addView(radioButtonPaymentGroup)
-        }
-
-        */
 
     }
 
