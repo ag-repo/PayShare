@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PayShare</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="summary_top_frag_text">NOME DELLO USER</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
