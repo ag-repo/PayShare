@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/CustomStyle">
         <activity
+            android:name=".GroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterNewPaymentActivity"
             android:exported="false" />
         <activity

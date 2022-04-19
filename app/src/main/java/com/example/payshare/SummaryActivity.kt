@@ -7,15 +7,17 @@ import kotlinx.android.synthetic.main.activity_summary.*
 
 class SummaryActivity : AppCompatActivity() {
 
-    val summaryTopFrag = SummaryTopFragment()       //Top bar della summary Activity
-    val summaryGroupFrag = SummaryGroupFragment()   //Group view dei gruppi dello user
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
 
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
+            startActivity(intent)
+        }
+
+        groupButton.setOnClickListener{
+            val intent = Intent(this, GroupActivity::class.java)
             startActivity(intent)
         }
     }

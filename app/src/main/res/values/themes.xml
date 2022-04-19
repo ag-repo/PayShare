@@ -26,4 +26,19 @@
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="FloatingButtonCustomStyle" parent="" >
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#002CA4</item>
+        <item name="colorPrimaryVariant">#3A35CB</item>
+        <item name="colorOnPrimary">#F2EDEB</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#35CCD0</item>
+        <item name="colorSecondaryVariant">#207376</item>
+        <item name="colorOnSecondary">#D55353</item>
+        <!-- Status bar color. -->
+        <!-- Customize your theme here. -->
+    </style>
+
+
 </resources>
