@@ -5,9 +5,9 @@
       <map>
         <entry key="app/src/main/res/drawable/button_bg.xml" value="0.2775" />
         <entry key="app/src/main/res/drawable/input_bg.xml" value="0.2775" />
-        <entry key="app/src/main/res/layout/activity_group.xml" value="0.2679306030273437" />
+        <entry key="app/src/main/res/layout/activity_group.xml" value="0.27879028320312493" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35662078857421875" />
-        <entry key="app/src/main/res/layout/activity_register_new_payment.xml" value="0.353415559772296" />
+        <entry key="app/src/main/res/layout/activity_register_new_payment.xml" value="0.34865134865134867" />
         <entry key="app/src/main/res/layout/activity_summary.xml" value="0.3013816925734024" />
         <entry key="app/src/main/res/layout/fragment_group_bottom_actions.xml" value="0.2572463768115942" />
         <entry key="app/src/main/res/layout/fragment_group_header.xml" value="0.2572463768115942" />

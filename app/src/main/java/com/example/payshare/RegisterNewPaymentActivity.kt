@@ -18,7 +18,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_new_payment)
 
-        floatingBackButton.setOnClickListener{
+        backViewPayment.setOnClickListener{
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }

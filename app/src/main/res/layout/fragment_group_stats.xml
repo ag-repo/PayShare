@@ -11,6 +11,7 @@
         android:textAlignment="center"
         android:paddingTop="32dp"
         android:paddingBottom="32dp"
+        android:textColor="@color/colorText"
         android:text="Fragment per lista statistiche e saldi" />
 
 </FrameLayout>
