@@ -21,7 +21,4 @@ class SummaryActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-
-
 }

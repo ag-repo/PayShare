@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@color/design_default_color_on_primary"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
     tools:context=".SummaryActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/input_bg"
         tools:layout_editor_absoluteX="75dp" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -25,6 +26,7 @@
         android:minHeight="400dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/fragmentTop"
+        android:background="@drawable/input_bg"
         tools:layout_editor_absoluteX="16dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

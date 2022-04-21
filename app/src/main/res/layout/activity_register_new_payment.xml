@@ -7,7 +7,7 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:fillViewport="false"
-    android:background="@color/design_default_color_secondary"
+    android:background="@color/colorBackground"
     android:id="@+id/registerLinearLayout"
     tools:context=".RegisterNewPaymentActivity">
 
