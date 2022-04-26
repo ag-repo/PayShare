@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddNewGroupActivity"
+    android:background="@color/colorBackground"
     android:padding="16dp"
-    android:background="@color/colorBackground">
+    tools:context=".AddNewGroupActivity">
 
 
     <TextView
@@ -16,7 +16,9 @@
         android:layout_marginTop="8dp"
         android:text="Aggiungi un nuovo gruppo"
         android:textColor="@color/colorText"
+        app:layout_constraintBottom_toTopOf="@+id/et_nomeGruppo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,12 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/input_bg"
-        android:text="Nome grouppo"
-        android:textColor="@color/colorText"
+        android:paddingLeft="24dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:paddingLeft="24dp"
+        android:hint="Nome grouppo"
+        android:textColor="@color/colorText"
+        android:textColorHint="@color/colorText"
+        app:layout_constraintBottom_toTopOf="@+id/et_descrizione"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_addNewGroup" />
 
@@ -44,9 +49,12 @@
         android:paddingLeft="24dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="Descrizione"
+        android:hint="Descrizione"
         android:textColor="@color/colorText"
+        android:textColorHint="@color/colorText"
+        app:layout_constraintBottom_toTopOf="@+id/tv_AddMembers"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_nomeGruppo" />
 
@@ -57,29 +65,74 @@
         android:layout_marginTop="16dp"
         android:text="Inserisci i partecipanti"
         android:textColor="@color/colorText"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_descrizione" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/groupMembersLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tv_AddMembers"
+        app:layout_constraintVertical_bias="0.654"
+        tools:layout_editor_absoluteX="1dp">
+
+        <EditText
+            android:id="@+id/et_newMember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@drawable/input_bg"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:hint="Aggiungi membro"
+            android:textColorHint="@color/colorText"
+            android:textColor="@color/colorText"
+            app:layout_constraintTop_toBottomOf="@+id/tv_AddMembers"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <Button
+            android:id="@+id/addMemberBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:text="ADD" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/groupMembersLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:padding="16dp"
+        android:background="@drawable/input_bg"
+        android:minHeight="400dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/addGroupBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_AddMembers">
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+    </ListView>
 
     <Button
         android:id="@+id/addGroupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Aggiungi gruppo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupMembersLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
