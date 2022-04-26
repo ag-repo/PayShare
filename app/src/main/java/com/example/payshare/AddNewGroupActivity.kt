@@ -1,5 +1,6 @@
 package com.example.payshare
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,12 +25,21 @@ class AddNewGroupActivity : AppCompatActivity() {
                 tempGroupMemberList.add(GroupMember(et_newMember.text.toString()))
                 groupMembersLayout.invalidateViews()
             } else {
+                //NON FUNZIONAAAAAAAAAAAAAAAAA
                 Toast.makeText(this, "Nome già presente",Toast.LENGTH_LONG).show()
             }
         }
 
         addGroupBtn.setOnClickListener{
+            val newGroup = Group(et_nomeGruppo.text.toString(), tempGroupMemberList)
+            val intent = Intent(this, SummaryActivity::class.java)
 
+            val bundle = Bundle()
+            bundle.putString("group_name", et_nomeGruppo.text.toString())
+            bundle.putSerializable("group_list", tempGroupMemberList)
+            intent.putExtra("newgroup_bundle", bundle)
+
+            startActivity(intent)
         }
     }
 }
