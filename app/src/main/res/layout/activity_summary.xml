@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:padding="16dp"
     android:background="@color/colorBackground"
     tools:context=".SummaryActivity">
@@ -33,27 +32,15 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="8dp">
 
         <Button
-            android:id="@+id/addPayments"
+            android:id="@+id/addGroupBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="+"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/listButton"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/groupButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/groupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="GROUP"
+            android:text="+ GROUP"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addPayments"
             app:layout_constraintHorizontal_bias="0.5"
@@ -61,15 +48,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/addPayments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ PAYM"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/groupButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/addGroupBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/groupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GROUP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/listButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/addPayments"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/listButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="LIST"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/addPayments"
+            app:layout_constraintStart_toEndOf="@+id/groupButton"
             app:layout_constraintTop_toTopOf="parent" />
 
 

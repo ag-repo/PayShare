@@ -20,5 +20,10 @@ class SummaryActivity : AppCompatActivity() {
             val intent = Intent(this, GroupActivity::class.java)
             startActivity(intent)
         }
+
+        addGroupBtn.setOnClickListener{
+            val intent = Intent(this, AddNewGroupActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
