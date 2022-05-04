@@ -32,17 +32,9 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         //add the new group button
         addGroupBtn.setOnClickListener{
-
+            //Creo oggetto gruppo e lo aggiungo su Firebase
             val newGroup = Group(et_nomeGruppo.text.toString(), et_descrizione.text.toString(), tempGroupMemberList)
             FirebaseDBHelper.setNewGroup(newGroup.getGroupName(), newGroup)
-
-            /*
-            val groupName: String = et_nomeGruppo.text.toString()
-            val groupDescr: String = et_descrizione.text.toString()
-            val groupMembers: ArrayList<String> = tempGroupMemberList
-            val newGroup = Group(groupName, groupDescr, groupMembers)
-             */
-
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.payshare
 
-import android.text.Editable
-
 data class Group(
     private var groupName: String,
     private var groupDescr: String,

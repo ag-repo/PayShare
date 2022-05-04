@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.SimpleAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -19,11 +20,14 @@ class SummaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
 
+        //Inizializzo listview
         val listview: ListView = groupListView
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_2, data)
         listview.adapter = adapter
 
+        //Leggo dati da firebase
         FirebaseDBHelper.readGroups(getGroupsEventListener())
+
 
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -39,18 +43,6 @@ class SummaryActivity : AppCompatActivity() {
             val intent = Intent(this, AddNewGroupActivity::class.java)
             startActivity(intent)
         }
-
-        /*
-        val extras = intent.extras
-        if (extras != null) {
-            val intent = getIntent()
-            val args = intent.getBundleExtra("newgroup_bundle")
-
-            val newGroupName = args?.getString("group_name")
-            val newGroupMembers = args?.getSerializable("newgroup_bundle")
-            val newGroup = Group(newGroupName.toString(), newGroupMembers)
-            groups.add(newGroup)
-         */
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
