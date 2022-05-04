@@ -14,15 +14,16 @@ class SummaryActivity : AppCompatActivity() {
 
     private val data: MutableList<Group> = ArrayList()
     lateinit var adapter: ArrayAdapter<Group>
-    lateinit var listview: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
 
+        val listview: ListView = groupListView
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_2, data)
-        FirebaseDBHelper.readGroups(getGroupsEventListener())
+        listview.adapter = adapter
 
+        FirebaseDBHelper.readGroups(getGroupsEventListener())
 
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -55,7 +56,11 @@ class SummaryActivity : AppCompatActivity() {
     private fun getGroupsEventListener(): ChildEventListener {
         val listener = object : ChildEventListener{
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                TODO("Not yet implemented")
+                val item = p0.getValue(Group::class.java)
+                if (item != null) { data.add(item) }
+                val groupIndex = data.indexOf(item)
+                groupListView.setItemChecked(groupIndex, false)
+                adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -63,7 +68,9 @@ class SummaryActivity : AppCompatActivity() {
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
-                TODO("Not yet implemented")
+                val item = p0.getValue(Group::class.java)
+                data.remove(item)
+                adapter.notifyDataSetChanged()
             }
 
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {

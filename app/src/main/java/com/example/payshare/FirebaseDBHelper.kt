@@ -13,11 +13,11 @@ class FirebaseDBHelper {
         fun readGroups(groupEventListener: ChildEventListener){
             db.addChildEventListener(groupEventListener)
         }
-        /*
-        fun setToDoItem(key: String, toDoItem: ToDoItem){
-            db.child(key).setValue(toDoItem)
-        }
 
+        fun setNewGroup(groupName: String, groupObj: Group){
+            db.child(groupName).setValue(groupObj)
+        }
+        /*
         fun removeToDoItem(key: String){
             db.child(key).removeValue()
         }
