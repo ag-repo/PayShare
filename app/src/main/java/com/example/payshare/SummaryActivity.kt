@@ -2,16 +2,27 @@ package com.example.payshare
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import kotlinx.android.synthetic.main.activity_summary.*
 
 class SummaryActivity : AppCompatActivity() {
 
-    private val groups = arrayListOf<Group>()
+    private val data: MutableList<Group> = ArrayList()
+    lateinit var adapter: ArrayAdapter<Group>
+    lateinit var listview: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
+
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_2, data)
+        FirebaseDBHelper.readGroups(getGroupsEventListener())
+
 
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -39,5 +50,31 @@ class SummaryActivity : AppCompatActivity() {
             val newGroup = Group(newGroupName.toString(), newGroupMembers)
             groups.add(newGroup)
          */
+    }
+
+    private fun getGroupsEventListener(): ChildEventListener {
+        val listener = object : ChildEventListener{
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        }
+        return listener
     }
 }
