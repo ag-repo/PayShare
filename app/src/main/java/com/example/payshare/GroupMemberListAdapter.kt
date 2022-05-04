@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.members_list_add_group_layout.view.*
 
-class GroupMemberListAdapter (val context:Context, val data:ArrayList<GroupMember>) : BaseAdapter() {
+class GroupMemberListAdapter (val context:Context, val data:ArrayList<String>) : BaseAdapter() {
+
     override fun getCount(): Int {
         return data.size
     }
@@ -17,7 +18,7 @@ class GroupMemberListAdapter (val context:Context, val data:ArrayList<GroupMembe
     }
 
     override fun getItemId(position: Int): Long {
-        return (data[position].name + data[position].toString()).hashCode().toLong()
+        return (data[position]).hashCode().toLong()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -27,7 +28,7 @@ class GroupMemberListAdapter (val context:Context, val data:ArrayList<GroupMembe
         }
 
         val group = data[position]
-        (newView as View)?.member_name?.text = group.name
+        (newView as View)?.member_name?.text = group
 
         //check se ci sono nuovi dati
         //notifyDataSetChanged()

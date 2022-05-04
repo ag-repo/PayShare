@@ -28,6 +28,7 @@ class SummaryActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        /*
         val extras = intent.extras
         if (extras != null) {
             val intent = getIntent()
@@ -37,6 +38,6 @@ class SummaryActivity : AppCompatActivity() {
             val newGroupMembers = args?.getSerializable("newgroup_bundle")
             val newGroup = Group(newGroupName.toString(), newGroupMembers)
             groups.add(newGroup)
-        }
+         */
     }
 }

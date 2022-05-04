@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "920732438462",
+    "project_id": "payshare-a08b2",
+    "storage_bucket": "payshare-a08b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920732438462:android:035ecb978c9f1768cbf3ef",
+        "android_client_info": {
+          "package_name": "com.example.payshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920732438462-346k6htq2upn77lgrol06cb134q4tc40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANFEVf5GFsX2yiN5L8jiuC1XY8NUH-ppk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920732438462-346k6htq2upn77lgrol06cb134q4tc40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
