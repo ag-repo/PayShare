@@ -3,14 +3,13 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_new_group.*
 
 
 class AddNewGroupActivity : AppCompatActivity() {
 
-    private var tempGroupMemberList =  arrayListOf<GroupMember>(GroupMember("IO"))
+    private var tempGroupMemberList =  arrayListOf<String>("IO")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +20,8 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         //se nome non presente lo aggiungo, altrimenti Toast con notifica
         addMemberBtn.setOnClickListener{
-            if(!tempGroupMemberList.contains(GroupMember(et_newMember.text.toString()))){
-                tempGroupMemberList.add(GroupMember(et_newMember.text.toString()))
+            if(!tempGroupMemberList.contains(et_newMember.text.toString())){
+                tempGroupMemberList.add(et_newMember.text.toString())
                 groupMembersLayout.invalidateViews()
             } else {
                 //NON FUNZIONAAAAAAAAAAAAAAAAA
@@ -37,6 +36,7 @@ class AddNewGroupActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putString("group_name", et_nomeGruppo.text.toString())
             bundle.putSerializable("group_list", tempGroupMemberList)
+            //bundle.putParcelableArrayList("group_array", tempGroupMemberList<Group>)
             intent.putExtra("newgroup_bundle", bundle)
 
             startActivity(intent)

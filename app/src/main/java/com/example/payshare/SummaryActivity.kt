@@ -34,9 +34,9 @@ class SummaryActivity : AppCompatActivity() {
             val args = intent.getBundleExtra("newgroup_bundle")
 
             val newGroupName = args?.getString("group_name")
-            val newGroupMembers = args?.getSerializable("newgroup_bundle").
+            val newGroupMembers = args?.getSerializable("newgroup_bundle")
             val newGroup = Group(newGroupName.toString(), newGroupMembers)
-            groups.add()
+            groups.add(newGroup)
         }
     }
 }
