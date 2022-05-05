@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
     android:fillViewport="false"
@@ -73,18 +73,6 @@
             android:paddingBottom="8dp"
             android:text="@string/newpay_quant"
             android:textColor="@color/design_default_color_on_primary" />
-
-        <DatePicker
-            android:id="@+id/paymentDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/input_bg"
-            android:calendarTextColor="@color/design_default_color_on_primary"
-            android:ems="10"
-            android:inputType="date"
-            android:datePickerMode="spinner"
-            android:calendarViewShown="false" />
 
         <TextView
             android:id="@+id/tv_paymentSubject"

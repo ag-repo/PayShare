@@ -49,29 +49,6 @@ class SummaryActivity : AppCompatActivity() {
         lv_adapter = adapter
         groupListView.adapter = adapter
 
-        /*
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_2, data)
-        listview.adapter = adapter
-         */
-        /*
-        //Inizializzo dati per la listview
-        for(i in 0..data.size){                 //SI PUÒ FARE ??
-            val myItem = MyItem2("nome $i", "cognome ${i*2}")
-            item["title"] = myItem.nome
-            item["description"] = myItem.cognome
-            item["image"] = R.drawable.ic_microwave
-            data.add(item)
-        }
-
-        val adapter = SimpleAdapter(
-            this,
-            data,
-            R.layout.summary_list_group_item_layout,
-            arrayOf("title", "description", "image"),
-            intArrayOf(R.id.tvTitle, R.id.tvDescr, R.id.ivLogo)
-        )
-         */
-
         //Leggo dati da firebase
         FirebaseDBHelper.readGroups(getGroupsEventListener())
 
