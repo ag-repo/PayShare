@@ -9,4 +9,6 @@
     <string name="newpay_pagatoda">Pagato da</string>
     <string name="newpay_perchi">Per chi</string>
     <string name="newpay_addspesa">Aggiungi spesa</string>
+    <string name="lv_group_name_placeholder">nome_gruppo</string>
+    <string name="lv_group_descr_placeholder">descrizione_gruppo</string>
 </resources>

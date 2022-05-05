@@ -2,6 +2,7 @@ package com.example.payshare
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SimpleAdapter
@@ -13,21 +14,66 @@ import kotlinx.android.synthetic.main.activity_summary.*
 
 class SummaryActivity : AppCompatActivity() {
 
-    private val data: MutableList<Group> = ArrayList()
-    lateinit var adapter: ArrayAdapter<Group>
+    private val groupList: MutableList<Group> = ArrayList()
+    lateinit var lv_adapter : SimpleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
 
+        //val data: MutableList<Group> = ArrayList<Group>()
+        val data = arrayListOf<HashMap<String,Any>>()
+        //inizializzo dati listview
+        for(i in 1..10){
+            val arrayNomi = ArrayList<String>() //creo nomi
+            for (i in 1..3){
+                arrayNomi.add("Nome $i")
+            }
+
+            val item = HashMap<String,Any>()
+            val group = Group("Gruppo $i", "Descrizione gruppo $i", arrayNomi)
+            groupList.add(group)
+            item["groupName"] = group.getGroupName()
+            item["groupDescr"] = group.getGroupDescr()
+            data.add(item)
+        }
+
         //Inizializzo listview
-        val listview: ListView = groupListView
+        val adapter = SimpleAdapter(
+            this,
+            data,
+            R.layout.summary_list_group_item_layout,
+            arrayOf("groupName", "groupDescr"),
+            intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
+        )
+        lv_adapter = adapter
+        groupListView.adapter = adapter
+
+        /*
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_2, data)
         listview.adapter = adapter
+         */
+        /*
+        //Inizializzo dati per la listview
+        for(i in 0..data.size){                 //SI PUÒ FARE ??
+            val myItem = MyItem2("nome $i", "cognome ${i*2}")
+            item["title"] = myItem.nome
+            item["description"] = myItem.cognome
+            item["image"] = R.drawable.ic_microwave
+            data.add(item)
+        }
+
+        val adapter = SimpleAdapter(
+            this,
+            data,
+            R.layout.summary_list_group_item_layout,
+            arrayOf("title", "description", "image"),
+            intArrayOf(R.id.tvTitle, R.id.tvDescr, R.id.ivLogo)
+        )
+         */
 
         //Leggo dati da firebase
         FirebaseDBHelper.readGroups(getGroupsEventListener())
-
 
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -46,11 +92,12 @@ class SummaryActivity : AppCompatActivity() {
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
+        val adapter = lv_adapter
         val listener = object : ChildEventListener{
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val item = p0.getValue(Group::class.java)
-                if (item != null) { data.add(item) }
-                val groupIndex = data.indexOf(item)
+                if (item != null) { groupList.add(item) }
+                val groupIndex = groupList.indexOf(item)
                 groupListView.setItemChecked(groupIndex, false)
                 adapter.notifyDataSetChanged()
             }
@@ -61,7 +108,7 @@ class SummaryActivity : AppCompatActivity() {
 
             override fun onChildRemoved(p0: DataSnapshot) {
                 val item = p0.getValue(Group::class.java)
-                data.remove(item)
+                groupList.remove(item)
                 adapter.notifyDataSetChanged()
             }
 

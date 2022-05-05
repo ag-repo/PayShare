@@ -5,7 +5,7 @@ data class Group(
     private var groupDescr: String,
     private var groupMembers: ArrayList<String>) {
 
-    constructor() : this("", "", arrayListOf("IO"))
+    constructor() : this("", "", arrayListOf())
 
     override fun toString(): String {
         return groupName
@@ -21,7 +21,7 @@ data class Group(
         return this.groupName
     }
 
-    fun setGroupDescr(): String {
+    fun getGroupDescr(): String {
         return this.groupDescr
     }
 
