@@ -19,14 +19,12 @@ class AddNewGroupActivity : AppCompatActivity() {
 
         //se nome non presente lo aggiungo, altrimenti Toast con notifica
         addMemberBtn.setOnClickListener{
-
             if(!tempGroupMemberList.contains(et_newMember.text.toString())){
                 tempGroupMemberList.add(et_newMember.text.toString())
                 //inserire autocancellazione della edit text quando inserisce membro
                 et_newMember.text.clear()
                 groupMembersLayout.invalidateViews()
             } else {
-                //NON FUNZIONAAAAAAAAAAAAAAAAA
                 Toast.makeText(this, "Nome già presente",Toast.LENGTH_LONG).show()
             }
         }

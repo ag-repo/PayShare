@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val user = ""
+    private val user = "IO"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,5 +17,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun getUserName():String{
+        return this.user
     }
 }
