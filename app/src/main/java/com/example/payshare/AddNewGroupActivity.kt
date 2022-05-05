@@ -23,6 +23,7 @@ class AddNewGroupActivity : AppCompatActivity() {
             if(!tempGroupMemberList.contains(et_newMember.text.toString())){
                 tempGroupMemberList.add(et_newMember.text.toString())
                 //inserire autocancellazione della edit text quando inserisce membro
+                et_newMember.text.clear()
                 groupMembersLayout.invalidateViews()
             } else {
                 //NON FUNZIONAAAAAAAAAAAAAAAAA
@@ -35,6 +36,9 @@ class AddNewGroupActivity : AppCompatActivity() {
             //Creo oggetto gruppo e lo aggiungo su Firebase
             val newGroup = Group(et_nomeGruppo.text.toString(), et_descrizione.text.toString(), tempGroupMemberList)
             FirebaseDBHelper.setNewGroup(newGroup.getGroupName(), newGroup)
+            //richiamo SummaryActivity
+            val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
         }
     }
 }
