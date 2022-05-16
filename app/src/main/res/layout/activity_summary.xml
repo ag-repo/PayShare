@@ -46,12 +46,24 @@
                 android:layout_height="wrap_content"
                 android:text="Gruppi creati: " />
         </LinearLayout>
-        <ImageView
-            android:id="@+id/topSettings"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_settings" />
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/topSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_settings" />
+            <ImageView
+                android:id="@+id/refreshGroups"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_refresh" />
+        </LinearLayout>
     </LinearLayout>
 
     <ListView

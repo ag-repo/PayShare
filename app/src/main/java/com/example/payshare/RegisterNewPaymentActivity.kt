@@ -19,6 +19,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
 
         val title = paymentName         //riferimento titolo della spesa
         val tot = paymentQuantity       //riferimento quantità della spesa
+        val pagatoDa = paymentSubjectRG.checkedRadioButtonId
 
     }
 

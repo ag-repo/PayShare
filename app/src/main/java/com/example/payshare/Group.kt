@@ -8,7 +8,7 @@ data class Group(
     constructor() : this("", "", arrayListOf())
 
     override fun toString(): String {
-        return groupName
+        return groupName + " - " + groupDescr
     }
 
     fun set(item: Group){

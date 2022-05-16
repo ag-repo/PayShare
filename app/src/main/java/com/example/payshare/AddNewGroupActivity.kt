@@ -3,6 +3,7 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_new_group.*
 
@@ -38,5 +39,10 @@ class AddNewGroupActivity : AppCompatActivity() {
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun getAddGroupClickListener(): View.OnClickListener?{
+        val listener = View.OnClickListener{}
+        return listener
     }
 }
