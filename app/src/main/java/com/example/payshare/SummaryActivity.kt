@@ -7,27 +7,25 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_add_new_group.*
 import kotlinx.android.synthetic.main.activity_summary.*
-import kotlinx.android.synthetic.main.activity_summary.addGroupBtn
+
 
 class SummaryActivity : AppCompatActivity() {
 
     private val groupList: MutableList<Group> = ArrayList()
-    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference("groups")
+    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference().child("groups")
     lateinit var lv_adapter : SimpleAdapter
     private lateinit var groupChildListener: ChildEventListener
     private lateinit var listViewItems : ListView
+    private var listData = arrayListOf<HashMap<String,Any>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
-
-        val data = arrayListOf<HashMap<String,Any>>()
         //Inizializzo listview
         lv_adapter = SimpleAdapter(
             this,
-            data,
+            listData,
             R.layout.summary_list_group_item_layout,
             arrayOf("groupName", "groupDescr"),
             intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
@@ -35,13 +33,22 @@ class SummaryActivity : AppCompatActivity() {
         
         listViewItems = groupListView
         listViewItems.adapter = lv_adapter
+        //inizializzo dati listview
+        /*for(i in 1..10){
+            val arrayNomi = ArrayList<String>() //creo nomi
+            for (i in 1..3){
+                arrayNomi.add("Nome $i")
+            }
 
-
-        /*for(g in groupList){
-            val group : Group = groupList.get(g)
-            Log.i("GRUPPO SALVATO ------>", group.toString())
+            val item = HashMap<String,Any>()
+            val group = Group("Gruppo $i", "Descrizione gruppo $i", arrayNomi)
+            groupList.add(group)
+            item["groupName"] = group.getGroupName()
+            item["groupDescr"] = group.getGroupDescr()
+            data.add(item)
         }*/
 
+        FirebaseDBHelper.setListeners(getGroupsEventListener());
         //Aggiungo lettura DB
         val groupListListener = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -57,28 +64,9 @@ class SummaryActivity : AppCompatActivity() {
             }
             //groupReference.addListenerForSingleEventValue()
 
-            /*
-            //inizializzo dati listview
-            for(i in 1..10){
-                val arrayNomi = ArrayList<String>() //creo nomi
-                for (i in 1..3){
-                    arrayNomi.add("Nome $i")
-                }
 
-                val item = HashMap<String,Any>()
-                val group = Group("Gruppo $i", "Descrizione gruppo $i", arrayNomi)
-                groupList.add(group)
-                item["groupName"] = group.getGroupName()
-                item["groupDescr"] = group.getGroupDescr()
-                data.add(item)
-            }*/
+
         }
-
-        //Leggo dati da firebase
-        FirebaseDBHelper.readGroups(getGroupsEventListener())
-        val refreshButton = refreshGroups
-        //refreshButton.setOnClickListener(getAddGroupClickListener()) //addGroupBtn
-
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
             startActivity(intent)
@@ -109,6 +97,15 @@ class SummaryActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun getRefreshGroupClickListener(): View.OnClickListener? {
+        val listener = View.OnClickListener{
+            //val newGroups = FirebaseDBHelper.readGroups()
+
+        }
+        return listener
+    }
+
     private fun getGroupsEventListener(): ChildEventListener {
         val adapter = lv_adapter
         val listener = object : ChildEventListener{
@@ -116,6 +113,11 @@ class SummaryActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
                     groupList.add(item)
+                    //Rappresentazione grafica dell'oggetto
+                    val listobj = HashMap<String,Any>()
+                    listobj["groupName"] = item.getGroupName()
+                    listobj["groupDescr"] = item.getGroupDescr()
+                    listData.add(listobj)
                     //test stampa in aggiunta - FUNZIONA
                     Log.i("GRUPPO SALVATO ------>", item.toString())
                 }
@@ -125,17 +127,58 @@ class SummaryActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousGroupName: String?) {
-                val newGroup = dataSnap.getValue(Group::class.java)
-                val groupKey = dataSnap.key
-                groupList.find{ e -> e.toString().equals(groupKey)}?.set(newGroup!!)
-                adapter.notifyDataSetChanged()
+            val item = dataSnap.getValue(Group::class.java)
+            if (item != null) {
+
+                for (i in groupList.indices) {
+                    if(groupList[i].getGroupName().equals(item.getGroupName()))
+                    {
+                        groupList[i] = item;
+                        break
+                    }
+                }
+                val listobj = HashMap<String,Any>()
+                listobj["groupName"] = item.getGroupName()
+                listobj["groupDescr"] = item.getGroupDescr()
+
+                for (i in listData.indices) {
+                    var obj = listData[i]["groupName"];
+                    if(obj.toString().equals(item.getGroupName()))
+                    {
+                        listData[i] = listobj;
+                        break
+                    }
+                }
+
+            }
+            adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
-                //val group = dataSnap.getValue(Group::class.java)
-                val groupKey = dataSnap.key
-                val fu = groupList.find{ e -> e.toString().equals(groupKey)}
-                groupList.remove(fu)
+                val item = dataSnap.getValue(Group::class.java)
+                if (item != null) {
+
+                    for (i in groupList.indices) {
+                        if(groupList[i].getGroupName().equals(item.getGroupName()))
+                        {
+                            groupList.removeAt(i)
+                            break
+                        }
+                    }
+                    val listobj = HashMap<String,Any>()
+                    listobj["groupName"] = item.getGroupName()
+                    listobj["groupDescr"] = item.getGroupDescr()
+
+                    for (i in listData.indices) {
+                        var obj = listData[i]["groupName"];
+                        if(obj.toString().equals(item.getGroupName()))
+                        {
+                            listData.removeAt(i)
+                            break
+                        }
+                    }
+
+                }
                 adapter.notifyDataSetChanged()
             }
 

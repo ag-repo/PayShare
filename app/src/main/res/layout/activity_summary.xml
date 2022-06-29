@@ -84,6 +84,7 @@
         tools:layout_editor_absoluteX="8dp">
 
         <Button
+            android:layout_marginEnd="5dp"
             android:id="@+id/addGroupBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:layout_marginEnd="5dp"
             android:id="@+id/addPayments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:layout_marginEnd="5dp"
             android:id="@+id/groupButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,6 +121,7 @@
 
         <Button
             android:id="@+id/listButton"
+            android:layout_marginEnd="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="LIST"
