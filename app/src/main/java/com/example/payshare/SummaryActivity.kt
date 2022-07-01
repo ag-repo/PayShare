@@ -85,17 +85,27 @@ class SummaryActivity : AppCompatActivity() {
         //listener per apertura del gruppo selezionato nella listview
         listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
             val group = lv_adapter.getItemAtPosition(position) //group è una HashMap
+            var obj = listData[position]["groupName"] //nome del gruppo
 
-            //val obj = HashMap<String,Any>()
-            //obj["groupName"] =
+            Log.i("LIST DATA POSITION", "LIST POSITION: ${obj.toString()}")
 
-            Log.i("GRUPPO CLICCATO", "GRUPPO CLICCATO: ${group.toString()}")
+            Log.i("GRUPPO CLICCATO", "GRUPPO CLICCATO: ${group}")
 
-            //Toast.makeText(this, "ELEMENTO SELEZIONATO: ${group.toString()}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, GroupActivity::class.java)
-            intent.putExtra("group", group as HashMap<String,String>)
+            intent.putExtra("group", obj as String)
             startActivity(intent)
         }
+    }
+
+    //Metodo per ritornare l'oggetto gruppo dato il nome
+    fun returnGroupFromGroupList(nome: String):Group{
+        var groupToReturn = Group()
+        for(i in groupList.indices){
+            if(groupList[i].getGroupName().equals(nome)){
+                groupToReturn = groupList[i]
+            }
+        }
+        return groupToReturn
     }
 
     override fun onStart() {
@@ -138,8 +148,6 @@ class SummaryActivity : AppCompatActivity() {
                     //test stampa in aggiunta - FUNZIONA
                     Log.i("GRUPPO SALVATO ------>", item.toString())
                 }
-                //val groupIndex = groupList.indexOf(item)
-                //groupListView.setItemChecked(groupIndex, false)
                 adapter.notifyDataSetChanged()
             }
 
@@ -176,8 +184,7 @@ class SummaryActivity : AppCompatActivity() {
                 if (item != null) {
 
                     for (i in groupList.indices) {
-                        if(groupList[i].getGroupName().equals(item.getGroupName()))
-                        {
+                        if(groupList[i].getGroupName().equals(item.getGroupName())) {
                             groupList.removeAt(i)
                             break
                         }
@@ -188,13 +195,11 @@ class SummaryActivity : AppCompatActivity() {
 
                     for (i in listData.indices) {
                         var obj = listData[i]["groupName"];
-                        if(obj.toString().equals(item.getGroupName()))
-                        {
+                        if(obj.toString().equals(item.getGroupName())) {
                             listData.removeAt(i)
                             break
                         }
                     }
-
                 }
                 adapter.notifyDataSetChanged()
             }

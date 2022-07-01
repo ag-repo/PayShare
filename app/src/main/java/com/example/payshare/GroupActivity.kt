@@ -3,8 +3,6 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_group.*
 
 class GroupActivity : AppCompatActivity() {
@@ -12,15 +10,13 @@ class GroupActivity : AppCompatActivity() {
     val paymentsFragment = GroupPaymentsFragment()
     val statsFragment = GroupStatsFragment()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        val group = intent.extras?.get("group")
-        Log.i("GRUPPO PASSATO", "GRUPPO PASSATO: ${group.toString()}")
-
-
+        val group = intent.extras?.get("group") //nome del gruppo passato
+        groupName.text = group.toString() //rimpiazzo textview con il nome del gruppo
+        //val g = returnGroupFromGroupList(groupName.text)
 
         //frame payments gruppo
         val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
