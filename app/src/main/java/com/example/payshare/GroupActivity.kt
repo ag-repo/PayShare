@@ -1,5 +1,6 @@
 package com.example.payshare
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +37,12 @@ class GroupActivity : AppCompatActivity() {
             val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
             transaction.replace(R.id.paymentsStatsFragment, statsFragment) //rimpiazzo fragment
             transaction.commit()
+        }
+
+        addPaymentsBtn.setOnClickListener{
+            val intent = Intent(this, RegisterNewPaymentActivity::class.java)
+            intent.putExtra("group", group as HashMap<String,String>)
+            startActivity(intent)
         }
     }
 }
