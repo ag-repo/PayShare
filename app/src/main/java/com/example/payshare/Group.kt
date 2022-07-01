@@ -11,7 +11,7 @@ data class Group(
     constructor() : this("", "", arrayListOf(), arrayListOf())
 
     override fun toString(): String {
-        return groupName + " - " + groupDescr
+        return groupName + " - " + groupDescr + " num partecipanti: " + groupMembers.size + " num transazioni: " + transactions.size
     }
 
     fun set(item: Group){

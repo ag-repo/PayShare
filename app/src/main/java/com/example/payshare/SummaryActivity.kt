@@ -68,7 +68,6 @@ class SummaryActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         }
         addPayments.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -84,15 +83,21 @@ class SummaryActivity : AppCompatActivity() {
         }
         //listener per apertura del gruppo selezionato nella listview
         listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
-            val group = lv_adapter.getItemAtPosition(position) //group è una HashMap
+            //val group = lv_adapter.getItemAtPosition(position) //group è una HashMap
             var obj = listData[position]["groupName"] //nome del gruppo
+            var groupObj = Group()
 
-            Log.i("LIST DATA POSITION", "LIST POSITION: ${obj.toString()}")
+            for(i in groupList.indices){
+                if(groupList[i].getGroupName().equals(obj)){
+                    groupObj = groupList[i]
+                }
+            }
 
-            Log.i("GRUPPO CLICCATO", "GRUPPO CLICCATO: ${group}")
+            Log.i("OGGETTO GRUPPO TROVATO", "GRUPPO: ${groupObj.toString()}")
 
             val intent = Intent(this, GroupActivity::class.java)
-            intent.putExtra("group", obj as String)
+            intent.putExtra("group_name", obj as String)
+            intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
     }

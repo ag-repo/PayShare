@@ -3,6 +3,9 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_group.*
 
 class GroupActivity : AppCompatActivity() {
@@ -14,9 +17,11 @@ class GroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        val group = intent.extras?.get("group") //nome del gruppo passato
-        groupName.text = group.toString() //rimpiazzo textview con il nome del gruppo
-        //val g = returnGroupFromGroupList(groupName.text)
+        val gName = intent.extras?.get("group_name") //nome del gruppo passato - tipo String
+        val groupObj = intent.extras?.get("group_obj")
+        groupName.text = gName.toString() //rimpiazzo textview con il nome del gruppo
+        //Log.i("OGGETTO GRUPPO INTENT", "GRUPPO: ${groupObj.toString()}")
+
 
         //frame payments gruppo
         val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
@@ -37,7 +42,8 @@ class GroupActivity : AppCompatActivity() {
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
-            intent.putExtra("group", group as HashMap<String,String>)
+            intent.putExtra("group_name", gName as String)
+            intent.putExtra("group_obj", groupObj as Group)
             startActivity(intent)
         }
     }
