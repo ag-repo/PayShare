@@ -14,7 +14,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_group)
 
-        var tempGroupMemberList =  arrayListOf<String>("IO")
+        var tempGroupMemberList =  arrayListOf("IO")
         val memberAdapter = GroupMemberListAdapter(this, tempGroupMemberList)
         groupMembersLayout.adapter = memberAdapter
 
