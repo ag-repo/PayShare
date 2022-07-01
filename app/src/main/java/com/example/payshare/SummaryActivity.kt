@@ -6,8 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_group.view.*
 import kotlinx.android.synthetic.main.activity_summary.*
+import kotlinx.android.synthetic.main.summary_list_group_item_layout.*
+import kotlinx.android.synthetic.main.summary_list_group_item_layout.view.*
+import java.io.Serializable
 
 
 class SummaryActivity : AppCompatActivity() {
@@ -33,6 +38,7 @@ class SummaryActivity : AppCompatActivity() {
         
         listViewItems = groupListView
         listViewItems.adapter = lv_adapter
+
         //inizializzo dati listview
         /*for(i in 1..10){
             val arrayNomi = ArrayList<String>() //creo nomi
@@ -62,9 +68,6 @@ class SummaryActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-            //groupReference.addListenerForSingleEventValue()
-
-
 
         }
         addPayments.setOnClickListener{
@@ -77,6 +80,20 @@ class SummaryActivity : AppCompatActivity() {
         }
         addGroupBtn.setOnClickListener{
             val intent = Intent(this, AddNewGroupActivity::class.java)
+            startActivity(intent)
+        }
+        //listener per apertura del gruppo selezionato nella listview
+        listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
+            val group = lv_adapter.getItemAtPosition(position) //group è una HashMap
+
+            //val obj = HashMap<String,Any>()
+            //obj["groupName"] =
+
+            Log.i("GRUPPO CLICCATO", "GRUPPO CLICCATO: ${group.toString()}")
+
+            //Toast.makeText(this, "ELEMENTO SELEZIONATO: ${group.toString()}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("group", group as HashMap<String,String>)
             startActivity(intent)
         }
     }
