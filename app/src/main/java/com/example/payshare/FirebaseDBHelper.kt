@@ -6,7 +6,7 @@ class FirebaseDBHelper {
 
     companion object {
 
-        val db = FirebaseDatabase.getInstance("https://payshare-a08b2-default-rtdb.europe-west1.firebasedatabase.app/")
+        val db = FirebaseDatabase.getInstance("https://payshare-a08b2-default-rtdb.europe-west1.firebasedatabase.app")
                                     .getReference()
                                     .child("groups")
 
@@ -19,12 +19,6 @@ class FirebaseDBHelper {
             //db.child(groupName).setValue(groupObj)
             db.child(groupName).setValue(groupObj)
         }
-
-        /*
-        fun removeToDoItem(key: String){
-            db.child(key).removeValue()
-        }
-        */
 
     }
 }
