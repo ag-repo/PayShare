@@ -4,10 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.SimpleAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_group.*
+import kotlinx.android.synthetic.main.fragment_group_payments.*
 
 class GroupActivity : AppCompatActivity() {
 
@@ -23,15 +25,6 @@ class GroupActivity : AppCompatActivity() {
         val groupObj = intent.extras?.get("group_obj") as Group
         val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
 
-        //popolo l'Hashmap per l'adapter
-        for(i in transactionsList){
-            //Controllo se transazione già presente
-            val transazione = HashMap<String,Transaction>()
-            //transazione.put(transactionsList[i].getTitolo(), transactionsList[i])
-            //aggiungo transazione alla listaSpese
-            //listaSpese.add(transazione)
-        }
-
         groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
         groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
 
@@ -40,7 +33,7 @@ class GroupActivity : AppCompatActivity() {
             this,
             listaSpese,
             R.layout.summary_list_group_item_layout,
-            arrayOf("groupName", "groupDescr"),
+            arrayOf("titolo_spesa", "totale_spesa"),
             intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
         )
 

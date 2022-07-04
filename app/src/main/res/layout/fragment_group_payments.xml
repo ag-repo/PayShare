@@ -9,10 +9,10 @@
         android:id="@+id/lv_pagamenti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:background="@drawable/input_bg"
         android:paddingTop="32dp"
         android:paddingBottom="32dp"
-        android:background="@drawable/input_bg"
-        android:textColor="@color/colorText"/>
+        android:textAlignment="center"
+        android:textColor="@color/colorText" />
 
 </FrameLayout>
