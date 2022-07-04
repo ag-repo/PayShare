@@ -4,11 +4,11 @@ import java.io.Serializable
 
 data class Transaction(
     private var titolo: String,
-    private var pagatoDa: String,
+    private var pagatoDa: ArrayList<String>,
     private var pagatoPer: ArrayList<String>,
     private var totale: Double) : Serializable {
 
-    constructor() : this("","", arrayListOf(), 0.0,)
+    constructor() : this("", arrayListOf(), arrayListOf(), 0.0,)
 
     fun set(transaction: Transaction){
         titolo = transaction.titolo
@@ -21,7 +21,7 @@ data class Transaction(
         return this.titolo
     }
 
-    fun getPagatoDa():String{
+    fun getPagatoDa():ArrayList<String>{
         return this.pagatoDa
     }
 

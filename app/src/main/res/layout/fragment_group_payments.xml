@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".GroupPaymentsFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/lv_pagamenti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:paddingTop="32dp"
         android:paddingBottom="32dp"
-        android:textColor="@color/colorText"
-        android:text="Fragment per lista pagamenti" />
+        android:background="@drawable/input_bg"
+        android:textColor="@color/colorText"/>
 
 </FrameLayout>

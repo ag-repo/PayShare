@@ -102,17 +102,6 @@ class SummaryActivity : AppCompatActivity() {
         }
     }
 
-    //Metodo per ritornare l'oggetto gruppo dato il nome
-    fun returnGroupFromGroupList(nome: String):Group{
-        var groupToReturn = Group()
-        for(i in groupList.indices){
-            if(groupList[i].getGroupName().equals(nome)){
-                groupToReturn = groupList[i]
-            }
-        }
-        return groupToReturn
-    }
-
     override fun onStart() {
         super.onStart()
 
@@ -127,15 +116,6 @@ class SummaryActivity : AppCompatActivity() {
         if(groupChildListener != null){
             groupReference!!.removeEventListener(groupChildListener)
         }
-    }
-
-
-    private fun getRefreshGroupClickListener(): View.OnClickListener? {
-        val listener = View.OnClickListener{
-            //val newGroups = FirebaseDBHelper.readGroups()
-
-        }
-        return listener
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
