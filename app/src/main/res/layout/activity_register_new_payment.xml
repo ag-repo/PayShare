@@ -56,6 +56,7 @@
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:textColorHint="@color/design_default_color_on_primary"
             android:hint="@string/newpay_name"
             android:textColor="@color/design_default_color_on_primary" />
 
@@ -70,6 +71,7 @@
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:textColorHint="@color/design_default_color_on_primary"
             android:hint="@string/newpay_quant"
             android:textColor="@color/design_default_color_on_primary" />
 
@@ -93,7 +95,9 @@
             android:padding="16dp"
             android:background="@drawable/input_bg"
             android:minHeight="400dp"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:backgroundTint="@color/white"
+            android:choiceMode="multipleChoice"/>
 
         <TextView
             android:id="@+id/tv_paymentGroup"
@@ -115,6 +119,8 @@
             android:padding="16dp"
             android:background="@drawable/input_bg"
             android:minHeight="400dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            android:backgroundTint="@color/white"
+            android:choiceMode="multipleChoice"/>
     </LinearLayout>
 </LinearLayout>

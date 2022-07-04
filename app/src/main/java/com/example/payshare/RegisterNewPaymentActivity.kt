@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.SimpleAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_new_group.*
@@ -20,30 +21,39 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         val groupObj = intent.extras?.get("group_obj") as Group
         var chiPaga = ArrayList<String>()
         var perChiPaga = ArrayList<String>()
-
-        paymentRegisterHeader.text = "Nuova spesa per " + groupObj.getGroupName()
-        //Log.i("REGISTERNEWPAY", gName.toString())
-
         var memberList =  groupObj.getGroupMembers()
-        val pagatoDaAdapter = GroupMemberListAdapter(this, memberList)
-        val pagatoPerAdapter = GroupMemberListAdapter(this, memberList)
-        //inizializzo le list view con adapter corrispondenti
-        lv_pagatoDa.adapter = pagatoDaAdapter
-        lv_pagatoPer.adapter = pagatoPerAdapter
-        lv_pagatoDa.invalidateViews()
-        lv_pagatoPer.invalidateViews()
+        //Setto testo per registrare spesa
+        paymentRegisterHeader.text = "Nuova spesa per " + groupObj.getGroupName()
+        //Adapter multiple choice per selezionare chi paga e per chi
+        val lv_adapter_checked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,memberList)
+        lv_pagatoDa.adapter = lv_adapter_checked
+        lv_pagatoPer.adapter = lv_adapter_checked
+        lv_adapter_checked.notifyDataSetInvalidated()
 
         //listener per catturare chi paga la spesa dalla listview
         lv_pagatoDa.setOnItemClickListener { lv_adapter, listViewItems, position, id ->
-            chiPaga.add(memberList[position])
+            if(!chiPaga.contains(memberList[position])){
+                //se non contiene il nome, viene aggiunto
+                chiPaga.add(memberList[position])
+            } else {
+                //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
+                chiPaga.remove(memberList[position])
+            }
         }
+
         //listener per pagato per
         lv_pagatoPer.setOnItemClickListener{ lv_adapter, listViewItems, position, id ->
-            perChiPaga.add(memberList[position])
+            //perChiPaga.add(memberList[position])
+            if(!perChiPaga.contains(memberList[position])){
+                //se non contiene il nome, viene aggiunto
+                perChiPaga.add(memberList[position])
+            } else {
+                //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
+                perChiPaga.remove(memberList[position])
+            }
         }
 
         addNewTransactionBtn.setOnClickListener{
-
             //check che titolo e quantità siano valide
             val titoloSpesa : String = R.id.paymentName.toString()
             val totaleSpesa : Double = R.id.paymentQuantity.toDouble()
