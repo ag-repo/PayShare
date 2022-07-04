@@ -96,7 +96,6 @@ class SummaryActivity : AppCompatActivity() {
             Log.i("OGGETTO GRUPPO TROVATO", "GRUPPO: ${groupObj.toString()}")
 
             val intent = Intent(this, GroupActivity::class.java)
-            intent.putExtra("group_name", obj as String)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }

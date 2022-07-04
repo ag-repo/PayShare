@@ -33,6 +33,14 @@ data class Group(
         return this.groupMembers
     }
 
+    fun getGroupMembersToString(): String {
+        val builder = StringBuilder()
+        for(i in groupMembers.indices){
+            builder.append(groupMembers[i] + ", ")
+        }
+        return builder.toString()
+    }
+
     fun getGroupTransactions(): ArrayList<Transaction>{
         return this.transactions
     }

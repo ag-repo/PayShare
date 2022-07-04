@@ -20,7 +20,6 @@ class GroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        val gName = intent.extras?.get("group_name") //nome del gruppo passato - tipo String
         val groupObj = intent.extras?.get("group_obj") as Group
         val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
 
@@ -33,7 +32,8 @@ class GroupActivity : AppCompatActivity() {
             //listaSpese.add(transazione)
         }
 
-        groupName.text = gName.toString() //rimpiazzo textview con il nome del gruppo
+        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
+        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
 
         //Adapter per fragment spese
         lv_spese_adapter = SimpleAdapter(
@@ -63,8 +63,7 @@ class GroupActivity : AppCompatActivity() {
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
-            intent.putExtra("group_name", gName as String)
-            intent.putExtra("group_obj", groupObj as Group)
+            intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
     }

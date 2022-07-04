@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,28 +21,27 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/backViewPayment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/paymentRegisterHeader"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_back_arrow" />
-
             <TextView
                 android:id="@+id/paymentRegisterHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Registra una nuova spesa"
+                android:text="Nuova spesa"
                 android:textAlignment="center"
                 android:textColor="@color/design_default_color_on_primary"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/addNewTransactionBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/addNewTransactionBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_bg"
+                android:text="ADD"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/backViewPayment"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -50,28 +49,28 @@
             android:id="@+id/paymentName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
             android:ems="10"
             android:inputType="textPersonName"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/newpay_name"
+            android:hint="@string/newpay_name"
             android:textColor="@color/design_default_color_on_primary" />
 
         <EditText
             android:id="@+id/paymentQuantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
             android:ems="10"
             android:inputType="number"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/newpay_quant"
+            android:hint="@string/newpay_quant"
             android:textColor="@color/design_default_color_on_primary" />
 
         <TextView
@@ -89,8 +88,8 @@
         <ListView
             android:id="@+id/lv_pagatoDa"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="160dp"
+            android:layout_marginBottom="8dp"
             android:padding="16dp"
             android:background="@drawable/input_bg"
             android:minHeight="400dp"
@@ -111,19 +110,11 @@
         <ListView
             android:id="@+id/lv_pagatoPer"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="160dp"
             android:layout_marginBottom="20dp"
             android:padding="16dp"
             android:background="@drawable/input_bg"
             android:minHeight="400dp"
             android:orientation="vertical"/>
-
-        <Button
-            android:id="@+id/addNewTransactionBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/newpay_addspesa"
-            android:background="@drawable/button_bg"/>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
