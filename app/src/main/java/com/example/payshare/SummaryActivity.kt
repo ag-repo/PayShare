@@ -40,20 +40,6 @@ class SummaryActivity : AppCompatActivity() {
         listViewItems.adapter = lv_adapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
-        //Aggiungo lettura DB
-        val groupListListener = object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var group = snapshot.value as Group
-                val g = HashMap<String,Any>()
-                groupList.add(group)
-                g["groupName"] = group.getGroupName()
-                g["groupDescr"] = group.getGroupDescr()
-
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        }
 
         addGroupBtn.setOnClickListener{
             val intent = Intent(this, AddNewGroupActivity::class.java)
@@ -100,12 +86,12 @@ class SummaryActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-                    groupList.add(item)
+                    groupList.add(item) //arraylist di group presi dal db
                     //Rappresentazione grafica dell'oggetto
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
-                    listData.add(listobj)
+                    listData.add(listobj) //Arraylist di Hashmap per la grafica
 
                     Log.i("EVENTLISTENERCHILDADDED", item.toString())
                 }

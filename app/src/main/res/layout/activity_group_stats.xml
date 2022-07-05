@@ -19,6 +19,7 @@
         android:background="@drawable/input_bg">
 
         <TextView
+            android:id="@+id/group_stats_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorText"
@@ -45,7 +46,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/viewStats"
+        android:id="@+id/lv_singleUserStats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

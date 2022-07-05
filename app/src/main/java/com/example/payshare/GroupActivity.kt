@@ -30,48 +30,43 @@ class GroupActivity : AppCompatActivity() {
         val groupObj = intent.extras?.get("group_obj") as Group
         val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
 
+        //Leggo transazioni dal db e le salvo
+        //val listaTransazioniDatabase = FirebaseDatabase.getInstance().reference.child("groups").child("${groupObj.getGroupName()}").child("transactions")
+        Log.i("AAA-ListaSpese.TOSTRING", groupList.toString())
+        for(i in groupList.indices){
+            if(groupList[i].getGroupName().equals(groupObj.getGroupName())){
+                //transactionsList = groupList[i].getGroupTransactions()
+            }
+        }
+        /*
+        for(i in groupList.indices){
+            if(groupList[i].getGroupName().equals(groupObj.getGroupName())){
+                var listPayments = HashMap<String,Any>()
+                listPayments["group_name"] = groupList[i].getGroupName()
+                listPayments["obj_transaction"] = groupList[i].getGroupTransactions()
+                listaSpese.add(listPayments)
+            }
+        } */
+
         //Adapter per fragment spese
         lv_spese_adapter = TransactionsListAdapter(this,transactionsList)
-
-        /*listaSpese,
-            R.layout.transactions_list_layout,
-            arrayOf("titolo_spesa", "pagato_da", "totale_spesa"),
-            intArrayOf(R.id.tv_titolo_spesa, R.id.tv_pagato_da, R.id.tv_amount)*/
 
         listview_payments = lv_payments
         listview_payments.adapter = lv_spese_adapter
 
-        //Leggo db per avere copia in locale
         FirebaseDBHelper.setListeners(getGroupsEventListener());
-
-        //Aggiungo lettura DB
-        val groupListListener = object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var group = snapshot.getValue() as Group
-                val g = HashMap<String,Any>()
-                groupList.add(group)
-                g["groupName"] = group.getGroupName()
-                g["groupObj"] = group
-
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        }
 
         groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
         groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
 
-        //QUI DEVO LEGGERLO DA REMOTO !!!!!!!!
-        //DA FARE
-
         //popolo la listaSpese con le transazioni del gruppo ricevuto
+        /*
         for(i in transactionsList.indices){
             var listPayments = HashMap<String,Any>()
             listPayments["titolo_spesa"] = transactionsList[i].getTitolo()
             listPayments["obj_transaction"] = transactionsList[i]
             listaSpese.add(listPayments)
-        }
+        }*/
 
         lv_spese_adapter.notifyDataSetChanged()
 
@@ -118,12 +113,6 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
                     groupList.add(item)
-
-                    //AGGIUNTO SCRITTURA !!!
-                    val speseObj = HashMap<String,Any>()
-                    speseObj["groupName"]
-                    listaSpese
-
                     //Rappresentazione grafica dell'oggetto
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
