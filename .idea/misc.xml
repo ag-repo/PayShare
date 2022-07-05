@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/input_bg.xml" value="0.2775" />
         <entry key="app/src/main/res/layout/activity_add_new_group.xml" value="0.21153411865234378" />
         <entry key="app/src/main/res/layout/activity_group.xml" value="0.27879028320312493" />
+        <entry key="app/src/main/res/layout/activity_group_stats.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35662078857421875" />
         <entry key="app/src/main/res/layout/activity_register_new_payment.xml" value="0.34865134865134867" />
         <entry key="app/src/main/res/layout/activity_summary.xml" value="0.2959274291992187" />
@@ -24,7 +25,9 @@
         <entry key="app/src/main/res/layout/fragment_summary_top.xml" value="0.38908233642578127" />
         <entry key="app/src/main/res/layout/fragment_summary_top2.xml" value="0.2572463768115942" />
         <entry key="app/src/main/res/layout/members_list_add_group_layout.xml" value="0.2572463768115942" />
-        <entry key="app/src/main/res/layout/summary_list_group_item_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/stats_list_layout.xml" value="0.32842254638671875" />
+        <entry key="app/src/main/res/layout/summary_list_group_item_layout.xml" value="0.4414169311523438" />
+        <entry key="app/src/main/res/layout/transactions_list_layout.xml" value="0.41528320312500006" />
       </map>
     </option>
   </component>

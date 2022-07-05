@@ -4,23 +4,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SimpleAdapter
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_group.*
-import kotlinx.android.synthetic.main.fragment_group_payments.*
 import java.util.*
 import kotlin.collections.HashMap
 
 class GroupActivity : AppCompatActivity() {
 
-    lateinit var lv_spese_adapter : SimpleAdapter
+    lateinit var lv_spese_adapter : TransactionsListAdapter
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var listview_payments : ListView
 
     //Aggiunto per il db in locale
-    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference().child("groups")
+    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
     private val groupList: MutableList<Group> = ArrayList()
     private var listData = arrayListOf<HashMap<String,Any>>()
@@ -29,14 +27,16 @@ class GroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
+        val groupObj = intent.extras?.get("group_obj") as Group
+        val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
+
         //Adapter per fragment spese
-        lv_spese_adapter = SimpleAdapter(
-            this,
-            listaSpese,
-            R.layout.summary_list_group_item_layout,
-            arrayOf("titolo_spesa", "obj_transaction"),
-            intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
-        )
+        lv_spese_adapter = TransactionsListAdapter(this,transactionsList)
+
+        /*listaSpese,
+            R.layout.transactions_list_layout,
+            arrayOf("titolo_spesa", "pagato_da", "totale_spesa"),
+            intArrayOf(R.id.tv_titolo_spesa, R.id.tv_pagato_da, R.id.tv_amount)*/
 
         listview_payments = lv_payments
         listview_payments.adapter = lv_spese_adapter
@@ -58,9 +58,6 @@ class GroupActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
-
-        val groupObj = intent.extras?.get("group_obj") as Group
-        val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
 
         groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
         groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
@@ -88,6 +85,12 @@ class GroupActivity : AppCompatActivity() {
 
         back_arrow.setOnClickListener{
             val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
+        }
+
+        groupStatsBtn.setOnClickListener {
+            val intent = Intent(this, GroupStatsActivity::class.java)
+            intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
     }

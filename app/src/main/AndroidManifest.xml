@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/CustomStyle">
         <activity
+            android:name=".GroupStatsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddNewGroupActivity"
             android:exported="false" />
         <activity
