@@ -22,7 +22,7 @@ class FirebaseDBHelper {
 
         //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO IL PRECEDENTE
         fun setNewPayment(groupName: String, transaction: Transaction){
-            db.child(groupName).child("transactions").setValue(transaction)
+            db.child(groupName).child("transactions").child("${transaction.getTitolo()}${transaction.getTotale().hashCode()}").setValue(transaction)
         }
 
     }
