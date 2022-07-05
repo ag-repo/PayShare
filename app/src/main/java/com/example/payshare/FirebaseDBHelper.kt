@@ -20,5 +20,10 @@ class FirebaseDBHelper {
             db.child(groupName).setValue(groupObj)
         }
 
+        //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO TUTTO
+        fun setNewPayment(groupName: String, transaction: Transaction){
+            db.child(groupName).child("transactions").setValue(transaction)
+        }
+
     }
 }
