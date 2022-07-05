@@ -18,7 +18,7 @@ import java.io.Serializable
 class SummaryActivity : AppCompatActivity() {
 
     private val groupList: MutableList<Group> = ArrayList()
-    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference().child("groups")
+    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     lateinit var lv_adapter : SimpleAdapter
     private lateinit var groupChildListener: ChildEventListener
     private lateinit var listViewItems : ListView
@@ -39,11 +39,11 @@ class SummaryActivity : AppCompatActivity() {
         listViewItems = groupListView
         listViewItems.adapter = lv_adapter
 
-        FirebaseDBHelper.setListeners(getGroupsEventListener());
+        FirebaseDBHelper.setListeners(getGroupsEventListener())
         //Aggiungo lettura DB
         val groupListListener = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                var group = snapshot.getValue() as Group
+                var group = snapshot.value as Group
                 val g = HashMap<String,Any>()
                 groupList.add(group)
                 g["groupName"] = group.getGroupName()
@@ -61,7 +61,6 @@ class SummaryActivity : AppCompatActivity() {
         }
         //listener per apertura del gruppo selezionato nella listview
         listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
-            //val group = lv_adapter.getItemAtPosition(position) //group è una HashMap
             var obj = listData[position]["groupName"] //nome del gruppo
             var groupObj = Group()
 
@@ -71,7 +70,7 @@ class SummaryActivity : AppCompatActivity() {
                 }
             }
 
-            Log.i("OGGETTO GRUPPO TROVATO", "GRUPPO: ${groupObj.toString()}")
+            Log.i("GRUPPO-SELEZIONATO-->", groupObj.toString())
 
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
@@ -107,8 +106,8 @@ class SummaryActivity : AppCompatActivity() {
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
                     listData.add(listobj)
-                    //test stampa in aggiunta - FUNZIONA
-                    Log.i("GRUPPO SALVATO ------>", item.toString())
+
+                    Log.i("EVENTLISTENERCHILDADDED", item.toString())
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -119,7 +118,7 @@ class SummaryActivity : AppCompatActivity() {
 
                 for (i in groupList.indices) {
                     if(groupList[i].getGroupName().equals(item.getGroupName())) {
-                        groupList[i] = item;
+                        groupList[i] = item
                         break
                     }
                 }
@@ -128,9 +127,9 @@ class SummaryActivity : AppCompatActivity() {
                 listobj["groupDescr"] = item.getGroupDescr()
 
                 for (i in listData.indices) {
-                    var obj = listData[i]["groupName"];
+                    var obj = listData[i]["groupName"]
                     if(obj.toString().equals(item.getGroupName())) {
-                        listData[i] = listobj;
+                        listData[i] = listobj
                         break
                     }
                 }
@@ -153,7 +152,7 @@ class SummaryActivity : AppCompatActivity() {
                     listobj["groupDescr"] = item.getGroupDescr()
 
                     for (i in listData.indices) {
-                        var obj = listData[i]["groupName"];
+                        var obj = listData[i]["groupName"]
                         if(obj.toString().equals(item.getGroupName())) {
                             listData.removeAt(i)
                             break

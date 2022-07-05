@@ -7,7 +7,7 @@ class FirebaseDBHelper {
     companion object {
 
         val db = FirebaseDatabase.getInstance("https://payshare-a08b2-default-rtdb.europe-west1.firebasedatabase.app")
-                                    .getReference()
+                                    .reference
                                     .child("groups")
 
         fun setListeners(groupEventListener: ChildEventListener){
@@ -20,7 +20,7 @@ class FirebaseDBHelper {
             db.child(groupName).setValue(groupObj)
         }
 
-        //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO TUTTO
+        //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO IL PRECEDENTE
         fun setNewPayment(groupName: String, transaction: Transaction){
             db.child(groupName).child("transactions").setValue(transaction)
         }

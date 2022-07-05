@@ -39,23 +39,30 @@
             android:textAlignment="center"
             android:text="Nomi dei partecipanti ..." />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_back_arrow"
+                android:baselineAlignBottom="true"
+                android:layout_marginRight="60dp"
+                android:layout_marginLeft="60dp"/>
 
             <Button
                 android:id="@+id/groupStatsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="STATISTICS"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:baselineAlignBottom="true"
+                tools:layout_editor_absoluteY="8dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <ListView

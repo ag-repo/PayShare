@@ -15,8 +15,6 @@ import kotlin.collections.HashMap
 
 class GroupActivity : AppCompatActivity() {
 
-    val paymentsFragment = GroupPaymentsFragment()
-    val statsFragment = GroupStatsFragment()
     lateinit var lv_spese_adapter : SimpleAdapter
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var listview_payments : ListView
@@ -40,29 +38,11 @@ class GroupActivity : AppCompatActivity() {
             intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
         )
 
-        val groupObj = intent.extras?.get("group_obj") as Group
-        val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
-
-        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
-        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
-
-        //Leggo db per avere copia in locale
-        FirebaseDBHelper.setListeners(getGroupsEventListener());
-
-        //popolo la listaSpese con le transazioni del gruppo ricevuto
-        for(i in transactionsList.indices){
-            var listPayments = HashMap<String,Any>()
-            listPayments["titolo_spesa"] = transactionsList[i].getTitolo()
-            listPayments["obj_transaction"] = transactionsList[i]
-            listaSpese.add(listPayments)
-        }
-
         listview_payments = lv_payments
         listview_payments.adapter = lv_spese_adapter
 
-        lv_spese_adapter.notifyDataSetChanged()
-
-        Log.i("DATI_SPESE_LISTA------>", listaSpese.toString())
+        //Leggo db per avere copia in locale
+        FirebaseDBHelper.setListeners(getGroupsEventListener());
 
         //Aggiungo lettura DB
         val groupListListener = object : ValueEventListener{
@@ -79,10 +59,52 @@ class GroupActivity : AppCompatActivity() {
             }
         }
 
+        val groupObj = intent.extras?.get("group_obj") as Group
+        val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
+
+        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
+        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
+
+        //QUI DEVO LEGGERLO DA REMOTO !!!!!!!!
+        //DA FARE
+
+        //popolo la listaSpese con le transazioni del gruppo ricevuto
+        for(i in transactionsList.indices){
+            var listPayments = HashMap<String,Any>()
+            listPayments["titolo_spesa"] = transactionsList[i].getTitolo()
+            listPayments["obj_transaction"] = transactionsList[i]
+            listaSpese.add(listPayments)
+        }
+
+        lv_spese_adapter.notifyDataSetChanged()
+
+        Log.i("DATI_SPESE_LISTA------>", listaSpese.toString())
+
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
+        }
+
+        back_arrow.setOnClickListener{
+            val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val groupChildListener = getGroupsEventListener()
+        groupReference!!.addChildEventListener(groupChildListener)
+        this.groupChildListener = groupChildListener
+    }
+
+    override fun onStop(){
+        super.onStop()
+
+        if(groupChildListener != null){
+            groupReference!!.removeEventListener(groupChildListener)
         }
     }
 
@@ -93,6 +115,12 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
                     groupList.add(item)
+
+                    //AGGIUNTO SCRITTURA !!!
+                    val speseObj = HashMap<String,Any>()
+                    speseObj["groupName"]
+                    listaSpese
+
                     //Rappresentazione grafica dell'oggetto
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
