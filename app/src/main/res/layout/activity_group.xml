@@ -15,7 +15,7 @@
         android:background="@drawable/input_bg"
         android:minHeight="80dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/paymentsStatsFragment"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,70 +45,58 @@
             android:padding="8dp">
 
             <Button
-                android:id="@+id/groupSpeseBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SPESE"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/groupStatsBtn"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
                 android:id="@+id/groupStatsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="STATS"
+                android:text="STATISTICS"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/groupSpeseBtn"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/paymentsStatsFragment"
-        android:name="com.example.payshare.GroupPaymentsFragment"
+    <ListView
+        android:id="@+id/lv_payments"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
-        android:minHeight="320dp"
+        android:minHeight="360dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/constaint_bottom_group"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout="@layout/fragment_group_payments" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></ListView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+
+    <LinearLayout
         android:id="@+id/constaint_bottom_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
         android:minHeight="80dp"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paymentsStatsFragment">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/addPaymentsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"
+            android:layout_gravity="center"
+            android:text="ADD NEW PAYMENT"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,21 +39,6 @@ class SummaryActivity : AppCompatActivity() {
         listViewItems = groupListView
         listViewItems.adapter = lv_adapter
 
-        //inizializzo dati listview
-        /*for(i in 1..10){
-            val arrayNomi = ArrayList<String>() //creo nomi
-            for (i in 1..3){
-                arrayNomi.add("Nome $i")
-            }
-
-            val item = HashMap<String,Any>()
-            val group = Group("Gruppo $i", "Descrizione gruppo $i", arrayNomi)
-            groupList.add(group)
-            item["groupName"] = group.getGroupName()
-            item["groupDescr"] = group.getGroupDescr()
-            data.add(item)
-        }*/
-
         FirebaseDBHelper.setListeners(getGroupsEventListener());
         //Aggiungo lettura DB
         val groupListListener = object : ValueEventListener{
@@ -69,14 +54,7 @@ class SummaryActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
-        addPayments.setOnClickListener{
-            val intent = Intent(this, RegisterNewPaymentActivity::class.java)
-            startActivity(intent)
-        }
-        groupButton.setOnClickListener{
-            val intent = Intent(this, GroupActivity::class.java)
-            startActivity(intent)
-        }
+
         addGroupBtn.setOnClickListener{
             val intent = Intent(this, AddNewGroupActivity::class.java)
             startActivity(intent)
@@ -140,8 +118,7 @@ class SummaryActivity : AppCompatActivity() {
             if (item != null) {
 
                 for (i in groupList.indices) {
-                    if(groupList[i].getGroupName().equals(item.getGroupName()))
-                    {
+                    if(groupList[i].getGroupName().equals(item.getGroupName())) {
                         groupList[i] = item;
                         break
                     }
@@ -152,13 +129,11 @@ class SummaryActivity : AppCompatActivity() {
 
                 for (i in listData.indices) {
                     var obj = listData[i]["groupName"];
-                    if(obj.toString().equals(item.getGroupName()))
-                    {
+                    if(obj.toString().equals(item.getGroupName())) {
                         listData[i] = listobj;
                         break
                     }
                 }
-
             }
             adapter.notifyDataSetChanged()
             }

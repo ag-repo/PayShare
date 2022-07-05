@@ -33,34 +33,30 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         //listener per catturare chi paga la spesa dalla listview
         lv_pagatoDa.setOnItemClickListener { lv_adapter, listViewItems, position, id ->
             if(!chiPaga.contains(memberList[position])){
-                //se non contiene il nome, viene aggiunto
-                chiPaga.add(memberList[position])
+                chiPaga.add(memberList[position]) //se non contiene il nome, viene aggiunto
             } else {
-                //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
-                chiPaga.remove(memberList[position])
+                chiPaga.remove(memberList[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
             }
         }
 
         //listener per pagato per
         lv_pagatoPer.setOnItemClickListener{ lv_adapter, listViewItems, position, id ->
-            //perChiPaga.add(memberList[position])
             if(!perChiPaga.contains(memberList[position])){
-                //se non contiene il nome, viene aggiunto
-                perChiPaga.add(memberList[position])
+                perChiPaga.add(memberList[position]) //se non contiene il nome, viene aggiunto
             } else {
-                //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
-                perChiPaga.remove(memberList[position])
+                perChiPaga.remove(memberList[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
             }
         }
 
         addNewTransactionBtn.setOnClickListener{
             //check che titolo e quantità siano valide
-            val titoloSpesa : String = R.id.paymentName.toString()
-            val totaleSpesa : Double = R.id.paymentQuantity.toDouble()
+            val titoloSpesa = paymentName1.text.toString()
+            val totaleSpesa = paymentQuantity.text.toString().toDouble()
+
             if(titoloSpesa != "" && totaleSpesa != 0.0 && !chiPaga.isEmpty() && !perChiPaga.isEmpty()) {
                 val newTransaction = Transaction(titoloSpesa, chiPaga, perChiPaga, totaleSpesa)
                 groupObj.addNewTransaction(newTransaction)
-                Log.i("PAGAMENTO-REGISTRATO!!", groupObj.getGroupTransactions().toString())
+                //Log.i("PAGAMENTO-REGISTRATO!!", groupObj.getGroupTransactions().toString())
 
                 //Se tutto corretto, passo alla nuova activity
                 val intent = Intent(this, GroupActivity::class.java)

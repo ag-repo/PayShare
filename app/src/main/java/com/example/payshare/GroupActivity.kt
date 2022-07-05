@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.SimpleAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -17,6 +18,7 @@ class GroupActivity : AppCompatActivity() {
     val statsFragment = GroupStatsFragment()
     lateinit var lv_spese_adapter : SimpleAdapter
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
+    private lateinit var listview_payments : ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,31 +30,28 @@ class GroupActivity : AppCompatActivity() {
         groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
         groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
 
+        //popolo la listaSpese con le transazioni del gruppo ricevuto
+        for(i in transactionsList.indices){
+            var listPayments = HashMap<String,Any>()
+            listPayments["titolo_spesa"] = transactionsList[i].getTitolo()
+            listPayments["obj_transaction"] = transactionsList[i]
+            listaSpese.add(listPayments)
+        }
+
         //Adapter per fragment spese
         lv_spese_adapter = SimpleAdapter(
             this,
             listaSpese,
             R.layout.summary_list_group_item_layout,
-            arrayOf("titolo_spesa", "totale_spesa"),
+            arrayOf("titolo_spesa", "obj_transaction"),
             intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
         )
 
-        //frame payments gruppo
-        val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
-        transaction.replace(R.id.paymentsStatsFragment, paymentsFragment) //rimpiazzo fragment
-        transaction.commit()
+        listview_payments = lv_payments
+        listview_payments.adapter = lv_spese_adapter
 
-        groupSpeseBtn.setOnClickListener{
-            val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
-            transaction.replace(R.id.paymentsStatsFragment, paymentsFragment) //rimpiazzo fragment
-            transaction.commit()
-        }
-
-        groupStatsBtn.setOnClickListener{
-            val transaction = supportFragmentManager.beginTransaction() //quando clicco sul testo
-            transaction.replace(R.id.paymentsStatsFragment, statsFragment) //rimpiazzo fragment
-            transaction.commit()
-        }
+        lv_spese_adapter.notifyDataSetChanged()
+        Log.i("DATI_SPESE_LISTA ------>", listaSpese.toString())
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
