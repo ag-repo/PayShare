@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ListView
 import android.widget.SimpleAdapter
 import com.google.firebase.database.*
@@ -23,54 +24,32 @@ class GroupActivity : AppCompatActivity() {
     private val groupList: MutableList<Group> = ArrayList()
     private var listData = arrayListOf<HashMap<String,Any>>()
 
+    //ADDED
+    private var listTransactions = arrayListOf<Transaction>()
+    private lateinit var passed_group_name : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
+        //Modifiche delle scritte della view
         val groupObj = intent.extras?.get("group_obj") as Group
-        val transactionsList = groupObj.getGroupTransactions() //arraylist di transazioni
+        passed_group_name = groupObj.getGroupName()
+        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
+        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
 
-        //Leggo transazioni dal db e le salvo
-        //val listaTransazioniDatabase = FirebaseDatabase.getInstance().reference.child("groups").child("${groupObj.getGroupName()}").child("transactions")
-        Log.i("AAA-ListaSpese.TOSTRING", groupList.toString())
-        for(i in groupList.indices){
-            if(groupList[i].getGroupName().equals(groupObj.getGroupName())){
-                //transactionsList = groupList[i].getGroupTransactions()
-            }
-        }
-        /*
-        for(i in groupList.indices){
-            if(groupList[i].getGroupName().equals(groupObj.getGroupName())){
-                var listPayments = HashMap<String,Any>()
-                listPayments["group_name"] = groupList[i].getGroupName()
-                listPayments["obj_transaction"] = groupList[i].getGroupTransactions()
-                listaSpese.add(listPayments)
-            }
-        } */
+        //inizializzo la listview
+        lv_spese_adapter = TransactionsListAdapter(
+            this,
+            listTransactions
+        )
 
-        //Adapter per fragment spese
-        lv_spese_adapter = TransactionsListAdapter(this,transactionsList)
-
-        listview_payments = lv_payments
+        listview_payments = group_list_view
         listview_payments.adapter = lv_spese_adapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener());
 
-        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
-        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
-
-        //popolo la listaSpese con le transazioni del gruppo ricevuto
-        /*
-        for(i in transactionsList.indices){
-            var listPayments = HashMap<String,Any>()
-            listPayments["titolo_spesa"] = transactionsList[i].getTitolo()
-            listPayments["obj_transaction"] = transactionsList[i]
-            listaSpese.add(listPayments)
-        }*/
-
         lv_spese_adapter.notifyDataSetChanged()
-
-        Log.i("DATI_SPESE_LISTA------>", listaSpese.toString())
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -111,15 +90,14 @@ class GroupActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item != null) {
+
+                Log.i("ITEM", item.toString())
+                Log.i("ITEM", item?.getGroupTransactions().toString())
+                if(item?.getGroupName() == passed_group_name) {
                     groupList.add(item)
-                    //Rappresentazione grafica dell'oggetto
-                    val listobj = HashMap<String,Any>()
-                    listobj["groupName"] = item.getGroupName()
-                    listobj["groupObj"] = item
-                    listData.add(listobj)
-                    //test stampa in aggiunta - FUNZIONA
-                    Log.i("GRUPPO SALVATO ------>", item.toString())
+                    listTransactions = item.getGroupTransactions()
+
+                    Log.i("CHILDGROUPACT", listTransactions.toString())
                 }
                 adapter.notifyDataSetChanged()
             }

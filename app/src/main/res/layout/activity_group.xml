@@ -66,9 +66,9 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/lv_payments"
+        android:id="@+id/group_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:background="@drawable/input_bg"
         android:minHeight="360dp"
         android:orientation="vertical"
@@ -103,7 +103,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
