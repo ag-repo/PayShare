@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.ListView
 import android.widget.SimpleAdapter
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class GroupActivity : AppCompatActivity() {
@@ -37,6 +39,12 @@ class GroupActivity : AppCompatActivity() {
         passed_group_name = groupObj.getGroupName()
         groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
         groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
+
+        //Inizializzo listTransactions con quelle lette e scritte su listaSpese
+        for (i in listaSpese.indices){
+            val pagatoDa = listaSpese[i].getValue("pagatoDa")
+            Log.i("PAGATO-DA", pagatoDa.toString())
+        }
 
         //inizializzo la listview
         lv_spese_adapter = TransactionsListAdapter(
@@ -90,14 +98,26 @@ class GroupActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
+                dataSnap.child("transactions")
+                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
 
-                Log.i("ITEM", item.toString())
-                Log.i("ITEM", item?.getGroupTransactions().toString())
                 if(item?.getGroupName() == passed_group_name) {
                     groupList.add(item)
-                    listTransactions = item.getGroupTransactions()
+                    //listTransactions da popolare con oggetti transaction
+                    if (transactions != null) {
+                        var i = 0
+                        for ((key, value) in transactions) {
 
-                    Log.i("CHILDGROUPACT", listTransactions.toString())
+                            listaSpese.add(i, value as HashMap<String,Any>)
+                            i += 1
+                            Log.i("KEY", key)
+                            Log.i("VALUE", value.toString())
+                            Log.i("KEY", key.javaClass.toString())
+                            Log.i("VALUE", value.javaClass.toString())
+
+                        }
+                        Log.i("LISTASPESA", listaSpese.toString())
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }
