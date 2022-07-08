@@ -19,14 +19,9 @@ class GroupActivity : AppCompatActivity() {
     lateinit var lv_spese_adapter : TransactionsListAdapter
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var listview_payments : ListView
-
-    //Aggiunto per il db in locale
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
     private val groupList: MutableList<Group> = ArrayList()
-    private var listData = arrayListOf<HashMap<String,Any>>()
-
-    //ADDED
     private var listTransactions = arrayListOf<Transaction>()
     private lateinit var passed_group_name : String
 
@@ -47,16 +42,10 @@ class GroupActivity : AppCompatActivity() {
         }
 
         //inizializzo la listview
-        lv_spese_adapter = TransactionsListAdapter(
-            this,
-            listTransactions
-        )
-
+        lv_spese_adapter = TransactionsListAdapter(this, listTransactions)
         listview_payments = group_list_view
         listview_payments.adapter = lv_spese_adapter
-
         FirebaseDBHelper.setListeners(getGroupsEventListener());
-
         lv_spese_adapter.notifyDataSetChanged()
 
         addPaymentsBtn.setOnClickListener{
@@ -79,7 +68,6 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         val groupChildListener = getGroupsEventListener()
         groupReference!!.addChildEventListener(groupChildListener)
         this.groupChildListener = groupChildListener
@@ -87,7 +75,6 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onStop(){
         super.onStop()
-
         if(groupChildListener != null){
             groupReference!!.removeEventListener(groupChildListener)
         }
@@ -96,6 +83,7 @@ class GroupActivity : AppCompatActivity() {
     private fun getGroupsEventListener(): ChildEventListener {
         val adapter = lv_spese_adapter
         val listener = object : ChildEventListener{
+
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 dataSnap.child("transactions")
@@ -125,24 +113,7 @@ class GroupActivity : AppCompatActivity() {
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-                    /*
-                    for (i in groupList.indices) {
-                        if(groupList[i].getGroupName().equals(item.getGroupName())) {
-                            groupList[i] = item;
-                            break
-                        }
-                    }
-                    val listobj = HashMap<String,Any>()
-                    listobj["groupName"] = item.getGroupName()
-                    listobj["groupObj"] = item
-
-                    for (i in listData.indices) {
-                        var obj = listData[i]["groupName"];
-                        if(obj.toString().equals(item.getGroupName())) {
-                            listData[i] = listobj;
-                            break
-                        }
-                    }*/
+                    TODO("Not yet implemented")
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -150,24 +121,7 @@ class GroupActivity : AppCompatActivity() {
             override fun onChildRemoved(dataSnap: DataSnapshot) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-                    /*
-                    for (i in groupList.indices) {
-                        if(groupList[i].getGroupName().equals(item.getGroupName())) {
-                            groupList.removeAt(i)
-                            break
-                        }
-                    }
-                    val listobj = HashMap<String,Any>()
-                    listobj["groupName"] = item.getGroupName()
-                    listobj["groupObj"] = item
-
-                    for (i in listData.indices) {
-                        var obj = listData[i]["groupName"];
-                        if(obj.toString().equals(item.getGroupName())) {
-                            listData.removeAt(i)
-                            break
-                        }
-                    } */
+                    TODO("Not yet implemented")
                 }
                 adapter.notifyDataSetChanged()
             }
