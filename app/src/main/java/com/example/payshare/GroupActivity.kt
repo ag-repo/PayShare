@@ -105,18 +105,18 @@ class GroupActivity : AppCompatActivity() {
                     groupList.add(item)
                     //listTransactions da popolare con oggetti transaction
                     if (transactions != null) {
-                        var i = 0
+                        var i: Int = 0
                         for ((key, value) in transactions) {
-
                             listaSpese.add(i, value as HashMap<String,Any>)
+                            val trans = Transaction(
+                                value["titolo"] as String,
+                                value["pagatoDa"] as ArrayList<String>,
+                                value["pagatoPer"] as ArrayList<String>,
+                                (value["totale"] as Long).toDouble()
+                            )
+                            listTransactions.add(trans)
                             i += 1
-                            Log.i("KEY", key)
-                            Log.i("VALUE", value.toString())
-                            Log.i("KEY", key.javaClass.toString())
-                            Log.i("VALUE", value.javaClass.toString())
-
                         }
-                        Log.i("LISTASPESA", listaSpese.toString())
                     }
                 }
                 adapter.notifyDataSetChanged()
@@ -125,7 +125,7 @@ class GroupActivity : AppCompatActivity() {
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-
+                    /*
                     for (i in groupList.indices) {
                         if(groupList[i].getGroupName().equals(item.getGroupName())) {
                             groupList[i] = item;
@@ -142,7 +142,7 @@ class GroupActivity : AppCompatActivity() {
                             listData[i] = listobj;
                             break
                         }
-                    }
+                    }*/
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -150,7 +150,7 @@ class GroupActivity : AppCompatActivity() {
             override fun onChildRemoved(dataSnap: DataSnapshot) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-
+                    /*
                     for (i in groupList.indices) {
                         if(groupList[i].getGroupName().equals(item.getGroupName())) {
                             groupList.removeAt(i)
@@ -167,7 +167,7 @@ class GroupActivity : AppCompatActivity() {
                             listData.removeAt(i)
                             break
                         }
-                    }
+                    } */
                 }
                 adapter.notifyDataSetChanged()
             }
