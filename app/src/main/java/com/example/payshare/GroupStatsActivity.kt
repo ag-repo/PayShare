@@ -44,7 +44,6 @@ class GroupStatsActivity : AppCompatActivity() {
         iv_refresh_stats.setOnClickListener{
             val map = computeStatistics(groupObj,listTransactions)
             Log.i("COMPUTESTATISTICS", map.toString())
-            Log.i("LISTTRANSACTION", listTransactions.toString()) //QUI LISTTRANS è VUOTA
         }
     }
 
@@ -119,22 +118,25 @@ class GroupStatsActivity : AppCompatActivity() {
             val splittedAmount = listTransactions[i].getTotale() / listTransactions[i].getPagatoDa().size
             val splittedDebt = listTransactions[i].getTotale() / listTransactions[i].getPagatoPer().size
 
-            Log.i("GR-STATS-transaction", listTransactions[i].toString())
-            Log.i("GR-STATS-splittedAmount", splittedAmount.toString())
-            Log.i("GR-STATS-splittedDebt", splittedDebt.toString())
-
-            for(i in listTransactions.indices){
+            for(j in 0 until listTransactions.size-1){
                 val pagatoDa = listTransactions[i].getPagatoDa()
-                for(i in pagatoDa.indices){
-                    data[pagatoDa[i]] = data[pagatoDa[i]]!!.toDouble() + splittedAmount
+                Log.i("PAGATO-DA", pagatoDa.toString())
+                for(z in 1..pagatoDa.size){
+                    Log.i("PAGATO-DA-PRIMA", pagatoDa.size.toString())
+                    Log.i("PAGATO-DA-PRIMA", data[pagatoDa[z]].toString())
+                    data[pagatoDa[z]] = data[pagatoDa[z]]!!.toDouble() + splittedAmount
+                    Log.i("PAGATO-DA-DOPO", data[pagatoDa[z]].toString())
                 }
             }
             Log.i("FOR-DATA1", data.toString())
 
-            for(i in listTransactions.indices){
+            for(j in 0 until listTransactions.size-1){
                 val pagatoPer = listTransactions[i].getPagatoPer()
-                for(i in pagatoPer.indices){
-                    data[pagatoPer[i]] = data[pagatoPer[i]]!!.toDouble() - splittedDebt
+                Log.i("PAGATO-PER", pagatoPer.toString())
+                for(z in pagatoPer.indices){
+                    Log.i("PAGATO-PER-DOPO", data[pagatoPer[z]].toString())
+                    data[pagatoPer[z]] = data[pagatoPer[z]]!!.toDouble() - splittedDebt
+                    Log.i("PAGATO-PER-DOPO", data[pagatoPer[z]].toString())
                 }
             }
             Log.i("FOR-DATA2", data.toString())

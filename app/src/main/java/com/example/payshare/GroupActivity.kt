@@ -120,7 +120,7 @@ class GroupActivity : AppCompatActivity() {
                     if (transactions != null){
                         var i = 0
                         for((key,value) in transactions){
-                            //listaSpese.add ???
+
                             val trans = value as Transaction
                             for(i in listTransactions.indices){
                                 if(trans.getTitolo() == listTransactions[i].getTitolo()){
