@@ -38,7 +38,6 @@ class GroupActivity : AppCompatActivity() {
         //Inizializzo listTransactions con quelle lette e scritte su listaSpese
         for (i in listaSpese.indices){
             val pagatoDa = listaSpese[i].getValue("pagatoDa")
-            Log.i("PAGATO-DA", pagatoDa.toString())
         }
 
         //inizializzo la listview
@@ -93,7 +92,7 @@ class GroupActivity : AppCompatActivity() {
                     groupList.add(item)
                     //listTransactions da popolare con oggetti transaction
                     if (transactions != null) {
-                        var i: Int = 0
+                        var i = 0
                         for ((key, value) in transactions) {
                             listaSpese.add(i, value as HashMap<String,Any>)
                             val trans = Transaction(
@@ -112,8 +111,25 @@ class GroupActivity : AppCompatActivity() {
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item != null) {
-                    TODO("Not yet implemented")
+                dataSnap.child("transactions")
+                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
+                if (item?.getGroupName() == passed_group_name) {
+                    //AGGIORNO GROUP LIST??
+
+                    if (transactions != null){
+                        var i = 0
+                        for((key,value) in transactions){
+                            //listaSpese.add ???
+                            val trans = value as Transaction
+                            for(i in listTransactions.indices){
+                                if(trans.getTitolo() == listTransactions[i].getTitolo()){
+                                    listTransactions[i] = trans
+                                }
+                            }
+                            i += 1
+                        }
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

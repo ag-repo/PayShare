@@ -18,6 +18,7 @@ class GroupStatsActivity : AppCompatActivity() {
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private var membersToDisplay = arrayListOf<String>()
+    private var listTransactions = arrayListOf<Transaction>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +35,16 @@ class GroupStatsActivity : AppCompatActivity() {
         FirebaseDBHelper.setListeners(getGroupsEventListener())
         lv_stats_adapter.notifyDataSetChanged()
 
-        //val map = computeStatistics(groupObj)
-        //Log.i("COMPUTESTATISTICS", map.toString())
-
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
+        }
+
+        iv_refresh_stats.setOnClickListener{
+            val map = computeStatistics(groupObj,listTransactions)
+            Log.i("COMPUTESTATISTICS", map.toString())
+            Log.i("LISTTRANSACTION", listTransactions.toString()) //QUI LISTTRANS è VUOTA
         }
     }
 
@@ -53,7 +57,6 @@ class GroupStatsActivity : AppCompatActivity() {
                 if (item!!.getGroupName().equals(passed_group_name)) {
                     for(i in item.getGroupMembers().indices)
                         membersToDisplay.add(item.getGroupMembers()[i])
-                        Log.i("GROUPSTATSACT", membersToDisplay.toString())
                 }
                 dataSnap.child("transactions")
                 val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
@@ -64,12 +67,13 @@ class GroupStatsActivity : AppCompatActivity() {
                         var i: Int = 0
                         for ((key, value) in transactions) {
                             listaSpese.add(i, value as HashMap<String,Any>)
-                            val trans = Transaction(
+                            val t = Transaction(
                                 value["titolo"] as String,
                                 value["pagatoDa"] as ArrayList<String>,
                                 value["pagatoPer"] as ArrayList<String>,
                                 (value["totale"] as Long).toDouble()
                             )
+                            listTransactions.add(t)
                             i += 1
                         }
                     }
@@ -98,35 +102,42 @@ class GroupStatsActivity : AppCompatActivity() {
         return listener
     }
 
-    fun computeStatistics(groupObj: Group): HashMap<String,Double>{
+    fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
 
         val membri = groupObj.getGroupMembers()
-        lateinit var data: HashMap<String,Double>
-        val transactions = groupObj.getGroupTransactions()
+        var data: HashMap<String, Double> = HashMap()
 
-        //val myArray = ArrayList<Double>()
+        Log.i("GR-STATS-datain", listTransactions.toString())
 
         //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
         for(i in membri.indices){
             data.put(membri[i], 0.0)
         }
 
-        for(i in transactions.indices){
+        for(i in listTransactions.indices){
             //calcolo il totale splittato per chi paga
-            val splittedAmount = transactions[i].getTotale() / transactions[i].getPagatoDa().size
-            val splittedDebt = transactions[i].getTotale() / transactions[i].getPagatoPer().size
-            //aggiungo il totale splittato al vettore per il calcolo in corrispondenza del nome
-            for(i in membri.indices){
-                //se nella transazione ho tra chi ha pagato uno dei membri su cui ciclo, allora aggiunto importo positivo
-                if(transactions[i].getPagatoDa().contains(membri[i]))
-                data.put(membri[i], +splittedAmount)
+            val splittedAmount = listTransactions[i].getTotale() / listTransactions[i].getPagatoDa().size
+            val splittedDebt = listTransactions[i].getTotale() / listTransactions[i].getPagatoPer().size
+
+            Log.i("GR-STATS-transaction", listTransactions[i].toString())
+            Log.i("GR-STATS-splittedAmount", splittedAmount.toString())
+            Log.i("GR-STATS-splittedDebt", splittedDebt.toString())
+
+            for(i in listTransactions.indices){
+                val pagatoDa = listTransactions[i].getPagatoDa()
+                for(i in pagatoDa.indices){
+                    data[pagatoDa[i]] = data[pagatoDa[i]]!!.toDouble() + splittedAmount
+                }
             }
-            //faccio lo stesso però aggiungendo un numero negativo
-            for(i in membri.indices){
-                //se nella transazione ho tra chi ha pagato uno dei membri su cui ciclo, allora aggiunto importo positivo
-                if(transactions[i].getPagatoPer().contains(membri[i]))
-                    data.put(membri[i], -splittedDebt)
+            Log.i("FOR-DATA1", data.toString())
+
+            for(i in listTransactions.indices){
+                val pagatoPer = listTransactions[i].getPagatoPer()
+                for(i in pagatoPer.indices){
+                    data[pagatoPer[i]] = data[pagatoPer[i]]!!.toDouble() - splittedDebt
+                }
             }
+            Log.i("FOR-DATA2", data.toString())
         }
         return data
     }
