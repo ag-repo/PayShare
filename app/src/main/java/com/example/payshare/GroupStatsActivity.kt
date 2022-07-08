@@ -39,6 +39,7 @@ class GroupStatsActivity : AppCompatActivity() {
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
     }
@@ -49,10 +50,10 @@ class GroupStatsActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item != null) {
+                if (item!!.getGroupName().equals(passed_group_name)) {
                     for(i in item.getGroupMembers().indices)
                         membersToDisplay.add(item.getGroupMembers()[i])
-                        Log.i("COMPUTESTATISTICS", membersToDisplay.toString())
+                        Log.i("GROUPSTATSACT", membersToDisplay.toString())
                 }
                 dataSnap.child("transactions")
                 val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()

@@ -16,6 +16,7 @@
         android:minHeight="80dp"
         android:orientation="vertical"
 
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,19 +26,19 @@
             android:id="@+id/groupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
-            android:textAlignment="center"
             android:padding="8dp"
-            android:text="NOME GRUPPO DINAMICO" />
+            android:text="NOME GRUPPO DINAMICO"
+            android:textAlignment="center"
+            android:textColor="@color/colorText" />
 
         <TextView
             android:id="@+id/groupPartecipants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
             android:padding="4dp"
+            android:text="Nomi dei partecipanti ..."
             android:textAlignment="center"
-            android:text="Nomi dei partecipanti ..." />
+            android:textColor="@color/colorText" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,51 +50,58 @@
                 android:id="@+id/back_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_back_arrow"
-                android:baselineAlignBottom="true"
+                android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginLeft="60dp"/>
+                android:baselineAlignBottom="true"
+                app:srcCompat="@drawable/ic_back_arrow" />
 
             <Button
                 android:id="@+id/groupStatsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:baselineAlignBottom="true"
                 android:text="STATISTICS"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:baselineAlignBottom="true"
                 tools:layout_editor_absoluteY="8dp" />
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/group_list_view"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:background="@drawable/input_bg"
-        android:minHeight="360dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/constaint_bottom_group"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="16dp">
 
-    </ListView>
-
+        <ListView
+            android:id="@+id/group_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/input_bg"
+            android:minHeight="360dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/constaint_bottom_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></ListView>
+    </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/constaint_bottom_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@drawable/input_bg"
         android:minHeight="80dp"
         android:orientation="vertical"
-        android:layout_marginTop="8dp"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
             android:id="@+id/addPaymentsBtn"
