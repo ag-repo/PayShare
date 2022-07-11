@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.single_member_stats_list_layout.view.*
 import kotlinx.android.synthetic.main.transactions_list_layout.view.*
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberStat>): BaseAdapter() {
     override fun getCount(): Int {
@@ -26,9 +28,10 @@ class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<Gro
         if(newView == null){
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_stats_list_layout, parent, false)
         }
-
+        //arrotondo a 2 decimali dopo la virgola
+        val memberAmount = (data[position].getMemberAmount()*100.0).roundToInt()/100.0
         (newView as View)?.tv_nomePartecipante?.text = data[position].getMemberName()
-        (newView)?.tv_statsAmount?.text = data[position].getMemberAmount().toString()
+        (newView)?.tv_statsAmount?.text = memberAmount.toString()
 
         return newView
     }
