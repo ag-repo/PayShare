@@ -14,42 +14,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/paymentRegisterHeader"
+            android:layout_weight="6"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Nuova spesa"
+            android:textAlignment="center"
+            android:textColor="@color/design_default_color_on_primary"
+            android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/paymentRegisterHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nuova spesa"
-                android:textAlignment="center"
-                android:textColor="@color/design_default_color_on_primary"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/addNewTransactionBtn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/addNewTransactionBtn"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg"
+            android:text="ADD" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/addNewTransactionBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_bg"
-                android:text="ADD"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/paymentName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
             android:ems="10"
             android:inputType="textPersonName"
@@ -74,14 +70,21 @@
             android:textColorHint="@color/design_default_color_on_primary"
             android:hint="@string/newpay_quant"
             android:textColor="@color/design_default_color_on_primary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
 
         <TextView
             android:id="@+id/tv_paymentSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:layout_marginTop="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/newpay_pagatoda"
             android:textAlignment="center"
             android:textColor="@color/design_default_color_on_primary"
@@ -91,8 +94,7 @@
             android:id="@+id/lv_pagatoDa"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:layout_marginBottom="8dp"
-            android:padding="16dp"
+            android:padding="8dp"
             android:background="@drawable/input_bg"
             android:minHeight="400dp"
             android:orientation="vertical"
@@ -104,8 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
             android:text="@string/newpay_perchi"
             android:textAlignment="center"
             android:textColor="@color/design_default_color_on_primary"

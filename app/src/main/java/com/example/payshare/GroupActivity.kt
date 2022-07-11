@@ -24,6 +24,7 @@ class GroupActivity : AppCompatActivity() {
     private val groupList: MutableList<Group> = ArrayList()
     private var listTransactions = arrayListOf<Transaction>()
     private lateinit var passed_group_name : String
+    private lateinit var membersToDisplay : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +33,23 @@ class GroupActivity : AppCompatActivity() {
         //Modifiche delle scritte della view
         val groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()
-        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
-        groupPartecipants.text = groupObj.getGroupMembersToString() //rimpiazzo texview con i partecipanti del gruppo
+        //rimpiazzo textview con il nome del gruppo
+        groupName.text = groupObj.getGroupName()
+        //rimpiazzo textview con i partecipanti
+        membersToDisplay = ""
+        groupPartecipants.invalidate()
+        val gm = groupObj.getGroupMembers()
+        for(i in gm.indices){
+            if(i == gm.size-1){
+                membersToDisplay += gm[i]
+            } else { membersToDisplay += gm[i] + ", "}
+        }
+        groupPartecipants.text = membersToDisplay //rimpiazzo texview con i partecipanti del gruppo
 
         //Inizializzo listTransactions con quelle lette e scritte su listaSpese
-        for (i in listaSpese.indices){
+        /*for (i in listaSpese.indices){
             val pagatoDa = listaSpese[i].getValue("pagatoDa")
-        }
+        }*/
 
         //inizializzo la listview
         lv_spese_adapter = TransactionsListAdapter(this, listTransactions)

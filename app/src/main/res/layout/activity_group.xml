@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".GroupActivity">
 
@@ -14,13 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
         android:minHeight="80dp"
-        android:orientation="vertical"
-
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/groupName"
@@ -39,52 +34,23 @@
             android:text="Nomi dei partecipanti ..."
             android:textAlignment="center"
             android:textColor="@color/colorText" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/back_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:baselineAlignBottom="true"
-                app:srcCompat="@drawable/ic_back_arrow" />
-
-            <Button
-                android:id="@+id/groupStatsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:baselineAlignBottom="true"
-                android:text="STATISTICS"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="8dp" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/constaint_bottom_group"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="16dp">
+        android:minHeight="400dp"
+        android:layout_marginTop="8dp">
 
         <ListView
             android:id="@+id/group_list_view"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="400dp"
+            android:padding="8dp"
             android:background="@drawable/input_bg"
             android:minHeight="360dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/constaint_bottom_group"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></ListView>
+            android:orientation="vertical" />
     </LinearLayout>
 
 
@@ -95,24 +61,38 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/input_bg"
         android:minHeight="80dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baselineAlignBottom="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_back_arrow" />
 
         <Button
             android:id="@+id/addPaymentsBtn"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:layout_gravity="center"
-            android:text="ADD NEW PAYMENT"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="ADD NEW PAYMENT" />
+
+        <Button
+            android:id="@+id/groupStatsBtn"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baselineAlignBottom="true"
+            android:text="STATS"
+            android:layout_gravity="center"
+            tools:layout_editor_absoluteY="8dp" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

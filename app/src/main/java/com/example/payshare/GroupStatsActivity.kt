@@ -105,11 +105,10 @@ class GroupStatsActivity : AppCompatActivity() {
             }
 
         }
-
         return listener
     }
 
-    fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
+    private fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
 
         val membri = groupObj.getGroupMembers()
         var data: HashMap<String, Double> = HashMap()
@@ -159,6 +158,5 @@ class GroupStatsActivity : AppCompatActivity() {
         fun setMemberAmount(amount : Double){
             this.memberAmount = amount
         }
-
     }
 }

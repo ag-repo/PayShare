@@ -13,13 +13,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/input_bg">
 
+        <ImageView
+            android:id="@+id/back_to_group"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_back_arrow"/>
+
         <TextView
             android:id="@+id/group_stats_name"
+            android:layout_weight="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorText"
@@ -28,28 +37,12 @@
             android:layout_gravity="center"
             android:textSize="20dp"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:background="@drawable/input_bg">
-
-        <ImageView
-            android:id="@+id/back_to_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_back_arrow"
-            android:layout_marginRight="64dp"/>
-
         <ImageView
             android:id="@+id/iv_refresh_stats"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_refresh" />
     </LinearLayout>
 
@@ -57,10 +50,10 @@
         android:id="@+id/lv_groupStatisticsListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="400dp"
         android:orientation="vertical"
         android:padding="8dp"
         android:background="@drawable/input_bg">
-
     </ListView>
 
 </LinearLayout>
