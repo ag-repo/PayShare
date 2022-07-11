@@ -110,37 +110,29 @@ class GroupStatsActivity : AppCompatActivity() {
 
         //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
         for(i in membri.indices){
-            data.put(membri[i], 0.0)
+            data[membri[i]] = 0.0
         }
 
-        for(i in listTransactions.indices){
-            //calcolo il totale splittato per chi paga
-            val splittedAmount = listTransactions[i].getTotale() / listTransactions[i].getPagatoDa().size
-            val splittedDebt = listTransactions[i].getTotale() / listTransactions[i].getPagatoPer().size
+        for(transaction in listTransactions.indices){
 
-            for(j in 0 until listTransactions.size-1){
-                val pagatoDa = listTransactions[i].getPagatoDa()
-                Log.i("PAGATO-DA", pagatoDa.toString())
-                for(z in 1..pagatoDa.size){
-                    Log.i("PAGATO-DA-PRIMA", pagatoDa.size.toString())
-                    Log.i("PAGATO-DA-PRIMA", data[pagatoDa[z]].toString())
-                    data[pagatoDa[z]] = data[pagatoDa[z]]!!.toDouble() + splittedAmount
-                    Log.i("PAGATO-DA-DOPO", data[pagatoDa[z]].toString())
-                }
-            }
-            Log.i("FOR-DATA1", data.toString())
+            val splittedAmount = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
+            val splittedDebt = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoPer().size
+            val pagatoDa = listTransactions[transaction].getPagatoDa()
+            val pagatoPer = listTransactions[transaction].getPagatoPer()
 
-            for(j in 0 until listTransactions.size-1){
-                val pagatoPer = listTransactions[i].getPagatoPer()
-                Log.i("PAGATO-PER", pagatoPer.toString())
-                for(z in pagatoPer.indices){
-                    Log.i("PAGATO-PER-DOPO", data[pagatoPer[z]].toString())
-                    data[pagatoPer[z]] = data[pagatoPer[z]]!!.toDouble() - splittedDebt
-                    Log.i("PAGATO-PER-DOPO", data[pagatoPer[z]].toString())
-                }
+            for(i in pagatoDa.indices){
+                val temp = data[pagatoDa[i]]
+                data[pagatoDa[i]] = temp!!+splittedAmount
             }
-            Log.i("FOR-DATA2", data.toString())
+            //Log.i("COMPUTE-STATS-PAGATODA", data.toString())
+
+            for(i in pagatoPer.indices){
+                val temp = data[pagatoPer[i]]
+                data[pagatoPer[i]] = temp!!-splittedDebt
+            }
+            //Log.i("COMPUTE-STATS-PAGATOPER", data.toString())
         }
+        //Log.i("COMPUTE-BEFORE-RETURN", data.toString())
         return data
     }
 
