@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.single_member_stats_list_layout.view.*
 import kotlinx.android.synthetic.main.transactions_list_layout.view.*
 
-class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<String>): BaseAdapter() {
+class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberStat>): BaseAdapter() {
     override fun getCount(): Int {
         return data.size
     }
@@ -27,12 +27,8 @@ class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<Str
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_stats_list_layout, parent, false)
         }
 
-        val transaction = data[position]
-        (newView as View)?.tv_nomePartecipante?.text = data[position]
-        (newView)?.tv_statsAmount?.text = data[position]
-
-        //check se ci sono nuovi dati
-        //notifyDataSetChanged()
+        (newView as View)?.tv_nomePartecipante?.text = data[position].getMemberName()
+        (newView)?.tv_statsAmount?.text = data[position].getMemberAmount().toString()
 
         return newView
     }

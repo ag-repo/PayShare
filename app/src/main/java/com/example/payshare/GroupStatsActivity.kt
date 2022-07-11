@@ -17,8 +17,10 @@ class GroupStatsActivity : AppCompatActivity() {
     private lateinit var listview_stats : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
-    private var membersToDisplay = arrayListOf<String>()
+    private var statistics = HashMap<String,Double>()
+    private var membersToDisplay = ArrayList<String>()
     private var listTransactions = arrayListOf<Transaction>()
+    private var statsToDisplay = ArrayList<SingleMemberStat>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +28,10 @@ class GroupStatsActivity : AppCompatActivity() {
 
         val groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()
-        val membersToDisplay = groupObj.getGroupMembers()
+        membersToDisplay = groupObj.getGroupMembers()
         group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
 
-        lv_stats_adapter = SingleMemberStatsListAdapter(this,membersToDisplay)
+        lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
         listview_stats = lv_groupStatisticsListView
         listview_stats.adapter = lv_stats_adapter
         FirebaseDBHelper.setListeners(getGroupsEventListener())
@@ -42,8 +44,14 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            val map = computeStatistics(groupObj,listTransactions)
-            Log.i("COMPUTESTATISTICS", map.toString())
+            statistics = computeStatistics(groupObj,listTransactions) //HashMap<String,Double> con le statistiche calcolate
+            Log.i("STATISTICS", statistics.toString())
+            //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
+            for ((key, value) in statistics) {
+                statsToDisplay.add(SingleMemberStat(key,value))
+                Log.i("STAT-TO-DISPLAY-ADDED", statistics.toString())
+            }
+            lv_stats_adapter.notifyDataSetChanged()
         }
     }
 
@@ -106,15 +114,9 @@ class GroupStatsActivity : AppCompatActivity() {
         val membri = groupObj.getGroupMembers()
         var data: HashMap<String, Double> = HashMap()
 
-        Log.i("GR-STATS-datain", listTransactions.toString())
-
-        //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
-        for(i in membri.indices){
-            data[membri[i]] = 0.0
-        }
+        for(i in membri.indices){ data[membri[i]] = 0.0 } //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
 
         for(transaction in listTransactions.indices){
-
             val splittedAmount = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
             val splittedDebt = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoPer().size
             val pagatoDa = listTransactions[transaction].getPagatoDa()
@@ -124,41 +126,39 @@ class GroupStatsActivity : AppCompatActivity() {
                 val temp = data[pagatoDa[i]]
                 data[pagatoDa[i]] = temp!!+splittedAmount
             }
-            //Log.i("COMPUTE-STATS-PAGATODA", data.toString())
 
             for(i in pagatoPer.indices){
                 val temp = data[pagatoPer[i]]
                 data[pagatoPer[i]] = temp!!-splittedDebt
             }
-            //Log.i("COMPUTE-STATS-PAGATOPER", data.toString())
         }
-        //Log.i("COMPUTE-BEFORE-RETURN", data.toString())
         return data
     }
 
-    data class Stats(private var nomeUtente:String, private var amount: Double){
+    data class SingleMemberStat(private var memberName: String, private var memberAmount: Double){
 
-        constructor() : this("",0.0)
+        constructor() : this("", 0.0)
 
-        fun set(item: Stats){
-            this.nomeUtente = item.nomeUtente
-            this.amount = item.amount
+        fun set(stat: SingleMemberStat){
+            memberName = stat.memberName
+            memberAmount = stat.memberAmount
         }
 
-        fun getNomeUtente():String{
-            return this.nomeUtente
+        fun getMemberName(): String{
+            return this.memberName
         }
 
-        fun getAmount():Double{
-            return this.amount
+        fun getMemberAmount(): Double{
+            return this.memberAmount
         }
 
-        fun setNomeUtente(nuovoNome: String){
-            this.nomeUtente = nuovoNome
+        fun setMemberName(name : String){
+            this.memberName = name
         }
 
-        fun setAmount(newAmount: Double){
-            this.amount = newAmount
+        fun setMemberAmount(amount : Double){
+            this.memberAmount = amount
         }
+
     }
 }
