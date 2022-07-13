@@ -17,7 +17,7 @@ import kotlin.collections.HashMap
 class GroupActivity : AppCompatActivity() {
 
     lateinit var lv_spese_adapter : TransactionsListAdapter
-    private var listaSpese = arrayListOf<HashMap<String,Any>>()
+    //private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var listview_payments : ListView
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
@@ -98,12 +98,13 @@ class GroupActivity : AppCompatActivity() {
                     if (transactions != null) {
                         var i = 0
                         for ((key, value) in transactions) {
-                            listaSpese.add(i, value as HashMap<String,Any>)
+                            //listaSpese.add(i, value as HashMap<String,Any>)
+                            val spesa = value as HashMap<String,Any>
                             val trans = Transaction(
-                                value["titolo"] as String,
-                                value["pagatoDa"] as ArrayList<String>,
-                                value["pagatoPer"] as ArrayList<String>,
-                                (value["totale"] as Long).toDouble()
+                                spesa["titolo"] as String,
+                                spesa["pagatoDa"] as ArrayList<String>,
+                                spesa["pagatoPer"] as ArrayList<String>,
+                                (spesa["totale"] as Long).toDouble()
                             )
                             listTransactions.add(trans)
                             i += 1
@@ -140,8 +141,25 @@ class GroupActivity : AppCompatActivity() {
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item != null) {
-                    TODO("Not yet implemented")
+                dataSnap.child("transactions")
+                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
+                if (item?.getGroupName() == passed_group_name) {
+                    if (transactions != null){
+                        for((key,value) in transactions){
+                            //listaSpese add??
+                            val spesa = value as HashMap<String,Any>
+                            val trans = Transaction(
+                                spesa["titolo"] as String,
+                                spesa["pagatoDa"] as ArrayList<String>,
+                                spesa["pagatoPer"] as ArrayList<String>,
+                                (spesa["totale"] as Long).toDouble()
+                            )
+                            if(!listTransactions.contains(trans)){
+                                listTransactions.remove(trans)
+                            }
+                        }
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

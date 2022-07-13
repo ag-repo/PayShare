@@ -89,11 +89,53 @@ class GroupStatsActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                val item = dataSnap.getValue(Group::class.java)
+                dataSnap.child("transactions")
+                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
+                if (item?.getGroupName() == passed_group_name) {
+                    if (transactions != null){
+                        for((key,value) in transactions){
+                            //listaSpese add??
+                            val spesa = value as HashMap<String,Any>
+                            val trans = Transaction(
+                                spesa["titolo"] as String,
+                                spesa["pagatoDa"] as ArrayList<String>,
+                                spesa["pagatoPer"] as ArrayList<String>,
+                                (spesa["totale"] as Long).toDouble()
+                            )
+                            if(!listTransactions.contains(trans)){
+                                listTransactions.add(trans)
+                            }
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
-                TODO("Not yet implemented")
+                val item = dataSnap.getValue(Group::class.java)
+                dataSnap.child("transactions")
+                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
+                if (item?.getGroupName() == passed_group_name) {
+                    if (transactions != null){
+                        for((key,value) in transactions){
+                            //listaSpese add??
+                            val spesa = value as HashMap<String,Any>
+                            val trans = Transaction(
+                                spesa["titolo"] as String,
+                                spesa["pagatoDa"] as ArrayList<String>,
+                                spesa["pagatoPer"] as ArrayList<String>,
+                                (spesa["totale"] as Long).toDouble()
+                            )
+                            if(!listTransactions.contains(trans)){
+                                listTransactions.remove(trans)
+                            }
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged()
             }
 
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
