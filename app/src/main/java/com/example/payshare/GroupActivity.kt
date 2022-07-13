@@ -119,19 +119,19 @@ class GroupActivity : AppCompatActivity() {
                 val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
 
                 if (item?.getGroupName() == passed_group_name) {
-                    //AGGIORNO GROUP LIST??
-
                     if (transactions != null){
-                        var i = 0
                         for((key,value) in transactions){
-
-                            val trans = value as Transaction
-                            for(i in listTransactions.indices){
-                                if(trans.getTitolo() == listTransactions[i].getTitolo()){
-                                    listTransactions[i] = trans
-                                }
+                            //listaSpese add??
+                            val spesa = value as HashMap<String,Any>
+                            val trans = Transaction(
+                                spesa["titolo"] as String,
+                                spesa["pagatoDa"] as ArrayList<String>,
+                                spesa["pagatoPer"] as ArrayList<String>,
+                                (spesa["totale"] as Long).toDouble()
+                            )
+                            if(!listTransactions.contains(trans)){
+                                listTransactions.add(trans)
                             }
-                            i += 1
                         }
                     }
                 }
