@@ -30,7 +30,6 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         lv_pagatoPer.adapter = lv_adapter_checked
         lv_adapter_checked.notifyDataSetInvalidated()
 
-        //listener per catturare chi paga la spesa dalla listview
         lv_pagatoDa.setOnItemClickListener { lv_adapter, listViewItems, position, id ->
             if(!chiPaga.contains(memberList[position])){
                 chiPaga.add(memberList[position]) //se non contiene il nome, viene aggiunto
@@ -39,7 +38,12 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
             }
         }
 
-        //listener per pagato per
+        back_top.setOnClickListener{
+            val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("group_obj",groupObj)
+            startActivity(intent)
+        }
+
         lv_pagatoPer.setOnItemClickListener{ lv_adapter, listViewItems, position, id ->
             if(!perChiPaga.contains(memberList[position])){
                 perChiPaga.add(memberList[position]) //se non contiene il nome, viene aggiunto

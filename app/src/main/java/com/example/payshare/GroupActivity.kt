@@ -37,19 +37,12 @@ class GroupActivity : AppCompatActivity() {
         groupName.text = groupObj.getGroupName()
         //rimpiazzo textview con i partecipanti
         membersToDisplay = ""
-        groupPartecipants.invalidate()
         val gm = groupObj.getGroupMembers()
         for(i in gm.indices){
             if(i == gm.size-1){
                 membersToDisplay += gm[i]
             } else { membersToDisplay += gm[i] + ", "}
         }
-        groupPartecipants.text = membersToDisplay //rimpiazzo texview con i partecipanti del gruppo
-
-        //Inizializzo listTransactions con quelle lette e scritte su listaSpese
-        /*for (i in listaSpese.indices){
-            val pagatoDa = listaSpese[i].getValue("pagatoDa")
-        }*/
 
         //inizializzo la listview
         lv_spese_adapter = TransactionsListAdapter(this, listTransactions)
