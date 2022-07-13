@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
+import kotlin.concurrent.thread
 import kotlin.math.absoluteValue
 
 class GroupStatsActivity : AppCompatActivity() {
@@ -46,17 +47,19 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            statistics = computeStatistics(groupObj,listTransactions) //HashMap<String,Double> con le statistiche calcolate
-            Log.i("STATISTICS", statistics.toString())
+            thread(start=true){
+                statistics = computeStatistics(groupObj,listTransactions)
+                Log.i("STATISTICS", statistics.toString())
+
+                //saldiToDisplay = computeDebt(groupObj, statistics)
+                //Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
+
+            }
+
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
                 statsToDisplay.add(SingleMemberStat(key,value))
             }
-
-            //compute debt
-            saldiToDisplay = computeDebt(groupObj, statistics)
-            Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
-
             lv_stats_adapter.notifyDataSetChanged()
         }
     }
@@ -204,7 +207,7 @@ class GroupStatsActivity : AppCompatActivity() {
 
         for(i in membriInPositivo.indices){
             //se il positivo - il negativo è ancora > 0, assegno il pagamento del debito
-            val debitoDaSaldare = membriInPositivo[i].getMemberAmount()
+            var debitoDaSaldare = membriInPositivo[i].getMemberAmount()
             while(debitoDaSaldare>0){
                 if(membriInPositivo[i].getMemberAmount() - membriInNegativo[i].getMemberAmount() > 0){
                     debiti.add(

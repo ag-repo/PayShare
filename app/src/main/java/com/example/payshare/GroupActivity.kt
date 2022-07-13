@@ -67,6 +67,12 @@ class GroupActivity : AppCompatActivity() {
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
+
+        icon_groupSettings.setOnClickListener{
+            val intent = Intent(this, ModifyGroupActivity::class.java)
+            intent.putExtra("group_obj", groupObj)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {
