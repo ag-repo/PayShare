@@ -23,7 +23,6 @@ class AddNewGroupActivity : AppCompatActivity() {
         groupMembersLayout.adapter = memberAdapter
 
         groupMembersLayout.setOnItemClickListener{lv_adapter,listViewItems, position, id ->
-
             val memb_name = tempGroupMemberList[position]
             tempGroupMemberList.remove(memb_name)
             Log.i("REMOVED->", memb_name+" ARRAY "+ tempGroupMemberList.toString())
@@ -54,10 +53,5 @@ class AddNewGroupActivity : AppCompatActivity() {
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    fun getAddGroupClickListener(): View.OnClickListener?{
-        val listener = View.OnClickListener{}
-        return listener
     }
 }
