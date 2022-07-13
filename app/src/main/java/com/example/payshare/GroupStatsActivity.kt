@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
+import kotlin.math.absoluteValue
 
 class GroupStatsActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ class GroupStatsActivity : AppCompatActivity() {
     private var membersToDisplay = ArrayList<String>()
     private var listTransactions = arrayListOf<Transaction>()
     private var statsToDisplay = ArrayList<SingleMemberStat>()
+    private var saldiToDisplay = ArrayList<SingleMemberDebt>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +51,12 @@ class GroupStatsActivity : AppCompatActivity() {
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
                 statsToDisplay.add(SingleMemberStat(key,value))
-                Log.i("STAT-TO-DISPLAY-ADDED", statistics.toString())
             }
+
+            //compute debt
+            saldiToDisplay = computeDebt(groupObj, statistics)
+            Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
+
             lv_stats_adapter.notifyDataSetChanged()
         }
     }
@@ -176,6 +182,45 @@ class GroupStatsActivity : AppCompatActivity() {
         return data
     }
 
+    //listDebt sarà l'hashmap computata da "computeStatistics()" che contiente "nome","amount"
+    private fun computeDebt(groupObj: Group, listDebt: HashMap<String,Double>): ArrayList<SingleMemberDebt>{
+        val membri = groupObj.getGroupMembers()
+        var debiti = ArrayList<SingleMemberDebt>()
+
+        var membriInPositivo = ArrayList<SingleMemberStat>()
+        var membriInNegativo = ArrayList<SingleMemberStat>()
+
+        //scansiono i dati computati per vedere chi è in negativo e chi in positivo
+        for((key,value) in listDebt){
+            if(listDebt.getValue(key)>0){
+                membriInPositivo.add(SingleMemberStat(key, value))
+            }
+            if(listDebt.getValue(key)<0){
+                membriInNegativo.add(SingleMemberStat(key, value))
+            }
+            membriInNegativo.sortByDescending{ it.getMemberAmount() } //ordino dal più grande al più piccolo
+            membriInPositivo.sortByDescending{ it.getMemberAmount() } //ordino dal più grande al più piccolo
+        }
+
+        for(i in membriInPositivo.indices){
+            //se il positivo - il negativo è ancora > 0, assegno il pagamento del debito
+            val debitoDaSaldare = membriInPositivo[i].getMemberAmount()
+            while(debitoDaSaldare>0){
+                if(membriInPositivo[i].getMemberAmount() - membriInNegativo[i].getMemberAmount() > 0){
+                    debiti.add(
+                        SingleMemberDebt(
+                            membriInPositivo[i].getMemberName(),
+                            membriInNegativo[i].getMemberName(),
+                            membriInNegativo[i].getMemberAmount().absoluteValue)
+                    )
+                    debitoDaSaldare-membriInNegativo[i].getMemberAmount()
+                }
+            }
+        }
+        Log.i("DEBITIIIII", debiti.toString())
+        return debiti
+    }
+
     data class SingleMemberStat(private var memberName: String, private var memberAmount: Double){
 
         constructor() : this("", 0.0)
@@ -192,13 +237,27 @@ class GroupStatsActivity : AppCompatActivity() {
         fun getMemberAmount(): Double{
             return this.memberAmount
         }
+    }
 
-        fun setMemberName(name : String){
-            this.memberName = name
+    data class SingleMemberDebt(private var ricevente: String, private var pagante: String, private var debito: Double){
+        constructor() : this("", "", 0.0)
+
+        fun set(debt: SingleMemberDebt){
+            ricevente = debt.ricevente
+            pagante = debt.pagante
+            debito = debt.debito
         }
 
-        fun setMemberAmount(amount : Double){
-            this.memberAmount = amount
+        fun getPagante(): String{
+            return this.pagante
+        }
+
+        fun getRicevente(): String{
+            return this.ricevente
+        }
+
+        fun getDebito(): Double{
+            return this.debito
         }
     }
 }
