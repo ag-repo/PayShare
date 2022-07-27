@@ -30,6 +30,9 @@ class GroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
+        //Tolgo barra
+        supportActionBar?.hide()
+
         //Modifiche delle scritte della view
         val groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()

@@ -5,63 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/colorBackground"
+    android:background="@drawable/mainbg"
     tools:context=".SummaryActivity">
 
     <LinearLayout
+        android:id="@+id/topSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_secondary_variant"
+        android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:gravity="top"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:id="@+id/topSummary"
         app:layout_constraintBottom_toTopOf="@+id/groupListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".SummaryTopFragment"
-        tools:layout_editor_absoluteX="16dp">
+        tools:context=".SummaryTopFragment">
+
         <ImageView
             android:id="@+id/topUserIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_weight="1"
             android:padding="8dp"
             android:src="@drawable/ic_person"
-            android:layout_weight="1"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_weight="4"
+            android:orientation="vertical"
             android:padding="8dp">
+
             <TextView
                 android:id="@+id/topUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username dinamico" />
+
             <TextView
                 android:id="@+id/topGroupCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gruppi creati: " />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/topSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/ic_settings" />
+
             <ImageView
                 android:id="@+id/refreshGroups"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_refresh" />
         </LinearLayout>
     </LinearLayout>
@@ -69,11 +79,14 @@
     <ListView
         android:id="@+id/groupListView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
+        android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
         android:minHeight="160dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/topSummary"
-        android:background="@drawable/input_bg"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topSummary" />
 
     <LinearLayout
         android:id="@+id/constraintLayout"
@@ -81,19 +94,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="8dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/input_bg">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/addGroupBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ADD GROUP"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:text="ADD GROUP" />
 
     </LinearLayout>
 

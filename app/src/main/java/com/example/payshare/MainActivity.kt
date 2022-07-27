@@ -13,6 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Tolgo barra
+        supportActionBar?.hide()
+
         appEnterBtn.setOnClickListener{
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)

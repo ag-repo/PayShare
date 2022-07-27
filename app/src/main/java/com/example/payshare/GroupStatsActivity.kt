@@ -40,6 +40,10 @@ class GroupStatsActivity : AppCompatActivity() {
         FirebaseDBHelper.setListeners(getGroupsEventListener())
         lv_stats_adapter.notifyDataSetChanged()
 
+        //TEST !!!
+        statistics = computeStatistics(groupObj,listTransactions)
+        saldiToDisplay = computeDebt(groupObj, statistics)
+
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)

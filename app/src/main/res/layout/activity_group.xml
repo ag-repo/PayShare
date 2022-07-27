@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/mainbg"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".GroupActivity">
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
         android:minHeight="40dp"
         android:padding="8dp"
         android:orientation="horizontal" >
@@ -55,13 +56,14 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="400dp"
+        android:minHeight="500dp"
         android:layout_marginTop="8dp">
 
         <ListView
             android:id="@+id/group_list_view"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
             android:padding="8dp"
             android:background="@drawable/input_bg"
             android:minHeight="360dp"
@@ -73,10 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/input_bg"
-        android:minHeight="80dp"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/addPaymentsBtn"

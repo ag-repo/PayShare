@@ -27,6 +27,10 @@ class SummaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
+
+        //Tolgo barra
+        supportActionBar?.hide()
+
         //Inizializzo listview
         lv_adapter = SimpleAdapter(
             this,
