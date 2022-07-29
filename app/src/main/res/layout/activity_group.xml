@@ -1,100 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mainbg"
-    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".GroupActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/input_bg"
         android:backgroundTint="@color/design_default_color_secondary_variant"
         android:minHeight="40dp"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:orientation="horizontal" >
+        app:layout_constraintBottom_toTopOf="@+id/group_list_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/back_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_back_arrow" />
 
         <TextView
             android:id="@+id/groupName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="8dp"
             android:text="NOME GRUPPO DINAMICO"
-            android:textSize="16dp"
-            android:textColor="@color/colorText" />
+            android:textColor="@color/colorText"
+            android:textSize="16dp" />
 
         <ImageView
             android:id="@+id/icon_groupSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:src="@drawable/ic_settings" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ListView
+        android:id="@+id/group_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:minHeight="360dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="500dp"
-        android:layout_marginTop="8dp">
-
-        <ListView
-            android:id="@+id/group_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:backgroundTint="@color/design_default_color_secondary_variant"
-            android:padding="8dp"
-            android:background="@drawable/input_bg"
-            android:minHeight="360dp"
-            android:orientation="vertical" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_list_view">
 
         <Button
             android:id="@+id/addPaymentsBtn"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
             android:layout_gravity="center"
-            android:text="ADD NEW" />
+            android:layout_marginRight="8dp"
+            android:text="ADD NEW"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/groupStatsBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/groupStatsBtn"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:baselineAlignBottom="true"
             android:text="STATS"
-            android:layout_gravity="center"
-            tools:layout_editor_absoluteY="8dp" />
-    </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/addPaymentsBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
