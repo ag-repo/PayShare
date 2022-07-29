@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registerLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
+    android:background="@drawable/mainbg"
     android:fillViewport="false"
-    android:background="@color/colorBackground"
-    android:id="@+id/registerLinearLayout"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".RegisterNewPaymentActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
 
         <ImageView
             android:id="@+id/back_top"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:padding="8dp"
             app:srcCompat="@drawable/ic_back_arrow" />
 
         <TextView
             android:id="@+id/paymentRegisterHeader"
-            android:layout_weight="6"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="6"
             android:text="Nuova spesa"
             android:textAlignment="center"
             android:textColor="@color/design_default_color_on_primary"
@@ -41,32 +47,37 @@
 
         <Button
             android:id="@+id/addNewTransactionBtn"
-            android:layout_weight="1"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="@drawable/button_bg"
             android:text="ADD" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:layout_editor_absoluteX="16dp">
 
         <EditText
             android:id="@+id/paymentName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
             android:ems="10"
+            android:hint="@string/newpay_name"
             android:inputType="textPersonName"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:textColorHint="@color/design_default_color_on_primary"
-            android:hint="@string/newpay_name"
-            android:textColor="@color/design_default_color_on_primary" />
+            android:textColor="@color/design_default_color_on_primary"
+            android:textColorHint="@color/design_default_color_on_primary" />
 
         <EditText
             android:id="@+id/paymentQuantity"
@@ -74,44 +85,48 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
             android:ems="10"
+            android:hint="@string/newpay_quant"
             android:inputType="number"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:textColorHint="@color/design_default_color_on_primary"
-            android:hint="@string/newpay_quant"
-            android:textColor="@color/design_default_color_on_primary" />
+            android:textColor="@color/design_default_color_on_primary"
+            android:textColorHint="@color/design_default_color_on_primary" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="16dp">
 
         <TextView
             android:id="@+id/tv_paymentSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:padding="8dp"
             android:text="@string/newpay_pagatoda"
             android:textAlignment="center"
-            android:textColor="@color/design_default_color_on_primary"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <ListView
             android:id="@+id/lv_pagatoDa"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:padding="8dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
+            android:choiceMode="multipleChoice"
             android:minHeight="400dp"
             android:orientation="vertical"
-            android:backgroundTint="@color/white"
-            android:choiceMode="multipleChoice"/>
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/tv_paymentGroup"
@@ -122,7 +137,7 @@
             android:padding="8dp"
             android:text="@string/newpay_perchi"
             android:textAlignment="center"
-            android:textColor="@color/design_default_color_on_primary"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <ListView
@@ -130,11 +145,11 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginBottom="20dp"
-            android:padding="16dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
+            android:choiceMode="multipleChoice"
             android:minHeight="400dp"
             android:orientation="vertical"
-            android:backgroundTint="@color/white"
-            android:choiceMode="multipleChoice"/>
+            android:padding="16dp" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

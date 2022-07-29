@@ -19,6 +19,9 @@ class AddNewGroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_group)
 
+        //Tolgo barra
+        supportActionBar?.hide()
+
         memberAdapter = GroupMemberListAdapter(this, tempGroupMemberList)
         groupMembersLayout.adapter = memberAdapter
 

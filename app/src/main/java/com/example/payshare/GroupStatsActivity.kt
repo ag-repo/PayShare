@@ -29,6 +29,9 @@ class GroupStatsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_stats)
 
+        //Tolgo barra
+        supportActionBar?.hide()
+
         val groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()
         membersToDisplay = groupObj.getGroupMembers()
@@ -51,13 +54,13 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
+            listview_stats.invalidateViews()
             thread(start=true){
                 statistics = computeStatistics(groupObj,listTransactions)
                 Log.i("STATISTICS", statistics.toString())
 
                 //saldiToDisplay = computeDebt(groupObj, statistics)
                 //Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
-
             }
 
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione

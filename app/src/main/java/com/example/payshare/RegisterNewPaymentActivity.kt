@@ -18,6 +18,9 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_new_payment)
 
+        //Tolgo barra
+        supportActionBar?.hide()
+
         val groupObj = intent.extras?.get("group_obj") as Group
         var chiPaga = ArrayList<String>()
         var perChiPaga = ArrayList<String>()

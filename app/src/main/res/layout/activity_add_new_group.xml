@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:padding="16dp"
+    android:background="@drawable/mainbg"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".AddNewGroupActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
 
         <TextView
             android:id="@+id/tv_addNewGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:padding="8dp"
             android:text="Aggiungi un nuovo gruppo"
-            android:textColor="@color/colorText" />
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/et_nomeGruppo"
@@ -29,10 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
+            android:hint="Nome grouppo"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:hint="Nome grouppo"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText" />
 
@@ -42,10 +49,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
+            android:hint="Descrizione"
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:hint="Descrizione"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText"
             app:layout_constraintBottom_toTopOf="@+id/tv_AddMembers"
@@ -56,9 +64,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+        tools:layout_editor_absoluteX="16dp">
 
         <TextView
             android:id="@+id/tv_AddMembers"
@@ -66,9 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:textAlignment="center"
             android:text="Inserisci i partecipanti"
-            android:textColor="@color/colorText"/>
+            android:textAlignment="center"
+            android:textColor="@color/colorText" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,52 +93,57 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/input_bg"
+                android:backgroundTint="@color/design_default_color_secondary_variant"
+                android:hint="Aggiungi membro"
                 android:paddingLeft="24dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:hint="Aggiungi membro"
                 android:textAlignment="center"
-                android:textColorHint="@color/colorText"
-                android:textColor="@color/colorText" />
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorText" />
 
             <Button
                 android:id="@+id/addMemberBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp"
                 android:text="ADD" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:layout_editor_absoluteX="16dp">
 
         <ListView
             android:id="@+id/groupMembersLayout"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"
-            android:padding="16dp"
             android:background="@drawable/input_bg"
+            android:backgroundTint="@color/design_default_color_secondary_variant"
             android:minHeight="400dp"
-            android:orientation="vertical">
-        </ListView>
+            android:orientation="vertical"
+            android:padding="16dp"></ListView>
 
         <Button
             android:id="@+id/addGroupBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
+            android:padding="8dp"
             android:text="Aggiungi gruppo" />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
