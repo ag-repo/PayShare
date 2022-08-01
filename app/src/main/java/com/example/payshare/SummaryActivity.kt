@@ -17,19 +17,18 @@ import java.io.Serializable
 
 class SummaryActivity : AppCompatActivity() {
 
-    private val groupList: MutableList<Group> = ArrayList()
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     lateinit var lv_adapter : SimpleAdapter
     private lateinit var groupChildListener: ChildEventListener
     private lateinit var listViewItems : ListView
-    private var listData = arrayListOf<HashMap<String,Any>>()
+    private val groupList: MutableList<Group> = ArrayList()     //Lista dei gruppi salvati
+    private var listData = arrayListOf<HashMap<String,Any>>()   //Lista gruppi da mostrare su ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
 
-        //Tolgo barra
-        supportActionBar?.hide()
+        supportActionBar?.hide() //Tolgo barra titolo app
 
         //Inizializzo listview
         lv_adapter = SimpleAdapter(
@@ -45,23 +44,22 @@ class SummaryActivity : AppCompatActivity() {
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
 
+        group_number.text = listData.size.toString()
+
         addGroupBtn.setOnClickListener{
             val intent = Intent(this, AddNewGroupActivity::class.java)
             startActivity(intent)
         }
+
         //listener per apertura del gruppo selezionato nella listview
         listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
             var obj = listData[position]["groupName"] //nome del gruppo
             var groupObj = Group()
-
             for(i in groupList.indices){
                 if(groupList[i].getGroupName().equals(obj)){
                     groupObj = groupList[i]
                 }
             }
-
-            Log.i("GRUPPO-SELEZIONATO-->", groupObj.toString())
-
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
@@ -96,9 +94,8 @@ class SummaryActivity : AppCompatActivity() {
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
                     listData.add(listobj) //Arraylist di Hashmap per la grafica
-
-                    Log.i("EVENTLISTENERCHILDADDED", item.toString())
                 }
+                group_number.text = listData.size.toString() //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
 
@@ -107,7 +104,7 @@ class SummaryActivity : AppCompatActivity() {
             if (item != null) {
 
                 for (i in groupList.indices) {
-                    if(groupList[i].getGroupName().equals(item.getGroupName())) {
+                    if(groupList[i].getGroupName() == item.getGroupName()) {
                         groupList[i] = item
                         break
                     }
@@ -118,12 +115,13 @@ class SummaryActivity : AppCompatActivity() {
 
                 for (i in listData.indices) {
                     var obj = listData[i]["groupName"]
-                    if(obj.toString().equals(item.getGroupName())) {
+                    if(obj.toString() == item.getGroupName()) {
                         listData[i] = listobj
                         break
                     }
                 }
             }
+                group_number.text = listData.size.toString() //AGGIORNO SCRITTA
             adapter.notifyDataSetChanged()
             }
 
@@ -149,6 +147,7 @@ class SummaryActivity : AppCompatActivity() {
                         }
                     }
                 }
+                group_number.text = listData.size.toString() //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
 

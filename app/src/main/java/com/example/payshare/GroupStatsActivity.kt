@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
+import androidx.core.view.iterator
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,10 +21,10 @@ class GroupStatsActivity : AppCompatActivity() {
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private var statistics = HashMap<String,Double>()
-    private var membersToDisplay = ArrayList<String>()
-    private var listTransactions = arrayListOf<Transaction>()
-    private var statsToDisplay = ArrayList<SingleMemberStat>()
-    private var saldiToDisplay = ArrayList<SingleMemberDebt>()
+    private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
+    private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
+    private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
+    private var saldiToDisplay = ArrayList<SingleMemberDebt>()  //COME SALDARE --> DA FARE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,17 +56,16 @@ class GroupStatsActivity : AppCompatActivity() {
 
         iv_refresh_stats.setOnClickListener{
             listview_stats.invalidateViews()
-            thread(start=true){
-                statistics = computeStatistics(groupObj,listTransactions)
-                Log.i("STATISTICS", statistics.toString())
-
-                //saldiToDisplay = computeDebt(groupObj, statistics)
-                //Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
-            }
+            statistics = computeStatistics(groupObj,listTransactions)
+            Log.i("STATISTICS", statistics.toString())
+            //saldiToDisplay = computeDebt(groupObj, statistics)
+            //Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
 
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
-                statsToDisplay.add(SingleMemberStat(key,value))
+                if(!statistics.containsValue(value)){
+                    statsToDisplay.add(SingleMemberStat(key,value))
+                }
             }
             lv_stats_adapter.notifyDataSetChanged()
         }
@@ -77,7 +77,7 @@ class GroupStatsActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item!!.getGroupName().equals(passed_group_name)) {
+                if (item!!.getGroupName() == passed_group_name) {
                     for(i in item.getGroupMembers().indices)
                         membersToDisplay.add(item.getGroupMembers()[i])
                 }

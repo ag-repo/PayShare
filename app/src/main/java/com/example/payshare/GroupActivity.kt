@@ -17,35 +17,22 @@ import kotlin.collections.HashMap
 class GroupActivity : AppCompatActivity() {
 
     lateinit var lv_spese_adapter : TransactionsListAdapter
-    //private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var listview_payments : ListView
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
-    private val groupList: MutableList<Group> = ArrayList()
-    private var listTransactions = arrayListOf<Transaction>()
+    private val groupList: MutableList<Group> = ArrayList() //LISTA DI GRUPPO CHE PUò DIVENTARE 1 SOLO !!!!
+    private var listTransactions = arrayListOf<Transaction>() //Lista delle transazioni da mostrare in ListView
     private lateinit var passed_group_name : String
-    private lateinit var membersToDisplay : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        //Tolgo barra
-        supportActionBar?.hide()
+        supportActionBar?.hide() //Tolgo barra titolo app
 
-        //Modifiche delle scritte della view
         val groupObj = intent.extras?.get("group_obj") as Group
-        passed_group_name = groupObj.getGroupName()
-        //rimpiazzo textview con il nome del gruppo
-        groupName.text = groupObj.getGroupName()
-        //rimpiazzo textview con i partecipanti
-        membersToDisplay = ""
-        val gm = groupObj.getGroupMembers()
-        for(i in gm.indices){
-            if(i == gm.size-1){
-                membersToDisplay += gm[i]
-            } else { membersToDisplay += gm[i] + ", "}
-        }
+        passed_group_name = groupObj.getGroupName() //Modifiche delle scritte della view
+        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
 
         //inizializzo la listview
         lv_spese_adapter = TransactionsListAdapter(this, listTransactions)
@@ -53,6 +40,9 @@ class GroupActivity : AppCompatActivity() {
         listview_payments.adapter = lv_spese_adapter
         FirebaseDBHelper.setListeners(getGroupsEventListener());
         lv_spese_adapter.notifyDataSetChanged()
+
+        //AGGIUNGERE RIMOZIONE DELLA TRANSAZIONE CON LONG CLICK LISTENER
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -67,12 +57,6 @@ class GroupActivity : AppCompatActivity() {
 
         groupStatsBtn.setOnClickListener {
             val intent = Intent(this, GroupStatsActivity::class.java)
-            intent.putExtra("group_obj", groupObj)
-            startActivity(intent)
-        }
-
-        icon_groupSettings.setOnClickListener{
-            val intent = Intent(this, ModifyGroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
@@ -184,6 +168,4 @@ class GroupActivity : AppCompatActivity() {
         }
         return listener
     }
-
-
 }
