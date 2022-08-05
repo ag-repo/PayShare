@@ -18,7 +18,9 @@ import kotlin.math.absoluteValue
 class GroupStatsActivity : AppCompatActivity() {
 
     lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
+    lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
     private lateinit var listview_stats : ListView
+    private lateinit var listview_debt : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private lateinit var groupObj : Group
@@ -42,10 +44,14 @@ class GroupStatsActivity : AppCompatActivity() {
         group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
 
         lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
+        lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
         listview_stats = lv_groupStatisticsListView
+        listview_debt = lv_comePagare
         listview_stats.adapter = lv_stats_adapter
+        listview_debt.adapter = lv_debt_adapter
         FirebaseDBHelper.setListeners(getGroupsEventListener())
         lv_stats_adapter.notifyDataSetChanged()
+        lv_debt_adapter.notifyDataSetChanged()
 
 
         back_to_group.setOnClickListener{
@@ -64,13 +70,24 @@ class GroupStatsActivity : AppCompatActivity() {
 
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
-                if(!statistics.containsValue(value)){
-                    statsToDisplay.add(SingleMemberStat(key,value))
+                val singleMemberStat = SingleMemberStat(key,value)
+                if(!statsToDisplay.contains(singleMemberStat)){
+                    statsToDisplay.add(singleMemberStat)
                 }
             }
+
+            for(i in saldiToDisplay.indices){
+                val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
+                if(!saldiToDisplay.contains(singleMemberDebt)){
+                    saldiToDisplay.add(singleMemberDebt)
+                }
+
+            }
             Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+            Log.i("SALDI-TO-DISPLAY", saldiToDisplay.toString())
 
             lv_stats_adapter.notifyDataSetChanged()
+            lv_debt_adapter.notifyDataSetChanged()
         }
     }
 
@@ -90,6 +107,8 @@ class GroupStatsActivity : AppCompatActivity() {
 
     private fun getGroupsEventListener(): ChildEventListener{
         val adapter = lv_stats_adapter
+        //TEST
+        val debt_adapter = lv_debt_adapter
 
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -119,6 +138,7 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
+                debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -144,6 +164,7 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
+                debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
@@ -245,6 +266,7 @@ class GroupStatsActivity : AppCompatActivity() {
                 )
                 iNeg ++
                 membriPos[iPos].setAmount(p.getMemberAmount() + n.getMemberAmount())
+                if((p.getMemberAmount() + n.getMemberAmount()) <= 0.0){ iPos++ }
             } else {
                 debiti.add(
                     SingleMemberDebt(
@@ -254,6 +276,7 @@ class GroupStatsActivity : AppCompatActivity() {
                 )
                 iPos ++
                 membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount()).absoluteValue)
+                //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }
             }
         }
         Log.i("DEBITIIII!!!!", debiti.toString())

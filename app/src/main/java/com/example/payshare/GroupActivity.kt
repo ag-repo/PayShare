@@ -16,7 +16,7 @@ import kotlin.collections.HashMap
 
 class GroupActivity : AppCompatActivity() {
 
-    lateinit var lv_spese_adapter : TransactionsListAdapter
+    private lateinit var lv_spese_adapter : TransactionsListAdapter
     private lateinit var listview_payments : ListView
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener

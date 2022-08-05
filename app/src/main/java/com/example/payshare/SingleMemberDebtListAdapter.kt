@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.single_member_stats_list_layout.view.*
 import kotlin.math.roundToInt
 
-class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberStat>): BaseAdapter() {
+class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberDebt>): BaseAdapter() {
     override fun getCount(): Int {
         return data.size
     }
@@ -27,8 +27,8 @@ class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<Grou
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_stats_list_layout, parent, false)
         }
         //arrotondo a 2 decimali dopo la virgola
-        val memberAmount = (data[position].getMemberAmount()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_nomePartecipante?.text = data[position].getMemberName()
+        val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
+        (newView as View)?.tv_nomePartecipante?.text = data[position].getPagante() + " deve a " + data[position].getRicevente()
         (newView)?.tv_statsAmount?.text = memberAmount.toString()
 
         return newView
