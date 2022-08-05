@@ -61,8 +61,6 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            //listview_stats.invalidateViews()
-
             statistics = computeStatistics(groupObj,listTransactions)
             saldiToDisplay = computeComeSaldare(statistics)
             Log.i("COMPUTE-STATISTICS", statistics.toString())
@@ -76,18 +74,18 @@ class GroupStatsActivity : AppCompatActivity() {
                 }
             }
 
-            for(i in saldiToDisplay.indices){
-                val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
-                if(!saldiToDisplay.contains(singleMemberDebt)){
-                    saldiToDisplay.add(singleMemberDebt)
-                }
-
-            }
+            //for(i in saldiToDisplay.indices){
+            //    val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
+            //    if(!saldiToDisplay.contains(singleMemberDebt)){
+            //        saldiToDisplay.add(singleMemberDebt)
+            //    }
+            //}
             Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
             Log.i("SALDI-TO-DISPLAY", saldiToDisplay.toString())
 
             lv_stats_adapter.notifyDataSetChanged()
             lv_debt_adapter.notifyDataSetChanged()
+            Log.i("POST-REF", "AIO")
         }
     }
 
@@ -106,6 +104,7 @@ class GroupStatsActivity : AppCompatActivity() {
     }
 
     private fun getGroupsEventListener(): ChildEventListener{
+        Log.i("PRE-STATISTICS", "AIO")
         val adapter = lv_stats_adapter
         //TEST
         val debt_adapter = lv_debt_adapter
@@ -139,6 +138,7 @@ class GroupStatsActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
                 debt_adapter.notifyDataSetChanged()
+                Log.i("POST-STATISTICS", "AIO")
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -190,6 +190,7 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
+                debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -234,6 +235,8 @@ class GroupStatsActivity : AppCompatActivity() {
         var debiti = ArrayList<SingleMemberDebt>()
         var membriPos = ArrayList<SingleMemberStat>()
         var membriNeg = ArrayList<SingleMemberStat>()
+        var iPos = 0
+        var iNeg = 0
 
         //listDebt = HashMap di String = nome, Double = totale debito/credito
         for((key,value) in listDebt){
@@ -247,11 +250,6 @@ class GroupStatsActivity : AppCompatActivity() {
 
         membriPos.sortByDescending{ it.getMemberAmount() }
         membriNeg.sortBy{ it.getMemberAmount() }
-        Log.i("COMP-SALD-POS", membriPos.toString())
-        Log.i("COMP-SALD-NEG", membriNeg.toString())
-
-        var iPos = 0
-        var iNeg = 0
 
         while(iPos < membriPos.size && iNeg < membriNeg.size){
             val p = membriPos[iPos]
@@ -279,7 +277,6 @@ class GroupStatsActivity : AppCompatActivity() {
                 //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }
             }
         }
-        Log.i("DEBITIIII!!!!", debiti.toString())
         return debiti
     }
 

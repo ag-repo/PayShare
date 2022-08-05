@@ -1,10 +1,12 @@
 package com.example.payshare
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import kotlinx.android.synthetic.main.single_member_debt_list_layout.view.*
 import kotlinx.android.synthetic.main.single_member_stats_list_layout.view.*
 import kotlin.math.roundToInt
 
@@ -22,14 +24,16 @@ class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<Grou
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        Log.i("DEBT-INNNNNNNN", "yo")
         var newView = convertView
         if(newView == null){
-            newView = LayoutInflater.from(context).inflate(R.layout.single_member_stats_list_layout, parent, false)
+            newView = LayoutInflater.from(context).inflate(R.layout.single_member_debt_list_layout, parent, false)
         }
         //arrotondo a 2 decimali dopo la virgola
         val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_nomePartecipante?.text = data[position].getPagante() + " deve a " + data[position].getRicevente()
-        (newView)?.tv_statsAmount?.text = memberAmount.toString()
+        (newView as View)?.tv_nomeDebito?.text = data[position].getPagante() + " deve a " + data[position].getRicevente()
+        (newView)?.tv_debtAmount?.text = memberAmount.toString()
+        Log.i("DEBT-UPDATEEEEEE", "yo")
 
         return newView
     }
