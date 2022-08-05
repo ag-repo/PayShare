@@ -8,9 +8,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.ListView
 import androidx.core.view.iterator
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
 import java.util.concurrent.Executors
@@ -30,6 +28,9 @@ class GroupStatsActivity : AppCompatActivity() {
     private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
     private var saldiToDisplay = ArrayList<SingleMemberDebt>()  //COME SALDARE --> DA FARE
 
+    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
+    private lateinit var groupChildListener: ChildEventListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_stats)
@@ -47,12 +48,6 @@ class GroupStatsActivity : AppCompatActivity() {
         lv_stats_adapter.notifyDataSetChanged()
 
 
-        //statistics = computeStatistics(groupObj,listTransactions)
-        //saldiToDisplay = computeComeSaldare(groupObj, statistics)
-        //Log.i("COMPUTE-STATISTICS", statistics.toString())
-        //Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
-
-
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
@@ -60,10 +55,10 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            listview_stats.invalidateViews()
-            //TEST TEST TEST
+            //listview_stats.invalidateViews()
+
             statistics = computeStatistics(groupObj,listTransactions)
-            saldiToDisplay = computeComeSaldare(groupObj, statistics)
+            saldiToDisplay = computeComeSaldare(statistics)
             Log.i("COMPUTE-STATISTICS", statistics.toString())
             Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
 
@@ -73,7 +68,23 @@ class GroupStatsActivity : AppCompatActivity() {
                     statsToDisplay.add(SingleMemberStat(key,value))
                 }
             }
+            Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+
             lv_stats_adapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val groupChildListener = getGroupsEventListener()
+        groupReference!!.addChildEventListener(groupChildListener)
+        this.groupChildListener = groupChildListener
+    }
+
+    override fun onStop(){
+        super.onStop()
+        if(groupChildListener != null){
+            groupReference!!.removeEventListener(groupChildListener)
         }
     }
 
@@ -198,8 +209,7 @@ class GroupStatsActivity : AppCompatActivity() {
         return data
     }
 
-    private fun computeComeSaldare(groupObj: Group, listDebt: HashMap<String, Double>): ArrayList<SingleMemberDebt>{
-        val membri = groupObj.getGroupMembers()
+    private fun computeComeSaldare(listDebt: HashMap<String, Double>): ArrayList<SingleMemberDebt>{
         var debiti = ArrayList<SingleMemberDebt>()
         var membriPos = ArrayList<SingleMemberStat>()
         var membriNeg = ArrayList<SingleMemberStat>()
@@ -247,47 +257,6 @@ class GroupStatsActivity : AppCompatActivity() {
             }
         }
         Log.i("DEBITIIII!!!!", debiti.toString())
-
-
-        return debiti
-    }
-
-    //listDebt sarà l'hashmap computata da "computeStatistics()" che contiente "nome","amount"
-    private fun computeDebt(groupObj: Group, listDebt: HashMap<String,Double>): ArrayList<SingleMemberDebt>{
-        val membri = groupObj.getGroupMembers()
-        var debiti = ArrayList<SingleMemberDebt>()
-
-        var membriInPositivo = ArrayList<SingleMemberStat>()
-        var membriInNegativo = ArrayList<SingleMemberStat>()
-
-        //scansiono i dati computati per vedere chi è in negativo e chi in positivo
-        for((key,value) in listDebt){
-            if(listDebt.getValue(key)>0){
-                membriInPositivo.add(SingleMemberStat(key, value))
-            }
-            if(listDebt.getValue(key)<0){
-                membriInNegativo.add(SingleMemberStat(key, value))
-            }
-            membriInNegativo.sortByDescending{ it.getMemberAmount() } //ordino dal più grande al più piccolo
-            membriInPositivo.sortByDescending{ it.getMemberAmount() } //ordino dal più grande al più piccolo
-        }
-
-        for(i in membriInPositivo.indices){
-            //se il positivo - il negativo è ancora > 0, assegno il pagamento del debito
-            var debitoDaSaldare = membriInPositivo[i].getMemberAmount()
-            while(debitoDaSaldare>0){
-                if(membriInPositivo[i].getMemberAmount() - membriInNegativo[i].getMemberAmount() > 0){
-                    debiti.add(
-                        SingleMemberDebt(
-                            membriInPositivo[i].getMemberName(),
-                            membriInNegativo[i].getMemberName(),
-                            membriInNegativo[i].getMemberAmount().absoluteValue)
-                    )
-                    debitoDaSaldare-membriInNegativo[i].getMemberAmount()
-                }
-            }
-        }
-        Log.i("DEBITIIIII", debiti.toString())
         return debiti
     }
 
