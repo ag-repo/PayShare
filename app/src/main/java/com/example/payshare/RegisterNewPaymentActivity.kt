@@ -17,9 +17,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_new_payment)
-
-        //Tolgo barra
-        supportActionBar?.hide()
+        supportActionBar?.hide() //Tolgo barra titolo app
 
         val groupObj = intent.extras?.get("group_obj") as Group
         var chiPaga = ArrayList<String>()
@@ -27,6 +25,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         var memberList =  groupObj.getGroupMembers()
         //Setto testo per registrare spesa
         paymentRegisterHeader.text = "Nuova spesa per " + groupObj.getGroupName()
+
         //Adapter multiple choice per selezionare chi paga e per chi
         val lv_adapter_checked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,memberList)
         lv_pagatoDa.adapter = lv_adapter_checked

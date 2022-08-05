@@ -3,6 +3,8 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.ListView
 import androidx.core.view.iterator
@@ -11,6 +13,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
+import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 import kotlin.math.absoluteValue
 
@@ -20,7 +23,8 @@ class GroupStatsActivity : AppCompatActivity() {
     private lateinit var listview_stats : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
-    private var statistics = HashMap<String,Double>()
+    private lateinit var groupObj : Group
+    private var statistics = HashMap<String,Double>()           //HashMap di String = nome, Double = totale debito/credito
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
     private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
     private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
@@ -29,11 +33,9 @@ class GroupStatsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_stats)
+        supportActionBar?.hide() //Tolgo barra nome app
 
-        //Tolgo barra
-        supportActionBar?.hide()
-
-        val groupObj = intent.extras?.get("group_obj") as Group
+        groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()
         membersToDisplay = groupObj.getGroupMembers()
         group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
@@ -44,9 +46,12 @@ class GroupStatsActivity : AppCompatActivity() {
         FirebaseDBHelper.setListeners(getGroupsEventListener())
         lv_stats_adapter.notifyDataSetChanged()
 
-        //TEST !!!
-        statistics = computeStatistics(groupObj,listTransactions)
-        saldiToDisplay = computeDebt(groupObj, statistics)
+
+        //statistics = computeStatistics(groupObj,listTransactions)
+        //saldiToDisplay = computeComeSaldare(groupObj, statistics)
+        //Log.i("COMPUTE-STATISTICS", statistics.toString())
+        //Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
+
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
@@ -56,10 +61,11 @@ class GroupStatsActivity : AppCompatActivity() {
 
         iv_refresh_stats.setOnClickListener{
             listview_stats.invalidateViews()
+            //TEST TEST TEST
             statistics = computeStatistics(groupObj,listTransactions)
-            Log.i("STATISTICS", statistics.toString())
-            //saldiToDisplay = computeDebt(groupObj, statistics)
-            //Log.i("DEBITI-CALCOLATI", saldiToDisplay.toString())
+            saldiToDisplay = computeComeSaldare(groupObj, statistics)
+            Log.i("COMPUTE-STATISTICS", statistics.toString())
+            Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
 
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
@@ -192,6 +198,60 @@ class GroupStatsActivity : AppCompatActivity() {
         return data
     }
 
+    private fun computeComeSaldare(groupObj: Group, listDebt: HashMap<String, Double>): ArrayList<SingleMemberDebt>{
+        val membri = groupObj.getGroupMembers()
+        var debiti = ArrayList<SingleMemberDebt>()
+        var membriPos = ArrayList<SingleMemberStat>()
+        var membriNeg = ArrayList<SingleMemberStat>()
+
+        //listDebt = HashMap di String = nome, Double = totale debito/credito
+        for((key,value) in listDebt){
+            val membStat = SingleMemberStat(key, value)
+            if(membStat.getMemberAmount() > 0){
+                membriPos.add(membStat)
+            } else {
+                membriNeg.add(membStat)
+            }
+        }
+
+        membriPos.sortByDescending{ it.getMemberAmount() }
+        membriNeg.sortBy{ it.getMemberAmount() }
+        Log.i("COMP-SALD-POS", membriPos.toString())
+        Log.i("COMP-SALD-NEG", membriNeg.toString())
+
+        var iPos = 0
+        var iNeg = 0
+
+        while(iPos < membriPos.size && iNeg < membriNeg.size){
+            val p = membriPos[iPos]
+            val n = membriNeg[iNeg]
+
+            if(p.getMemberAmount() >= n.getMemberAmount().absoluteValue){
+                debiti.add(
+                    SingleMemberDebt(
+                        p.getMemberName(),
+                        n.getMemberName(),
+                        n.getMemberAmount().absoluteValue)
+                )
+                iNeg ++
+                membriPos[iPos].setAmount(p.getMemberAmount() + n.getMemberAmount())
+            } else {
+                debiti.add(
+                    SingleMemberDebt(
+                        p.getMemberName(),
+                        n.getMemberName(),
+                        p.getMemberAmount().absoluteValue)
+                )
+                iPos ++
+                membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount()).absoluteValue)
+            }
+        }
+        Log.i("DEBITIIII!!!!", debiti.toString())
+
+
+        return debiti
+    }
+
     //listDebt sarà l'hashmap computata da "computeStatistics()" che contiente "nome","amount"
     private fun computeDebt(groupObj: Group, listDebt: HashMap<String,Double>): ArrayList<SingleMemberDebt>{
         val membri = groupObj.getGroupMembers()
@@ -238,6 +298,14 @@ class GroupStatsActivity : AppCompatActivity() {
         fun set(stat: SingleMemberStat){
             memberName = stat.memberName
             memberAmount = stat.memberAmount
+        }
+
+        fun setAmount(amount: Double){
+            this.memberAmount = amount
+        }
+
+        fun setName(name: String){
+            this.memberName = name
         }
 
         fun getMemberName(): String{

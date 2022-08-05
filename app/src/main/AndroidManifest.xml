@@ -10,9 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomStyle">
-        <activity
-            android:name=".ModifyGroupActivity"
-            android:exported="false" />
+
         <activity
             android:name=".GroupStatsActivity"
             android:exported="false" />
