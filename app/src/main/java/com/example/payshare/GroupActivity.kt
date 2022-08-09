@@ -1,24 +1,17 @@
 package com.example.payshare
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.app.ProgressDialog.show
 import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.ListView
-import android.widget.SimpleAdapter
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 class GroupActivity : AppCompatActivity() {
 
@@ -68,10 +61,9 @@ class GroupActivity : AppCompatActivity() {
         }
 
         bin_icon.setOnClickListener{
-            //Cancello il gruppo
-            //Apro finestra Toast per conferma eliminazione gruppo
 
-            val dialogBuilder = AlertDialog.Builder(this)
+            val dialogBuilder = AlertDialog.Builder(this,R.style.AlertDialogTheme)
+
             dialogBuilder.setMessage("Confermi di volere eliminare il gruppo?")
                 .setCancelable(false)
                 .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
@@ -82,8 +74,11 @@ class GroupActivity : AppCompatActivity() {
                 .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
                     dialog.cancel()
                 })
+
             val alert = dialogBuilder.create()
             alert.setTitle("Elimina gruppo")
+            //alert.getButton(AlertDialog.BUTTON_POSITIVE) //CAMBIO COLORE AL TESTO
+            //alert.getButton(AlertDialog.BUTTON_POSITIVE)
             alert.show()
         }
     }
