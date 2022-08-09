@@ -19,16 +19,20 @@ class GroupStatsActivity : AppCompatActivity() {
 
     lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
     lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
+    lateinit var lv_single_total_adapter : SingleMemberStatsListAdapter
     private lateinit var listview_stats : ListView
     private lateinit var listview_debt : ListView
+    private lateinit var listview_single_total : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private lateinit var groupObj : Group
     private var statistics = HashMap<String,Double>()           //HashMap di String = nome, Double = totale debito/credito
+    private var single_statistics = HashMap<String, Double>()
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
     private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
     private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
     private var saldiToDisplay = ArrayList<SingleMemberDebt>()  //COME SALDARE --> DA FARE
+    private var singleTotalToDisplay = ArrayList<SingleMemberStat>()
 
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
@@ -45,13 +49,20 @@ class GroupStatsActivity : AppCompatActivity() {
 
         lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
         lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
+        lv_single_total_adapter = SingleMemberStatsListAdapter(this, singleTotalToDisplay)
+
         listview_stats = lv_groupStatisticsListView
         listview_debt = lv_comePagare
+        listview_single_total = lv_personal_stats
+
         listview_stats.adapter = lv_stats_adapter
         listview_debt.adapter = lv_debt_adapter
+        listview_single_total.adapter = lv_single_total_adapter
+
         FirebaseDBHelper.setListeners(getGroupsEventListener())
         lv_stats_adapter.notifyDataSetChanged()
         lv_debt_adapter.notifyDataSetChanged()
+        lv_single_total_adapter.notifyDataSetChanged()
 
 
         back_to_group.setOnClickListener{
@@ -63,8 +74,10 @@ class GroupStatsActivity : AppCompatActivity() {
         iv_refresh_stats.setOnClickListener{
             statistics = computeStatistics(groupObj,listTransactions)
             saldiToDisplay = computeComeSaldare(statistics)
+            single_statistics = computeSingleTotal(groupObj, listTransactions)
             Log.i("COMPUTE-STATISTICS", statistics.toString())
             Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
+            Log.i("COMPUTE-SINGLE", single_statistics.toString())
 
             //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
             for ((key, value) in statistics) {
@@ -74,15 +87,22 @@ class GroupStatsActivity : AppCompatActivity() {
                 }
             }
 
-            //for(i in saldiToDisplay.indices){
-            //    val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
-            //    if(!saldiToDisplay.contains(singleMemberDebt)){
-            //        saldiToDisplay.add(singleMemberDebt)
-            //    }
-            //}
+            for(i in saldiToDisplay.indices){
+                val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
+                //print(singleMemberDebt.toString())
+                //print(saldiToDisplay[i].toString())
+
+                //ATTENZIONE INSERIRE NUOVAMENTE CONTROLLO!!!!!!!!!!
+                saldiToDisplay.add(singleMemberDebt)
+                //QUI NON ENTRA MAI !?!?!?!?!?
+                if(!saldiToDisplay.contains(singleMemberDebt)){
+                    saldiToDisplay.add(singleMemberDebt)
+                }
+            }
 
             lv_stats_adapter.notifyDataSetChanged()
             lv_debt_adapter.notifyDataSetChanged()
+            lv_single_total_adapter.notifyDataSetChanged()
         }
     }
 
@@ -227,6 +247,29 @@ class GroupStatsActivity : AppCompatActivity() {
         return data
     }
 
+    private fun computeSingleTotal(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
+
+        val membri = groupObj.getGroupMembers()
+        var data: HashMap<String, Double> = HashMap()
+
+        for(i in membri.indices){ data[membri[i]] = 0.0 } //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
+
+        for(transaction in listTransactions.indices){
+            var transactionSplit = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
+            var transactionSubjects = listTransactions[transaction].getPagatoDa()
+
+            for(i in transactionSubjects.indices){
+                for((key,value) in data){
+                    if(key == transactionSubjects[i]){
+                        data[key] = value + transactionSplit
+                    }
+                }
+            }
+        }
+
+        return data
+    }
+
     private fun computeComeSaldare(listDebt: HashMap<String, Double>): ArrayList<SingleMemberDebt>{
         var debiti = ArrayList<SingleMemberDebt>()
         var membriPos = ArrayList<SingleMemberStat>()
@@ -252,22 +295,12 @@ class GroupStatsActivity : AppCompatActivity() {
             val n = membriNeg[iNeg]
 
             if(p.getMemberAmount() >= n.getMemberAmount().absoluteValue){
-                debiti.add(
-                    SingleMemberDebt(
-                        p.getMemberName(),
-                        n.getMemberName(),
-                        n.getMemberAmount().absoluteValue)
-                )
+                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), n.getMemberAmount().absoluteValue))
                 iNeg ++
                 membriPos[iPos].setAmount(p.getMemberAmount() + n.getMemberAmount())
                 if((p.getMemberAmount() + n.getMemberAmount()) <= 0.0){ iPos++ }
             } else {
-                debiti.add(
-                    SingleMemberDebt(
-                        p.getMemberName(),
-                        n.getMemberName(),
-                        p.getMemberAmount().absoluteValue)
-                )
+                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), p.getMemberAmount().absoluteValue))
                 iPos ++
                 membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount()).absoluteValue)
                 //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }

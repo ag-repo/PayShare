@@ -18,7 +18,7 @@ android:padding="8dp">
         android:layout_weight="2"
         android:layout_gravity="left">
         <TextView
-            android:id="@+id/tv_nomeDebito"
+            android:id="@+id/tv_chideveachi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NOME_PARTECIPANTE"
