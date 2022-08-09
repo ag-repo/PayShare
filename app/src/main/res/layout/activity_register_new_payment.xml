@@ -74,8 +74,8 @@
             android:hint="@string/newpay_name"
             android:inputType="textPersonName"
             android:paddingLeft="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="@color/design_default_color_on_primary"
             android:textColorHint="@color/design_default_color_on_primary" />
 
@@ -90,8 +90,8 @@
             android:hint="@string/newpay_quant"
             android:inputType="number"
             android:paddingLeft="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="@color/design_default_color_on_primary"
             android:textColorHint="@color/design_default_color_on_primary" />
     </LinearLayout>

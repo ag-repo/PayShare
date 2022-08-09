@@ -56,5 +56,10 @@ class AddNewGroupActivity : AppCompatActivity() {
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }
+
+        back_to_summary_btn.setOnClickListener {
+            val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

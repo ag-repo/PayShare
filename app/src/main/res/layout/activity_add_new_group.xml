@@ -27,7 +27,7 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/design_default_color_secondary_variant" />
 
         <EditText
             android:id="@+id/et_nomeGruppo"
@@ -38,8 +38,8 @@
             android:backgroundTint="@color/design_default_color_secondary_variant"
             android:hint="Nome grouppo"
             android:paddingLeft="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText" />
 
@@ -52,8 +52,8 @@
             android:backgroundTint="@color/design_default_color_secondary_variant"
             android:hint="Descrizione"
             android:paddingLeft="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText"
             app:layout_constraintBottom_toTopOf="@+id/tv_AddMembers"
@@ -80,7 +80,9 @@
             android:padding="8dp"
             android:text="Inserisci i partecipanti"
             android:textAlignment="center"
-            android:textColor="@color/colorText" />
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="@color/design_default_color_secondary_variant" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,8 +98,8 @@
                 android:backgroundTint="@color/design_default_color_secondary_variant"
                 android:hint="Aggiungi membro"
                 android:paddingLeft="24dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorText" />
@@ -111,7 +113,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
-                android:text="ADD" />
+                android:text="AGGIUNGI MEMBRO" />
         </LinearLayout>
     </LinearLayout>
 
@@ -137,12 +139,21 @@
 
         <Button
             android:id="@+id/addGroupBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:text="Aggiungi gruppo" />
+
+        <Button
+            android:id="@+id/back_to_summary_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:text="ANNULLA" />
 
     </LinearLayout>
 
