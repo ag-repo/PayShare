@@ -1,6 +1,8 @@
 package com.example.payshare
 
+import android.util.Log
 import com.google.firebase.database.*
+import kotlin.math.absoluteValue
 
 class FirebaseDBHelper {
 
@@ -11,12 +13,10 @@ class FirebaseDBHelper {
                                     .child("groups")
 
         fun setListeners(groupEventListener: ChildEventListener){
-            //db.addChildEventListener(groupEventListener)
             db.addChildEventListener(groupEventListener)
         }
 
         fun setNewGroup(groupName: String, groupObj: Group){
-            //db.child(groupName).setValue(groupObj)
             db.child(groupName).setValue(groupObj)
         }
 
@@ -24,9 +24,14 @@ class FirebaseDBHelper {
             db.child(groupName).removeValue()
         }
 
-        //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO IL PRECEDENTE
+        fun deleteTransaction(groupName: String, transName: String, transactionAmount: Double){
+            var transactionToFind = transName+"-"+transactionAmount.hashCode().absoluteValue.toString()
+            db.child(groupName).child("transactions").child(transactionToFind).removeValue()
+        }
+
         fun setNewPayment(groupName: String, transaction: Transaction){
-            db.child(groupName).child("transactions").child("${transaction.getTitolo()}${transaction.getTotale().hashCode()}").setValue(transaction)
+            var transName = transaction.getTitolo()+"-"+transaction.getTotale().hashCode().absoluteValue.toString()
+            db.child(groupName).child("transactions").child(transName).setValue(transaction)
         }
 
     }

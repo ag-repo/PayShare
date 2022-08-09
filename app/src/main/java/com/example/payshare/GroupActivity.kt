@@ -26,7 +26,6 @@ class GroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
-
         supportActionBar?.hide() //Tolgo barra titolo app
 
         val groupObj = intent.extras?.get("group_obj") as Group
@@ -42,6 +41,26 @@ class GroupActivity : AppCompatActivity() {
 
         //AGGIUNGERE RIMOZIONE DELLA TRANSAZIONE CON LONG CLICK LISTENER
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        listview_payments.setOnItemLongClickListener { adapterView, view, position, l ->
+            var trans = listTransactions[position]
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setMessage("Confermi di volere eliminare la transazione?")
+                .setCancelable(false)
+                .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
+                    listTransactions.remove(trans)
+                    FirebaseDBHelper.deleteTransaction(passed_group_name, trans.getTitolo(), trans.getTotale())
+                })
+                .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Elimina transazione")
+            alert.show()
+            lv_spese_adapter.notifyDataSetChanged()
+            true
+        }
 
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
@@ -62,8 +81,7 @@ class GroupActivity : AppCompatActivity() {
 
         bin_icon.setOnClickListener{
 
-            val dialogBuilder = AlertDialog.Builder(this,R.style.AlertDialogTheme)
-
+            val dialogBuilder = AlertDialog.Builder(this)
             dialogBuilder.setMessage("Confermi di volere eliminare il gruppo?")
                 .setCancelable(false)
                 .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
@@ -77,8 +95,6 @@ class GroupActivity : AppCompatActivity() {
 
             val alert = dialogBuilder.create()
             alert.setTitle("Elimina gruppo")
-            //alert.getButton(AlertDialog.BUTTON_POSITIVE) //CAMBIO COLORE AL TESTO
-            //alert.getButton(AlertDialog.BUTTON_POSITIVE)
             alert.show()
         }
     }
