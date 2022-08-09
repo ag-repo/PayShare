@@ -60,6 +60,15 @@ class GroupActivity : AppCompatActivity() {
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
         }
+
+        bin_icon.setOnClickListener{
+            //Cancello il gruppo
+            //Apro finestra Toast per conferma eliminazione gruppo
+            FirebaseDBHelper.deleteGroup(passed_group_name)
+            //ritorno all'activity precedenete SE non annullo
+            val intent = Intent(this, SummaryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {

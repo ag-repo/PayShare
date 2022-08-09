@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.166" />
         <entry key="app/src/main/res/drawable/button_bg.xml" value="0.2775" />
         <entry key="app/src/main/res/drawable/ic_back_arrow.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/ic_bin_delete.xml" value="0.193" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/ic_enter_group_arrow.xml" value="0.1835" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.166" />
         <entry key="app/src/main/res/drawable/ic_person.xml" value="0.166" />

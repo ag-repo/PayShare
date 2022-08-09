@@ -20,6 +20,10 @@ class FirebaseDBHelper {
             db.child(groupName).setValue(groupObj)
         }
 
+        fun deleteGroup(groupName: String){
+            db.child(groupName).removeValue()
+        }
+
         //NON VA BENE, RISCRIVE L'OGGETTO GRUPPO PERDENDO IL PRECEDENTE
         fun setNewPayment(groupName: String, transaction: Transaction){
             db.child(groupName).child("transactions").child("${transaction.getTitolo()}${transaction.getTotale().hashCode()}").setValue(transaction)
