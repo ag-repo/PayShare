@@ -25,7 +25,6 @@ class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<Gro
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        Log.i("STATS-INNNNNNNN", "yo")
         var newView = convertView
         if(newView == null){
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_stats_list_layout, parent, false)
@@ -34,7 +33,6 @@ class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<Gro
         val memberAmount = (data[position].getMemberAmount()*100.0).roundToInt()/100.0
         (newView as View)?.tv_nomePartecipante?.text = data[position].getMemberName()
         (newView)?.tv_statsAmount?.text = memberAmount.toString()
-        Log.i("STATS-UPDATEEEEEE", "yo")
         return newView
     }
 

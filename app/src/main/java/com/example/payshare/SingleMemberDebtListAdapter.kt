@@ -24,7 +24,6 @@ class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<Grou
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        Log.i("DEBT-INNNNNNNN", "yo")
         var newView = convertView
         if(newView == null){
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_debt_list_layout, parent, false)
@@ -33,7 +32,6 @@ class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<Grou
         val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
         (newView as View)?.tv_nomeDebito?.text = data[position].getPagante() + " deve a " + data[position].getRicevente()
         (newView)?.tv_debtAmount?.text = memberAmount.toString()
-        Log.i("DEBT-UPDATEEEEEE", "yo")
 
         return newView
     }

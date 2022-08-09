@@ -80,12 +80,9 @@ class GroupStatsActivity : AppCompatActivity() {
             //        saldiToDisplay.add(singleMemberDebt)
             //    }
             //}
-            Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
-            Log.i("SALDI-TO-DISPLAY", saldiToDisplay.toString())
 
             lv_stats_adapter.notifyDataSetChanged()
             lv_debt_adapter.notifyDataSetChanged()
-            Log.i("POST-REF", "AIO")
         }
     }
 
@@ -104,7 +101,7 @@ class GroupStatsActivity : AppCompatActivity() {
     }
 
     private fun getGroupsEventListener(): ChildEventListener{
-        Log.i("PRE-STATISTICS", "AIO")
+
         val adapter = lv_stats_adapter
         //TEST
         val debt_adapter = lv_debt_adapter
@@ -138,7 +135,6 @@ class GroupStatsActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
                 debt_adapter.notifyDataSetChanged()
-                Log.i("POST-STATISTICS", "AIO")
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
