@@ -1,5 +1,9 @@
 package com.example.payshare
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.app.ProgressDialog.show
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +11,8 @@ import android.util.Log
 import android.view.View
 import android.widget.ListView
 import android.widget.SimpleAdapter
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group.*
@@ -64,10 +70,21 @@ class GroupActivity : AppCompatActivity() {
         bin_icon.setOnClickListener{
             //Cancello il gruppo
             //Apro finestra Toast per conferma eliminazione gruppo
-            FirebaseDBHelper.deleteGroup(passed_group_name)
-            //ritorno all'activity precedenete SE non annullo
-            val intent = Intent(this, SummaryActivity::class.java)
-            startActivity(intent)
+
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setMessage("Confermi di volere eliminare il gruppo?")
+                .setCancelable(false)
+                .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
+                    FirebaseDBHelper.deleteGroup(passed_group_name)
+                    val intent = Intent(this, SummaryActivity::class.java)
+                    startActivity(intent)
+                })
+                .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+            val alert = dialogBuilder.create()
+            alert.setTitle("Elimina gruppo")
+            alert.show()
         }
     }
 
