@@ -31,7 +31,8 @@ class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<Grou
         }
         //arrotondo a 2 decimali dopo la virgola
         //val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_chideveachi?.text = data[position].getPagante() + " deve a " + data[position].getRicevente()
+        (newView as View)?.tv_chipaga?.text = data[position].getPagante()
+        (newView)?.tv_chiriceve?.text = data[position].getRicevente()
         (newView)?.tv_debtAmount?.text = data[position].getDebito().absoluteValue.toString()
 
         return newView

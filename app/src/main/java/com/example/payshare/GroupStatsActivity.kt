@@ -1,38 +1,31 @@
 package com.example.payshare
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.ListView
-import androidx.core.view.iterator
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 import kotlin.math.absoluteValue
 
 class GroupStatsActivity : AppCompatActivity() {
 
     lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
     lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
-    lateinit var lv_single_total_adapter : SingleMemberStatsListAdapter
     private lateinit var listview_stats : ListView
     private lateinit var listview_debt : ListView
-    private lateinit var listview_single_total : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private lateinit var groupObj : Group
-    private var statistics = HashMap<String,Double>()           //HashMap di String = nome, Double = totale debito/credito
     private var single_statistics = HashMap<String, Double>()
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
     private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
     private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
     private var saldiToDisplay = ArrayList<SingleMemberDebt>()  //COME SALDARE --> DA FARE
-    private var singleTotalToDisplay = ArrayList<SingleMemberStat>()
 
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
@@ -47,22 +40,24 @@ class GroupStatsActivity : AppCompatActivity() {
         membersToDisplay = groupObj.getGroupMembers()
         group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
 
+        // QUI QUI QUI QUI QUI
+        statsToDisplay = computeStatistics(groupObj,listTransactions)
+        //single_statistics = computeSingleTotal(groupObj, listTransactions)
+
         lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
         lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
-        lv_single_total_adapter = SingleMemberStatsListAdapter(this, singleTotalToDisplay)
 
         listview_stats = lv_groupStatisticsListView
         listview_debt = lv_comePagare
-        listview_single_total = lv_personal_stats
 
         listview_stats.adapter = lv_stats_adapter
         listview_debt.adapter = lv_debt_adapter
-        listview_single_total.adapter = lv_single_total_adapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
+
         lv_stats_adapter.notifyDataSetChanged()
         lv_debt_adapter.notifyDataSetChanged()
-        lv_single_total_adapter.notifyDataSetChanged()
+
 
 
         back_to_group.setOnClickListener{
@@ -72,37 +67,23 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            statistics = computeStatistics(groupObj,listTransactions)
-            saldiToDisplay = computeComeSaldare(statistics)
-            single_statistics = computeSingleTotal(groupObj, listTransactions)
-            Log.i("COMPUTE-STATISTICS", statistics.toString())
-            Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
-            Log.i("COMPUTE-SINGLE", single_statistics.toString())
 
-            //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
-            for ((key, value) in statistics) {
-                val singleMemberStat = SingleMemberStat(key,value)
-                if(!statsToDisplay.contains(singleMemberStat)){
-                    statsToDisplay.add(singleMemberStat)
+            Thread(Runnable {
+                statsToDisplay = computeStatistics(groupObj,listTransactions)
+                //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
+                Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+
+                saldiToDisplay = computeComeSaldare(statsToDisplay)
+                Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
+
+
+                Handler(mainLooper).post{
+                    lv_stats_adapter.notifyDataSetChanged()
+                    Log.i("NOTIFY-ADAPT1","Done")
+                    lv_debt_adapter.notifyDataSetChanged()
+                    Log.i("NOTIFY-ADAPT2","Done")
                 }
-            }
-
-            for(i in saldiToDisplay.indices){
-                val singleMemberDebt = SingleMemberDebt(saldiToDisplay[i].getRicevente(), saldiToDisplay[i].getPagante(), saldiToDisplay[i].getDebito())
-                //print(singleMemberDebt.toString())
-                //print(saldiToDisplay[i].toString())
-
-                //ATTENZIONE INSERIRE NUOVAMENTE CONTROLLO!!!!!!!!!!
-                saldiToDisplay.add(singleMemberDebt)
-                //QUI NON ENTRA MAI !?!?!?!?!?
-                if(!saldiToDisplay.contains(singleMemberDebt)){
-                    saldiToDisplay.add(singleMemberDebt)
-                }
-            }
-
-            lv_stats_adapter.notifyDataSetChanged()
-            lv_debt_adapter.notifyDataSetChanged()
-            lv_single_total_adapter.notifyDataSetChanged()
+            }).start()
         }
     }
 
@@ -124,7 +105,7 @@ class GroupStatsActivity : AppCompatActivity() {
 
         val adapter = lv_stats_adapter
         //TEST
-        val debt_adapter = lv_debt_adapter
+        //val debt_adapter = lv_debt_adapter
 
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -154,7 +135,7 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
-                debt_adapter.notifyDataSetChanged()
+                //debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -180,7 +161,6 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
-                debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
@@ -206,7 +186,6 @@ class GroupStatsActivity : AppCompatActivity() {
                     }
                 }
                 adapter.notifyDataSetChanged()
-                debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -222,12 +201,11 @@ class GroupStatsActivity : AppCompatActivity() {
     }
 
     //calcola quanto ogni partecipante è in positivo o negativo
-    private fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
+    private fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
+        //val membri = groupObj.getGroupMembers()
+        var data =  ArrayList<SingleMemberStat>()
 
-        val membri = groupObj.getGroupMembers()
-        var data: HashMap<String, Double> = HashMap()
-
-        for(i in membri.indices){ data[membri[i]] = 0.0 } //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
+        //for(i in membri.indices){ data[membri[i]] = 0.0 } //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
 
         for(transaction in listTransactions.indices){
             val splittedAmount = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
@@ -236,19 +214,26 @@ class GroupStatsActivity : AppCompatActivity() {
             val pagatoPer = listTransactions[transaction].getPagatoPer()
 
             for(i in pagatoDa.indices){
+                data.add(SingleMemberStat(pagatoDa[i], splittedAmount, splittedAmount))
+                /*
                 val temp = data[pagatoDa[i]]
-                data[pagatoDa[i]] = temp!!+splittedAmount
+                data[pagatoDa[i] = temp!!+splittedAmount
+                 */
             }
 
             for(i in pagatoPer.indices){
+                data.add(SingleMemberStat(pagatoPer[i], splittedDebt, 0.0))
+                /*
                 val temp = data[pagatoPer[i]]
                 data[pagatoPer[i]] = temp!!-splittedDebt
+                 */
             }
         }
         return data
     }
 
     //calcola quanto ha speso ogni singolo membro del gruppo
+    /*
     private fun computeSingleTotal(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
 
         val membri = groupObj.getGroupMembers()             //prendo la lista dei membri dal gruppo passato
@@ -271,9 +256,10 @@ class GroupStatsActivity : AppCompatActivity() {
 
         return data
     }
+    */
 
     //calcola come saldare i debiti attuali
-    private fun computeComeSaldare(listDebt: HashMap<String, Double>): ArrayList<SingleMemberDebt>{
+    private fun computeComeSaldare(listDebt: ArrayList<SingleMemberStat>): ArrayList<SingleMemberDebt>{
         var debiti = ArrayList<SingleMemberDebt>()          //variabile da ritornare
         var membriPos = ArrayList<SingleMemberStat>()       //lista dei membri in positivo
         var membriNeg = ArrayList<SingleMemberStat>()       //lista dei membri in negativo
@@ -281,8 +267,8 @@ class GroupStatsActivity : AppCompatActivity() {
         var iNeg = 0                                        //counter per il while membri in positivo
 
         //listDebt = HashMap di String = nome, Double = totale debito/credito
-        for((key,value) in listDebt){
-            val membStat = SingleMemberStat(key, value)
+        for(i in listDebt.indices){
+            val membStat = SingleMemberStat(listDebt[i].getMemberName(), listDebt[i].getMemberAmount(), listDebt[i].getSingleMemberTotal())
             if(membStat.getMemberAmount() > 0){             //se l'amount è positivo
                 membriPos.add(membStat)                     //aggiungo alla lista dei positivi
             } else {
@@ -303,9 +289,9 @@ class GroupStatsActivity : AppCompatActivity() {
                 p.setAmount(p.getMemberAmount() + n.getMemberAmount())              //setto il nuovo debito da saldare per il positivo togliendo l'amount del negativo
                 //if((p.getMemberAmount() + n.getMemberAmount()) <= 0.0){ iPos++ }
             } else {
-                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), p.getMemberAmount().absoluteValue))
-                iPos ++
-                membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount()))
+                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), p.getMemberAmount().absoluteValue))   //aggiungo a debiti un debito da pagare
+                iPos ++                                                             //aumento i positivi perchè sicuramente ho saldato il debito
+                membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount())) //setto il nuovo debito da saldare per il negativo
                 //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }
             }
         }
@@ -313,13 +299,14 @@ class GroupStatsActivity : AppCompatActivity() {
     }
 
     //dataclass per le statistiche singole dei membri del gruppo
-    data class SingleMemberStat(private var memberName: String, private var memberAmount: Double){
+    data class SingleMemberStat(private var memberName: String, private var memberAmount: Double, private var singleMemberTotal: Double){
 
-        constructor() : this("", 0.0)
+        constructor() : this("", 0.0, 0.0)
 
         fun set(stat: SingleMemberStat){
             memberName = stat.memberName
             memberAmount = stat.memberAmount
+            singleMemberTotal = stat.singleMemberTotal
         }
 
         fun setAmount(amount: Double){
@@ -330,12 +317,20 @@ class GroupStatsActivity : AppCompatActivity() {
             this.memberName = name
         }
 
+        fun setSingleMemberTotal(amount: Double){
+            this.singleMemberTotal = amount
+        }
+
         fun getMemberName(): String{
             return this.memberName
         }
 
         fun getMemberAmount(): Double{
             return this.memberAmount
+        }
+
+        fun getSingleMemberTotal(): Double{
+            return this.singleMemberTotal
         }
     }
     //dataclass per capire come saldare i debiti
@@ -361,3 +356,26 @@ class GroupStatsActivity : AppCompatActivity() {
         }
     }
 }
+
+/*/
+    private fun calculateViews(){
+
+        statsToDisplay = computeStatistics(groupObj,listTransactions)
+        //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
+        for (i in statsToDisplay.indices) {
+            val singleMemberStat = SingleMemberStat(statsToDisplay[i].getMemberName(), statsToDisplay[i].getMemberAmount(),statsToDisplay[i].getSingleMemberTotal())
+            if(!statsToDisplay.contains(singleMemberStat)){
+                statsToDisplay.add(singleMemberStat)
+            }
+        }
+        Log.i("COMPUTE-STATISTICS", statsToDisplay.toString())
+        Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+
+
+        saldiToDisplay = computeComeSaldare(statsToDisplay)
+        Log.i("COMPUTE-DEBT", saldiToDisplay.toString())
+
+        single_statistics = computeSingleTotal(groupObj, listTransactions)
+        Log.i("COMPUTE-SINGLE", single_statistics.toString())
+
+    }*/

@@ -15,15 +15,38 @@ android:padding="8dp">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_gravity="left">
         <TextView
             android:id="@+id/tv_nomePartecipante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="NOME_PARTECIPANTE"
             android:textSize="16dp"
+            android:textStyle="bold"
             android:textColor="@color/colorText"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Totale personale: "
+                android:textSize="12dp"
+                android:textColor="@color/colorText"/>
+
+            <TextView
+                android:id="@+id/tv_personal_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="personal_amount"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorText"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -36,7 +59,8 @@ android:padding="8dp">
             android:id="@+id/tv_statsAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="transaction_amount"
+            android:text="single_amount"
+            android:textStyle="bold"
             android:textColor="@color/colorText"
             android:textSize="16dp"/>
     </LinearLayout>
