@@ -32,8 +32,7 @@ class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<Gro
         //arrotondo a 2 decimali dopo la virgola
         val memberAmount = (data[position].getMemberAmount()*100.0).roundToInt()/100.0
         (newView as View)?.tv_nomePartecipante?.text = data[position].getMemberName()
-        //QUI QUI QUI
-        //(newView)?.tv_personal_amount?.text = single_data[position].getMemberAmount().toString()
+        (newView)?.tv_personal_amount?.text = data[position].getSingleMemberTotal().toString()
         (newView)?.tv_statsAmount?.text = memberAmount.toString()
         return newView
     }

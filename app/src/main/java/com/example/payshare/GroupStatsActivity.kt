@@ -40,6 +40,8 @@ class GroupStatsActivity : AppCompatActivity() {
         membersToDisplay = groupObj.getGroupMembers()
         group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
 
+        Log.i("CHECK-listTransaction", listTransactions.toString())
+
         // QUI QUI QUI QUI QUI
         statsToDisplay = computeStatistics(groupObj,listTransactions)
         //single_statistics = computeSingleTotal(groupObj, listTransactions)
@@ -54,9 +56,10 @@ class GroupStatsActivity : AppCompatActivity() {
         listview_debt.adapter = lv_debt_adapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
-
+        Log.i("CHECK-listTransaction", listTransactions.toString())
         lv_stats_adapter.notifyDataSetChanged()
         lv_debt_adapter.notifyDataSetChanged()
+        Log.i("CHECK-listTransaction", listTransactions.toString())
 
 
 
@@ -67,7 +70,12 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
+            Log.i("STATS-TO-DISPLAY", listTransactions.toString())
+            statsToDisplay = computeStatistics(groupObj,listTransactions)
+            Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+            lv_stats_adapter.notifyDataSetChanged()
 
+            /*
             Thread(Runnable {
                 statsToDisplay = computeStatistics(groupObj,listTransactions)
                 //converto Hashmap in oggetto SingleMemberStat per la visualizzazione
@@ -83,7 +91,7 @@ class GroupStatsActivity : AppCompatActivity() {
                     lv_debt_adapter.notifyDataSetChanged()
                     Log.i("NOTIFY-ADAPT2","Done")
                 }
-            }).start()
+            }).start() */
         }
     }
 
@@ -104,8 +112,6 @@ class GroupStatsActivity : AppCompatActivity() {
     private fun getGroupsEventListener(): ChildEventListener{
 
         val adapter = lv_stats_adapter
-        //TEST
-        //val debt_adapter = lv_debt_adapter
 
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -134,8 +140,8 @@ class GroupStatsActivity : AppCompatActivity() {
                         }
                     }
                 }
+                Log.i("CHECK-listONADDED", listTransactions.toString())
                 adapter.notifyDataSetChanged()
-                //debt_adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -200,12 +206,18 @@ class GroupStatsActivity : AppCompatActivity() {
         return listener
     }
 
-    //calcola quanto ogni partecipante è in positivo o negativo
+    //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
     private fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
-        //val membri = groupObj.getGroupMembers()
+        val membri = groupObj.getGroupMembers()
         var data =  ArrayList<SingleMemberStat>()
 
-        //for(i in membri.indices){ data[membri[i]] = 0.0 } //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
+        var tempStat = HashMap<String,Double>()
+        var tempSingleAmount = HashMap<String,Double>()
+
+        for(i in membri.indices){
+            tempStat[membri[i]] = 0.0   //inizializzo hashmap con nomi partecipanti
+            tempSingleAmount[membri[i]] = 0.0
+        }
 
         for(transaction in listTransactions.indices){
             val splittedAmount = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
@@ -214,20 +226,19 @@ class GroupStatsActivity : AppCompatActivity() {
             val pagatoPer = listTransactions[transaction].getPagatoPer()
 
             for(i in pagatoDa.indices){
-                data.add(SingleMemberStat(pagatoDa[i], splittedAmount, splittedAmount))
-                /*
-                val temp = data[pagatoDa[i]]
-                data[pagatoDa[i] = temp!!+splittedAmount
-                 */
+                val t = tempStat[pagatoDa[i]]
+                tempStat[pagatoDa[i]] = t!!+splittedAmount
+                tempSingleAmount[pagatoDa[i]] = t +splittedAmount
             }
 
             for(i in pagatoPer.indices){
-                data.add(SingleMemberStat(pagatoPer[i], splittedDebt, 0.0))
-                /*
-                val temp = data[pagatoPer[i]]
-                data[pagatoPer[i]] = temp!!-splittedDebt
-                 */
+                val t = tempStat[pagatoPer[i]]
+                tempStat[pagatoPer[i]] = t!!+splittedDebt
             }
+        }
+
+        for(i in membri.indices){
+            data.add(SingleMemberStat(membri[i], tempStat[membri[i]]!!, tempSingleAmount[membri[i]]!!))
         }
         return data
     }
