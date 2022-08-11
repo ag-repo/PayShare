@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.payshare.FirebaseDBHelper.Companion.saveStatistics
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
@@ -21,7 +22,7 @@ class GroupStatsActivity : AppCompatActivity() {
     private lateinit var groupObj : Group
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
     private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
-    private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
+    private var statsToDisplay = arrayListOf<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
     private var saldiToDisplay = ArrayList<SingleMemberDebt>()  //COME SALDARE --> DA FARE
 
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
@@ -41,8 +42,6 @@ class GroupStatsActivity : AppCompatActivity() {
             statsToDisplay.add(SingleMemberStat(membersToDisplay[i], 0.0, 0.0))
         }
 
-        FirebaseDBHelper.setListeners(getGroupsEventListener())
-
         Log.i("BEFORE-SLEEP", "ok")
         Thread.sleep(2000)
         Log.i("AFTER-SLEEP", "ok")
@@ -54,8 +53,9 @@ class GroupStatsActivity : AppCompatActivity() {
         listview_stats.adapter = lv_stats_adapter
         listview_debt.adapter = lv_debt_adapter
 
-        lv_stats_adapter.notifyDataSetChanged()
+        FirebaseDBHelper.setListeners(getGroupsEventListener())
 
+        lv_stats_adapter.notifyDataSetChanged()
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
@@ -125,9 +125,9 @@ class GroupStatsActivity : AppCompatActivity() {
                             listTransactions.add(t)
                             i += 1
                             statsToDisplay = computeStatistics(listTransactions)
+                            saveStatistics(passed_group_name, statsToDisplay)
                         }
                     }
-                    Log.i("CHILD-Added","statToDisplay--> $statsToDisplay")
                     lv_stats_adapter.notifyDataSetChanged()
                 }
             }

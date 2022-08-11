@@ -24,12 +24,6 @@ class FirebaseDBHelper {
             db.child(groupName).removeValue()
         }
 
-        fun returnMembers(groupName: String): ArrayList<String>{
-            val list = db.child(groupName).child("groupMembers")
-            val toReturn = ArrayList<String>()
-            return toReturn
-        }
-
         fun deleteTransaction(groupName: String, transName: String, transactionAmount: Double){
             var transactionToFind = transName+"-"+transactionAmount.hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()
@@ -38,6 +32,10 @@ class FirebaseDBHelper {
         fun setNewPayment(groupName: String, transaction: Transaction){
             var transName = transaction.getTitolo()+"-"+transaction.getTotale().hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transName).setValue(transaction)
+        }
+
+        fun saveStatistics(groupName: String, list: ArrayList<SingleMemberStat>){
+            db.child(groupName).child("stats").setValue(list)
         }
 
     }
