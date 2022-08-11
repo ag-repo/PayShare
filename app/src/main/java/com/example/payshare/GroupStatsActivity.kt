@@ -2,14 +2,12 @@ package com.example.payshare
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
-import java.util.concurrent.Executors
 import kotlin.math.absoluteValue
 
 class GroupStatsActivity : AppCompatActivity() {
@@ -56,8 +54,6 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-
-            Log.i("MEMBERS-CHECK", "-->${membersToDisplay}")
             statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
             Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
             lv_stats_adapter.notifyDataSetChanged()
@@ -187,21 +183,17 @@ class GroupStatsActivity : AppCompatActivity() {
             }
 
         }
-        //statsToDisplay = computeStatistics(groupObj,listTransactions)
-        //Log.i("GROUPSTAT-stats-END", statsToDisplay.toString())
-
         return listener
     }
 
     //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
     private fun computeStatistics(members: ArrayList<String>, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
         var data =  ArrayList<SingleMemberStat>()
-
         var tempStat = HashMap<String,Double>()
         var tempSingleAmount = HashMap<String,Double>()
 
-        for(i in members.indices){
-            tempStat[members[i]] = 0.0   //inizializzo hashmap con nomi partecipanti
+        for(i in members.indices){      //inizializzo hashmap con nomi partecipanti
+            tempStat[members[i]] = 0.0
             tempSingleAmount[members[i]] = 0.0
         }
 
@@ -229,32 +221,6 @@ class GroupStatsActivity : AppCompatActivity() {
         }
         return data
     }
-
-    //calcola quanto ha speso ogni singolo membro del gruppo
-    /*
-    private fun computeSingleTotal(groupObj: Group, listTransactions: ArrayList<Transaction>): HashMap<String,Double>{
-
-        val membri = groupObj.getGroupMembers()             //prendo la lista dei membri dal gruppo passato
-        var data: HashMap<String, Double> = HashMap()       //variabile da ritornare
-
-        for(i in membri.indices){ data[membri[i]] = 0.0 }   //popolo data con NomePartecipante, Array delle spese dandogli i nomi dei partecipanti
-
-        for(transaction in listTransactions.indices){
-            var transactionSplit = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
-            var transactionSubjects = listTransactions[transaction].getPagatoDa() //prendo solo chi ha pagato delle transazioni
-
-            for(i in transactionSubjects.indices){
-                for((key,value) in data){
-                    if(key == transactionSubjects[i]){              //se trovo il nome uguale
-                        data[key] = value + transactionSplit        //aggiungo amount spesa a data
-                    }
-                }
-            }
-        }
-
-        return data
-    }
-    */
 
     //calcola come saldare i debiti attuali
     private fun computeComeSaldare(listDebt: ArrayList<SingleMemberStat>): ArrayList<SingleMemberDebt>{
@@ -294,64 +260,6 @@ class GroupStatsActivity : AppCompatActivity() {
             }
         }
         return debiti
-    }
-
-    //dataclass per le statistiche singole dei membri del gruppo
-    data class SingleMemberStat(private var memberName: String, private var memberAmount: Double, private var singleMemberTotal: Double){
-
-        constructor() : this("", 0.0, 0.0)
-
-        fun set(stat: SingleMemberStat){
-            memberName = stat.memberName
-            memberAmount = stat.memberAmount
-            singleMemberTotal = stat.singleMemberTotal
-        }
-
-        fun setAmount(amount: Double){
-            this.memberAmount = amount
-        }
-
-        fun setName(name: String){
-            this.memberName = name
-        }
-
-        fun setSingleMemberTotal(amount: Double){
-            this.singleMemberTotal = amount
-        }
-
-        fun getMemberName(): String{
-            return this.memberName
-        }
-
-        fun getMemberAmount(): Double{
-            return this.memberAmount
-        }
-
-        fun getSingleMemberTotal(): Double{
-            return this.singleMemberTotal
-        }
-    }
-    //dataclass per capire come saldare i debiti
-    data class SingleMemberDebt(private var ricevente: String, private var pagante: String, private var debito: Double){
-        constructor() : this("", "", 0.0)
-
-        fun set(debt: SingleMemberDebt){
-            ricevente = debt.ricevente
-            pagante = debt.pagante
-            debito = debt.debito
-        }
-
-        fun getPagante(): String{
-            return this.pagante
-        }
-
-        fun getRicevente(): String{
-            return this.ricevente
-        }
-
-        fun getDebito(): Double{
-            return this.debito
-        }
     }
 }
 

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.transactions_list_layout.view.*
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberStat>): BaseAdapter() {
+class SingleMemberStatsListAdapter(val context: Context, val data: ArrayList<SingleMemberStat>): BaseAdapter() {
     override fun getCount(): Int {
         return data.size
     }

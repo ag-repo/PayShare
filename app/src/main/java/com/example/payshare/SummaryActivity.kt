@@ -94,7 +94,6 @@ class SummaryActivity : AppCompatActivity() {
                     listData.add(listobj) //Arraylist di Hashmap per la grafica
                 }
                 group_number.text = listData.size.toString() //AGGIORNO SCRITTA
-                Log.i("SUMMARY-onChildAdded", "Done!")
                 adapter.notifyDataSetChanged()
             }
 

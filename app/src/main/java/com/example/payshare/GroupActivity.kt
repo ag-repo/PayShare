@@ -34,15 +34,10 @@ class GroupActivity : AppCompatActivity() {
         passed_group_name = groupObj.getGroupName() //Modifiche delle scritte della view
         groupName.text = passed_group_name //rimpiazzo textview con il nome del gruppo
 
-        //inizializzo la listview
-        lv_spese_adapter = TransactionsListAdapter(this, listTransactions)
+        lv_spese_adapter = TransactionsListAdapter(this, listTransactions)  //inizializzo la listview
         listview_payments = group_list_view
         listview_payments.adapter = lv_spese_adapter
         FirebaseDBHelper.setListeners(getGroupsEventListener());
-        lv_spese_adapter.notifyDataSetChanged()
-
-        //AGGIUNGERE RIMOZIONE DELLA TRANSAZIONE CON LONG CLICK LISTENER
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         listview_payments.setOnItemLongClickListener { adapterView, view, position, l ->
             var trans = listTransactions[position]
