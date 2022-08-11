@@ -27,10 +27,10 @@ class TransactionsListAdapter(val context: Context, val data:ArrayList<Transacti
             newView = LayoutInflater.from(context).inflate(R.layout.transactions_list_layout, parent, false)
         }
 
-        Log.i("TRANSACTIONLIST-Adapter", "list --> ${data}")
         val transaction = data[position]
         (newView as View)?.tv_titolo_spesa?.text = transaction.getTitolo()
-        newView?.tv_pagato_da?.text = transaction.getPagatoDa().toString()
+        newView?.tv_pagato_da?.text = transaction.getPagatoDaToString()
+        newView?.tv_pagato_per?.text = transaction.getPagatoPerToString()
         newView?.tv_amount?.text = transaction.getTotale().toString()
         return newView
     }

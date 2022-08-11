@@ -17,7 +17,6 @@ class GroupStatsActivity : AppCompatActivity() {
     private lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
     private lateinit var listview_stats : ListView
     private lateinit var listview_debt : ListView
-    private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private lateinit var groupObj : Group
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent

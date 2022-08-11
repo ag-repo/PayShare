@@ -17,6 +17,30 @@ data class Transaction(
         totale = transaction.totale
     }
 
+    fun getPagatoDaToString(): String {
+        val builder = StringBuilder()
+        for(i in pagatoDa.indices){
+            if(i == pagatoDa.size-1){
+                builder.append(pagatoDa[i])
+            } else {
+                builder.append(pagatoDa[i] + ", ")
+            }
+        }
+        return builder.toString()
+    }
+
+    fun getPagatoPerToString(): String {
+        val builder = StringBuilder()
+        for(i in pagatoPer.indices){
+            if(i == pagatoPer.size-1){
+                builder.append(pagatoPer[i])
+            } else {
+                builder.append(pagatoPer[i] + ", ")
+            }
+        }
+        return builder.toString()
+    }
+
     fun getTitolo():String{
         return this.titolo
     }

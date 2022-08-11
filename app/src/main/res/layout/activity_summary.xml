@@ -49,6 +49,7 @@
                 android:layout_marginRight="8dp"
                 android:textSize="16dp"
                 android:textStyle="bold"
+                android:textColor="@color/colorText"
                 android:text="Gruppi creati: " />
 
             <TextView
@@ -56,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
+                android:textColor="@color/colorText"
                 android:text="n_gruppi"/>
         </LinearLayout>
     </LinearLayout>

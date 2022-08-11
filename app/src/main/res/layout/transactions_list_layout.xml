@@ -16,24 +16,56 @@
                 android:id="@+id/tv_titolo_spesa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="titolo_spesa"
                 android:textSize="16dp"
+                android:textStyle="bold"
                 android:textColor="@color/colorText"/>
-            <TextView
-                android:layout_width="match_parent"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Pagato da:"
-                android:textSize="12dp"
-                android:textColor="@color/colorText"/>
-            <TextView
-                android:id="@+id/tv_pagato_da"
-                android:layout_width="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Pagato da:"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorText"/>
+                <TextView
+                    android:id="@+id/tv_pagato_da"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="pagato_da"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorText"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="pagato_da"
-                android:textSize="12dp"
-                android:textColor="@color/colorText"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Pagato per:"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorText"/>
+                <TextView
+                    android:id="@+id/tv_pagato_per"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="pagato_da"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorText"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
