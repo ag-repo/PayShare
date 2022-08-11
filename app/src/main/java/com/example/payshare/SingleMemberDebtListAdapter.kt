@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.single_member_stats_list_layout.view.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<GroupStatsActivity.SingleMemberDebt>): BaseAdapter() {
+class SingleMemberDebtListAdapter(val context: Context, val data: ArrayList<SingleMemberDebt>): BaseAdapter() {
     override fun getCount(): Int {
         return data.size
     }
