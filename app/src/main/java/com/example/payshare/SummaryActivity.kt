@@ -27,11 +27,9 @@ class SummaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
-
         supportActionBar?.hide() //Tolgo barra titolo app
 
-        //Inizializzo listview
-        lv_adapter = SimpleAdapter(
+        lv_adapter = SimpleAdapter( //Inizializzo listview
             this,
             listData,
             R.layout.summary_list_group_item_layout,
@@ -96,33 +94,33 @@ class SummaryActivity : AppCompatActivity() {
                     listData.add(listobj) //Arraylist di Hashmap per la grafica
                 }
                 group_number.text = listData.size.toString() //AGGIORNO SCRITTA
+                Log.i("SUMMARY-onChildAdded", "Done!")
                 adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousGroupName: String?) {
-            val item = dataSnap.getValue(Group::class.java)
-            if (item != null) {
+                val item = dataSnap.getValue(Group::class.java)
+                if (item != null) {
+                    for (i in groupList.indices) {
+                        if(groupList[i].getGroupName() == item.getGroupName()) {
+                            groupList[i] = item
+                            break
+                        }
+                    }
+                    val listobj = HashMap<String,Any>()
+                    listobj["groupName"] = item.getGroupName()
+                    listobj["groupDescr"] = item.getGroupDescr()
 
-                for (i in groupList.indices) {
-                    if(groupList[i].getGroupName() == item.getGroupName()) {
-                        groupList[i] = item
-                        break
+                    for (i in listData.indices) {
+                        var obj = listData[i]["groupName"]
+                        if(obj.toString() == item.getGroupName()) {
+                            listData[i] = listobj
+                            break
+                        }
                     }
                 }
-                val listobj = HashMap<String,Any>()
-                listobj["groupName"] = item.getGroupName()
-                listobj["groupDescr"] = item.getGroupDescr()
-
-                for (i in listData.indices) {
-                    var obj = listData[i]["groupName"]
-                    if(obj.toString() == item.getGroupName()) {
-                        listData[i] = listobj
-                        break
-                    }
-                }
-            }
                 group_number.text = listData.size.toString() //AGGIORNO SCRITTA
-            adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {

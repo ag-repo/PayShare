@@ -24,6 +24,12 @@ class FirebaseDBHelper {
             db.child(groupName).removeValue()
         }
 
+        fun returnMembers(groupName: String): ArrayList<String>{
+            val list = db.child(groupName).child("groupMembers")
+            val toReturn = ArrayList<String>()
+            return toReturn
+        }
+
         fun deleteTransaction(groupName: String, transName: String, transactionAmount: Double){
             var transactionToFind = transName+"-"+transactionAmount.hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()

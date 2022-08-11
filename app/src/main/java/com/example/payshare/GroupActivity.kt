@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.DialogInterface.OnShowListener
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
@@ -29,8 +30,9 @@ class GroupActivity : AppCompatActivity() {
         supportActionBar?.hide() //Tolgo barra titolo app
 
         val groupObj = intent.extras?.get("group_obj") as Group
+        Log.i("GROUPACT-Obj", "-->$groupObj")
         passed_group_name = groupObj.getGroupName() //Modifiche delle scritte della view
-        groupName.text = groupObj.getGroupName() //rimpiazzo textview con il nome del gruppo
+        groupName.text = passed_group_name //rimpiazzo textview con il nome del gruppo
 
         //inizializzo la listview
         lv_spese_adapter = TransactionsListAdapter(this, listTransactions)

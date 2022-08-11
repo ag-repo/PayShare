@@ -38,30 +38,16 @@ class GroupStatsActivity : AppCompatActivity() {
         groupObj = intent.extras?.get("group_obj") as Group
         passed_group_name = groupObj.getGroupName()
         membersToDisplay = groupObj.getGroupMembers()
-        group_stats_name.text = groupObj.getGroupName() //rimpiazzo nome gruppo nella view
-
-        Log.i("CHECK-listTransaction", listTransactions.toString())
-
-        // QUI QUI QUI QUI QUI
-        statsToDisplay = computeStatistics(groupObj,listTransactions)
-        //single_statistics = computeSingleTotal(groupObj, listTransactions)
+        group_stats_name.text = passed_group_name //rimpiazzo nome gruppo nella view
 
         lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
         lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
-
         listview_stats = lv_groupStatisticsListView
         listview_debt = lv_comePagare
-
         listview_stats.adapter = lv_stats_adapter
         listview_debt.adapter = lv_debt_adapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
-        Log.i("CHECK-listTransaction", listTransactions.toString())
-        lv_stats_adapter.notifyDataSetChanged()
-        lv_debt_adapter.notifyDataSetChanged()
-        Log.i("CHECK-listTransaction", listTransactions.toString())
-
-
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
@@ -70,8 +56,9 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
-            Log.i("STATS-TO-DISPLAY", listTransactions.toString())
-            statsToDisplay = computeStatistics(groupObj,listTransactions)
+
+            Log.i("MEMBERS-CHECK", "-->${membersToDisplay}")
+            statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
             Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
             lv_stats_adapter.notifyDataSetChanged()
 
@@ -117,30 +104,27 @@ class GroupStatsActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item!!.getGroupName() == passed_group_name) {
-                    for(i in item.getGroupMembers().indices)
-                        membersToDisplay.add(item.getGroupMembers()[i])
-                }
-                dataSnap.child("transactions")
-                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+                    dataSnap.child("transactions")
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
 
-                if(item?.getGroupName() == passed_group_name) {
-                    //listTransactions da popolare con oggetti transaction
-                    if (transactions != null) {
-                        var i: Int = 0
-                        for ((key, value) in transactions) {
-                            listaSpese.add(i, value as HashMap<String,Any>)
-                            val t = Transaction(
-                                value["titolo"] as String,
-                                value["pagatoDa"] as ArrayList<String>,
-                                value["pagatoPer"] as ArrayList<String>,
-                                (value["totale"] as Long).toDouble()
-                            )
-                            listTransactions.add(t)
-                            i += 1
+                    if(item?.getGroupName() == passed_group_name) {
+                        //listTransactions da popolare con oggetti transaction
+                        if (transactions != null) {
+                            var i: Int = 0
+                            for ((key, value) in transactions) {
+                                listaSpese.add(i, value as HashMap<String,Any>)
+                                val t = Transaction(
+                                    value["titolo"] as String,
+                                    value["pagatoDa"] as ArrayList<String>,
+                                    value["pagatoPer"] as ArrayList<String>,
+                                    (value["totale"] as Long).toDouble()
+                                )
+                                listTransactions.add(t)
+                                i += 1
+                            }
                         }
                     }
                 }
-                Log.i("CHECK-listONADDED", listTransactions.toString())
                 adapter.notifyDataSetChanged()
             }
 
@@ -203,20 +187,22 @@ class GroupStatsActivity : AppCompatActivity() {
             }
 
         }
+        //statsToDisplay = computeStatistics(groupObj,listTransactions)
+        //Log.i("GROUPSTAT-stats-END", statsToDisplay.toString())
+
         return listener
     }
 
     //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
-    private fun computeStatistics(groupObj: Group, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
-        val membri = groupObj.getGroupMembers()
+    private fun computeStatistics(members: ArrayList<String>, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
         var data =  ArrayList<SingleMemberStat>()
 
         var tempStat = HashMap<String,Double>()
         var tempSingleAmount = HashMap<String,Double>()
 
-        for(i in membri.indices){
-            tempStat[membri[i]] = 0.0   //inizializzo hashmap con nomi partecipanti
-            tempSingleAmount[membri[i]] = 0.0
+        for(i in members.indices){
+            tempStat[members[i]] = 0.0   //inizializzo hashmap con nomi partecipanti
+            tempSingleAmount[members[i]] = 0.0
         }
 
         for(transaction in listTransactions.indices){
@@ -226,19 +212,20 @@ class GroupStatsActivity : AppCompatActivity() {
             val pagatoPer = listTransactions[transaction].getPagatoPer()
 
             for(i in pagatoDa.indices){
-                val t = tempStat[pagatoDa[i]]
-                tempStat[pagatoDa[i]] = t!!+splittedAmount
-                tempSingleAmount[pagatoDa[i]] = t +splittedAmount
+                val t1 = tempStat[pagatoDa[i]]
+                val t2 = tempSingleAmount[pagatoDa[i]]
+                tempStat[pagatoDa[i]] = t1!!+splittedAmount
+                tempSingleAmount[pagatoDa[i]] = t2!!+splittedAmount
             }
 
             for(i in pagatoPer.indices){
                 val t = tempStat[pagatoPer[i]]
-                tempStat[pagatoPer[i]] = t!!+splittedDebt
+                tempStat[pagatoPer[i]] = t!!-splittedDebt
             }
         }
 
-        for(i in membri.indices){
-            data.add(SingleMemberStat(membri[i], tempStat[membri[i]]!!, tempSingleAmount[membri[i]]!!))
+        for(i in members.indices){
+            data.add(SingleMemberStat(members[i], tempStat[members[i]]!!, tempSingleAmount[members[i]]!!))
         }
         return data
     }
