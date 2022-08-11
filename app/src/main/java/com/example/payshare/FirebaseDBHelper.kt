@@ -34,8 +34,12 @@ class FirebaseDBHelper {
             db.child(groupName).child("transactions").child(transName).setValue(transaction)
         }
 
-        fun saveStatistics(groupName: String, list: ArrayList<SingleMemberStat>){
+        fun saveStatistics(groupName: String, list: MutableList<SingleMemberStat>){
             db.child(groupName).child("stats").setValue(list)
+        }
+
+        fun saveComeSaldare(groupName: String, list: ArrayList<SingleMemberDebt>){
+            db.child(groupName).child("saldi").setValue(list)
         }
 
     }

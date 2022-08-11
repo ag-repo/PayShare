@@ -1,6 +1,8 @@
 package com.example.payshare
 
-data class SingleMemberStat(private var memberName: String, private var memberAmount: Double, private var singleMemberTotal: Double){
+import java.io.Serializable
+
+data class SingleMemberStat(private var memberName: String, private var memberAmount: Double, private var singleMemberTotal: Double): Serializable{
 
     constructor() : this("", 0.0, 0.0)
 

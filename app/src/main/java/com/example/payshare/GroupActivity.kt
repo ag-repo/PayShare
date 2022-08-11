@@ -12,6 +12,8 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 
 class GroupActivity : AppCompatActivity() {
@@ -23,6 +25,10 @@ class GroupActivity : AppCompatActivity() {
     private val groupList: MutableList<Group> = ArrayList() //LISTA DI GRUPPO CHE PUò DIVENTARE 1 SOLO !!!!
     private var listTransactions = arrayListOf<Transaction>() //Lista delle transazioni da mostrare in ListView
     private lateinit var passed_group_name : String
+    private lateinit var passed_group_members : ArrayList<String>
+
+    private var statsToSave = mutableListOf<SingleMemberStat>()
+    private var saldiToSave = ArrayList<SingleMemberDebt>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +38,7 @@ class GroupActivity : AppCompatActivity() {
         val groupObj = intent.extras?.get("group_obj") as Group
         Log.i("GROUPACT-Obj", "-->$groupObj")
         passed_group_name = groupObj.getGroupName() //Modifiche delle scritte della view
+        passed_group_members = groupObj.getGroupMembers()
         groupName.text = passed_group_name //rimpiazzo textview con il nome del gruppo
 
         lv_spese_adapter = TransactionsListAdapter(this, listTransactions)  //inizializzo la listview
@@ -135,6 +142,11 @@ class GroupActivity : AppCompatActivity() {
                             )
                             listTransactions.add(trans)
                             i += 1
+                            statsToSave = computeStatistics(listTransactions)
+                            saldiToSave = computeComeSaldare(statsToSave)
+
+                            FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
+                            FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
                         }
                     }
                 }
@@ -201,5 +213,82 @@ class GroupActivity : AppCompatActivity() {
 
         }
         return listener
+    }
+
+    //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
+    private fun computeStatistics(listTransactions: MutableList<Transaction>): ArrayList<SingleMemberStat>{
+        var data =  ArrayList<SingleMemberStat>()
+        var tempStat = HashMap<String,Double>()
+        var tempSingleAmount = HashMap<String,Double>()
+
+        for(i in passed_group_members.indices){      //inizializzo hashmap con nomi partecipanti
+            tempStat[passed_group_members[i]] = 0.0
+            tempSingleAmount[passed_group_members[i]] = 0.0
+        }
+
+        for(transaction in listTransactions.indices){
+            val splittedAmount = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoDa().size
+            val splittedDebt = listTransactions[transaction].getTotale() / listTransactions[transaction].getPagatoPer().size
+            val pagatoDa = listTransactions[transaction].getPagatoDa()
+            val pagatoPer = listTransactions[transaction].getPagatoPer()
+
+            for(i in pagatoDa.indices){
+                val t1 = tempStat[pagatoDa[i]]
+                val t2 = tempSingleAmount[pagatoDa[i]]
+                tempStat[pagatoDa[i]] = t1!!+splittedAmount
+                tempSingleAmount[pagatoDa[i]] = t2!!+splittedAmount
+            }
+
+            for(i in pagatoPer.indices){
+                val t = tempStat[pagatoPer[i]]
+                tempStat[pagatoPer[i]] = t!!-splittedDebt
+            }
+        }
+
+        for(i in passed_group_members.indices){
+            data.add(SingleMemberStat(passed_group_members[i], tempStat[passed_group_members[i]]!!, tempSingleAmount[passed_group_members[i]]!!))
+        }
+        Log.i("COMPUTE-STATS","dataToReturn--> $data")
+        return data
+    }
+
+    //calcola come saldare i debiti attuali
+    private fun computeComeSaldare(listDebt: MutableList<SingleMemberStat>): ArrayList<SingleMemberDebt>{
+        var debiti = ArrayList<SingleMemberDebt>()          //variabile da ritornare
+        var membriPos = ArrayList<SingleMemberStat>()       //lista dei membri in positivo
+        var membriNeg = ArrayList<SingleMemberStat>()       //lista dei membri in negativo
+        var iPos = 0                                        //counter per il while membri in positivo
+        var iNeg = 0                                        //counter per il while membri in positivo
+
+        //listDebt = HashMap di String = nome, Double = totale debito/credito
+        for(i in listDebt.indices){
+            val membStat = SingleMemberStat(listDebt[i].getMemberName(), listDebt[i].getMemberAmount(), listDebt[i].getSingleMemberTotal())
+            if(membStat.getMemberAmount() > 0){             //se l'amount è positivo
+                membriPos.add(membStat)                     //aggiungo alla lista dei positivi
+            } else {
+                membriNeg.add(membStat)                     //altrimenti aggiungo alla lista dei negativi
+            }
+        }
+
+        membriPos.sortByDescending{ it.getMemberAmount() }  //ordino i membri positivi, da chi ha speso di più a chi ha speso di meno
+        membriNeg.sortBy{ it.getMemberAmount() }            //li ordino dal più piccolo al più grande, avendo numeri negativi
+
+        while(iPos < membriPos.size && iNeg < membriNeg.size){      //fichè i contatori puntano a regioni di memoria valide
+            val p = membriPos[iPos]                                 //p è un SingleMemberStat con amount positivo
+            val n = membriNeg[iNeg]                                 //n è un SingleMemberStat con amount negativo
+
+            if(p.getMemberAmount() >= n.getMemberAmount().absoluteValue){           //se amount positivo >= amount negativo
+                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), n.getMemberAmount().absoluteValue))   //aggiungo a debiti un debito da pagare
+                iNeg ++                                                             //aumento i negativi per andare sul prossimo dato che ho saldato il primo della lista
+                p.setAmount(p.getMemberAmount() + n.getMemberAmount())              //setto il nuovo debito da saldare per il positivo togliendo l'amount del negativo
+                //if((p.getMemberAmount() + n.getMemberAmount()) <= 0.0){ iPos++ }
+            } else {
+                debiti.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), p.getMemberAmount().absoluteValue))   //aggiungo a debiti un debito da pagare
+                iPos ++                                                             //aumento i positivi perchè sicuramente ho saldato il debito
+                membriNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount())) //setto il nuovo debito da saldare per il negativo
+                //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }
+            }
+        }
+        return debiti
     }
 }
