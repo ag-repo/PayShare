@@ -37,6 +37,16 @@ class GroupStatsActivity : AppCompatActivity() {
         membersToDisplay = groupObj.getGroupMembers()
         group_stats_name.text = passed_group_name //rimpiazzo nome gruppo nella view
 
+        for(i in membersToDisplay.indices){
+            statsToDisplay.add(SingleMemberStat(membersToDisplay[i], 0.0, 0.0))
+        }
+
+        FirebaseDBHelper.setListeners(getGroupsEventListener())
+
+        Log.i("BEFORE-SLEEP", "ok")
+        Thread.sleep(2000)
+        Log.i("AFTER-SLEEP", "ok")
+
         lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
         lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
         listview_stats = lv_groupStatisticsListView
@@ -44,12 +54,8 @@ class GroupStatsActivity : AppCompatActivity() {
         listview_stats.adapter = lv_stats_adapter
         listview_debt.adapter = lv_debt_adapter
 
-        FirebaseDBHelper.setListeners(getGroupsEventListener())
-
-        for(i in membersToDisplay.indices){
-            statsToDisplay.add(SingleMemberStat(membersToDisplay[i], 0.0, 0.0))
-        }
         lv_stats_adapter.notifyDataSetChanged()
+
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
@@ -59,7 +65,7 @@ class GroupStatsActivity : AppCompatActivity() {
 
         iv_refresh_stats.setOnClickListener{
             Log.i("STATS-TO-DISPLAY", "BEFORE--> $statsToDisplay")
-            statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+            statsToDisplay = computeStatistics(listTransactions)
             Log.i("STATS-TO-DISPLAY", "AFTER--> $statsToDisplay")
             lv_stats_adapter.notifyDataSetInvalidated()
             lv_stats_adapter.notifyDataSetChanged()
@@ -118,11 +124,11 @@ class GroupStatsActivity : AppCompatActivity() {
                             )
                             listTransactions.add(t)
                             i += 1
+                            statsToDisplay = computeStatistics(listTransactions)
                         }
                     }
-                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
                     Log.i("CHILD-Added","statToDisplay--> $statsToDisplay")
-                    lv_stats_adapter.notifyDataSetInvalidated()
+                    lv_stats_adapter.notifyDataSetChanged()
                 }
             }
 
@@ -147,7 +153,7 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+                    statsToDisplay = computeStatistics(listTransactions)
                     Log.i("CHILD-Change","statToDisplay--> $statsToDisplay")
                     lv_stats_adapter.notifyDataSetInvalidated()
                     lv_stats_adapter.notifyDataSetChanged()
@@ -175,7 +181,7 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+                    statsToDisplay = computeStatistics(listTransactions)
                     Log.i("CHILD-Rem","statToDisplay--> $statsToDisplay")
                     lv_stats_adapter.notifyDataSetChanged()
                 }
@@ -194,14 +200,14 @@ class GroupStatsActivity : AppCompatActivity() {
     }
 
     //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
-    private fun computeStatistics(members: ArrayList<String>, listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
+    private fun computeStatistics(listTransactions: ArrayList<Transaction>): ArrayList<SingleMemberStat>{
         var data =  ArrayList<SingleMemberStat>()
         var tempStat = HashMap<String,Double>()
         var tempSingleAmount = HashMap<String,Double>()
 
-        for(i in members.indices){      //inizializzo hashmap con nomi partecipanti
-            tempStat[members[i]] = 0.0
-            tempSingleAmount[members[i]] = 0.0
+        for(i in membersToDisplay.indices){      //inizializzo hashmap con nomi partecipanti
+            tempStat[membersToDisplay[i]] = 0.0
+            tempSingleAmount[membersToDisplay[i]] = 0.0
         }
 
         for(transaction in listTransactions.indices){
@@ -223,8 +229,8 @@ class GroupStatsActivity : AppCompatActivity() {
             }
         }
 
-        for(i in members.indices){
-            data.add(SingleMemberStat(members[i], tempStat[members[i]]!!, tempSingleAmount[members[i]]!!))
+        for(i in membersToDisplay.indices){
+            data.add(SingleMemberStat(membersToDisplay[i], tempStat[membersToDisplay[i]]!!, tempSingleAmount[membersToDisplay[i]]!!))
         }
         Log.i("COMPUTE-STATS","dataToReturn--> $data")
         return data

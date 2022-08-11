@@ -32,9 +32,9 @@ class SingleMemberStatsListAdapter(private val context: Context, private var sta
         //arrotondo a 2 decimali dopo la virgola
         Log.i("STATS-Adapter", "newList --> ${statList}")
         val memberAmount = (statList[position].getMemberAmount()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_nomePartecipante?.text = statList[position].getMemberName()
-        (newView)?.tv_personal_amount?.text = statList[position].getSingleMemberTotal().toString()
-        (newView)?.tv_statsAmount?.text = memberAmount.toString()
+        newView!!.tv_nomePartecipante?.text = statList[position].getMemberName()
+        newView!!.tv_personal_amount?.text = statList[position].getSingleMemberTotal().toString()
+        newView!!.tv_statsAmount?.text = memberAmount.toString()
         return newView
     }
 
