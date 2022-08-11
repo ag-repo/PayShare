@@ -12,14 +12,13 @@ import kotlin.math.absoluteValue
 
 class GroupStatsActivity : AppCompatActivity() {
 
-    lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
-    lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
+    private lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
+    private lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
     private lateinit var listview_stats : ListView
     private lateinit var listview_debt : ListView
     private var listaSpese = arrayListOf<HashMap<String,Any>>()
     private lateinit var passed_group_name : String
     private lateinit var groupObj : Group
-    private var single_statistics = HashMap<String, Double>()
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
     private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
     private var statsToDisplay = ArrayList<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
@@ -47,6 +46,11 @@ class GroupStatsActivity : AppCompatActivity() {
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
 
+        for(i in membersToDisplay.indices){
+            statsToDisplay.add(SingleMemberStat(membersToDisplay[i], 0.0, 0.0))
+        }
+        lv_stats_adapter.notifyDataSetChanged()
+
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
@@ -54,8 +58,10 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         iv_refresh_stats.setOnClickListener{
+            Log.i("STATS-TO-DISPLAY", "BEFORE--> $statsToDisplay")
             statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
-            Log.i("STATS-TO-DISPLAY", statsToDisplay.toString())
+            Log.i("STATS-TO-DISPLAY", "AFTER--> $statsToDisplay")
+            lv_stats_adapter.notifyDataSetInvalidated()
             lv_stats_adapter.notifyDataSetChanged()
 
             /*
@@ -94,34 +100,30 @@ class GroupStatsActivity : AppCompatActivity() {
 
     private fun getGroupsEventListener(): ChildEventListener{
 
-        val adapter = lv_stats_adapter
-
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item!!.getGroupName() == passed_group_name) {
                     dataSnap.child("transactions")
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-
-                    if(item?.getGroupName() == passed_group_name) {
-                        //listTransactions da popolare con oggetti transaction
-                        if (transactions != null) {
-                            var i: Int = 0
-                            for ((key, value) in transactions) {
-                                listaSpese.add(i, value as HashMap<String,Any>)
-                                val t = Transaction(
-                                    value["titolo"] as String,
-                                    value["pagatoDa"] as ArrayList<String>,
-                                    value["pagatoPer"] as ArrayList<String>,
-                                    (value["totale"] as Long).toDouble()
-                                )
-                                listTransactions.add(t)
-                                i += 1
-                            }
+                    if (transactions != null) { //listTransactions da popolare con oggetti transaction
+                        var i: Int = 0
+                        for ((key, value) in transactions) {
+                            listaSpese.add(i, value as HashMap<String,Any>)
+                            val t = Transaction(
+                                value["titolo"] as String,
+                                value["pagatoDa"] as ArrayList<String>,
+                                value["pagatoPer"] as ArrayList<String>,
+                                (value["totale"] as Long).toDouble()
+                            )
+                            listTransactions.add(t)
+                            i += 1
                         }
                     }
+                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+                    Log.i("CHILD-Added","statToDisplay--> $statsToDisplay")
+                    lv_stats_adapter.notifyDataSetInvalidated()
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -145,8 +147,11 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
+                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+                    Log.i("CHILD-Change","statToDisplay--> $statsToDisplay")
+                    lv_stats_adapter.notifyDataSetInvalidated()
+                    lv_stats_adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
@@ -170,8 +175,10 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
+                    statsToDisplay = computeStatistics(membersToDisplay,listTransactions)
+                    Log.i("CHILD-Rem","statToDisplay--> $statsToDisplay")
+                    lv_stats_adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -219,6 +226,7 @@ class GroupStatsActivity : AppCompatActivity() {
         for(i in members.indices){
             data.add(SingleMemberStat(members[i], tempStat[members[i]]!!, tempSingleAmount[members[i]]!!))
         }
+        Log.i("COMPUTE-STATS","dataToReturn--> $data")
         return data
     }
 
