@@ -54,6 +54,7 @@ class GroupActivity : AppCompatActivity() {
                 .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
                     listTransactions.remove(trans)
                     FirebaseDBHelper.deleteTransaction(passed_group_name, trans.getTitolo(), trans.getTotale())
+                    lv_spese_adapter.notifyDataSetChanged()
                 })
                 .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
                     dialog.cancel()
@@ -62,7 +63,7 @@ class GroupActivity : AppCompatActivity() {
             val alert = dialogBuilder.create()
             alert.setTitle("Elimina transazione")
             alert.show()
-            lv_spese_adapter.notifyDataSetChanged()
+            //lv_spese_adapter.notifyDataSetChanged()
             true
         }
 
@@ -128,29 +129,29 @@ class GroupActivity : AppCompatActivity() {
 
                 if(item?.getGroupName() == passed_group_name) {
                     groupList.add(item)
-                    //listTransactions da popolare con oggetti transaction
                     if (transactions != null) {
-                        var i = 0
                         for ((key, value) in transactions) {
-                            //listaSpese.add(i, value as HashMap<String,Any>)
-                            val spesa = value as HashMap<String,Any>
+                            val spesa = value as HashMap<String, Any>
                             val trans = Transaction(
                                 spesa["titolo"] as String,
                                 spesa["pagatoDa"] as ArrayList<String>,
                                 spesa["pagatoPer"] as ArrayList<String>,
                                 (spesa["totale"] as Long).toDouble()
                             )
-                            listTransactions.add(trans)
-                            i += 1
-                            statsToSave = computeStatistics(listTransactions)
-                            saldiToSave = computeComeSaldare(statsToSave)
 
-                            FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
-                            FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
+                            if(!listTransactions.contains(trans)){
+                                listTransactions.add(trans)
+                                statsToSave = computeStatistics(listTransactions)
+                                saldiToSave = computeComeSaldare(statsToSave)
+                                FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
+                                FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
+
+                                Log.i("GROUP-ACT", "OnChildAdded!")
+                                adapter.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
@@ -161,7 +162,6 @@ class GroupActivity : AppCompatActivity() {
                 if (item?.getGroupName() == passed_group_name) {
                     if (transactions != null){
                         for((key,value) in transactions){
-                            //listaSpese add??
                             val spesa = value as HashMap<String,Any>
                             val trans = Transaction(
                                 spesa["titolo"] as String,
@@ -169,13 +169,22 @@ class GroupActivity : AppCompatActivity() {
                                 spesa["pagatoPer"] as ArrayList<String>,
                                 (spesa["totale"] as Long).toDouble()
                             )
-                            if(!listTransactions.contains(trans)){
-                                listTransactions.add(trans)
+
+                            for(i in listTransactions.indices){
+                                if(listTransactions[i].getTitolo() == trans.getTitolo())
+                                    listTransactions[i] = trans
                             }
+
+                            statsToSave = computeStatistics(listTransactions)
+                            saldiToSave = computeComeSaldare(statsToSave)
+                            FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
+                            FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
+
+                            Log.i("GROUP-ACT", "OnChildChanged!")
+                            adapter.notifyDataSetChanged()
                         }
                     }
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
@@ -186,7 +195,6 @@ class GroupActivity : AppCompatActivity() {
                 if (item?.getGroupName() == passed_group_name) {
                     if (transactions != null){
                         for((key,value) in transactions){
-                            //listaSpese add??
                             val spesa = value as HashMap<String,Any>
                             val trans = Transaction(
                                 spesa["titolo"] as String,
@@ -196,11 +204,19 @@ class GroupActivity : AppCompatActivity() {
                             )
                             if(!listTransactions.contains(trans)){
                                 listTransactions.remove(trans)
+
+                                statsToSave = computeStatistics(listTransactions)
+                                saldiToSave = computeComeSaldare(statsToSave)
+                                FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
+                                FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
+
+                                Log.i("GROUP-ACT", "OnChildRemoved!")
+                                adapter.notifyDataSetChanged()
                             }
                         }
                     }
                 }
-                adapter.notifyDataSetChanged()
+
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
