@@ -86,14 +86,13 @@ class SummaryActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
-                    groupList.add(item) //arraylist di group presi dal db
-                    //Rappresentazione grafica dell'oggetto
-                    val listobj = HashMap<String,Any>()
+                    groupList.add(item)                             //arraylist di group presi dal db
+                    val listobj = HashMap<String,Any>()             //Rappresentazione grafica dell'oggetto
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
-                    listData.add(listobj) //Arraylist di Hashmap per la grafica
+                    listData.add(listobj)                           //Arraylist di Hashmap per la grafica
                 }
-                group_number.text = listData.size.toString() //AGGIORNO SCRITTA
+                group_number.text = listData.size.toString()        //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
 
@@ -118,7 +117,7 @@ class SummaryActivity : AppCompatActivity() {
                         }
                     }
                 }
-                group_number.text = listData.size.toString() //AGGIORNO SCRITTA
+                group_number.text = listData.size.toString()        //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
 

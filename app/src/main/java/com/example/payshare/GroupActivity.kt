@@ -20,14 +20,13 @@ class GroupActivity : AppCompatActivity() {
 
     private lateinit var lv_spese_adapter : TransactionsListAdapter
     private lateinit var listview_payments : ListView
-    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
-    private lateinit var groupChildListener: ChildEventListener
-    private var listTransactions = arrayListOf<Transaction>() //Lista delle transazioni da mostrare in ListView
     private lateinit var passed_group_name : String
     private lateinit var passed_group_members : ArrayList<String>
-
+    private lateinit var groupChildListener: ChildEventListener
+    private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
+    private var listTransactions = arrayListOf<Transaction>() //Lista delle transazioni da mostrare in ListView
     private var statsToSave = mutableListOf<SingleMemberStat>()
-    private var saldiToSave = ArrayList<SingleMemberDebt>()
+    private var saldiToSave = mutableListOf<SingleMemberDebt>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,9 +131,9 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
 
                 if(item?.getGroupName() == passed_group_name) {
-                    dataSnap.child("transactions")
+                    //Log.i("ADDED-ChildItem","---> $item")
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-
+                    //Log.i("ADDED-ChildItem","---> $transactions")
                     if (transactions != null) {
                         for ((key, value) in transactions) {
                             val spesa = value as HashMap<String, Any>
@@ -145,11 +144,12 @@ class GroupActivity : AppCompatActivity() {
                                 (spesa["totale"] as Long).toDouble()
                             )
 
-                            Log.i("ADDED-CheckList","---> $listTransactions")
+                            //Log.i("ADDED-CheckList","---> $listTransactions")
                             if(!listTransactions.contains(trans)){
-                                Log.i("GROUP-ACT", "OnChildAdded!")
+                                //Log.i("ListADDED", "Trans --> $trans")
                                 listTransactions.add(trans)
                             }
+                            //Log.i("ADDED-CheckList","---> $listTransactions")
                         }
                         compute()
                         adapter.notifyDataSetChanged()
@@ -161,11 +161,10 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item?.getGroupName() == passed_group_name) {
 
-                    dataSnap.child("transactions")
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-
-                    if (transactions != null){
-                        for((key,value) in transactions){
+                    Log.i("CHANGED-ChildItem","---> $transactions")
+                    val tempList = ArrayList<Transaction>()
+                        for((key,value) in transactions!!){
                             val spesa = value as HashMap<String,Any>
                             val trans = Transaction(
                                 spesa["titolo"] as String,
@@ -173,17 +172,11 @@ class GroupActivity : AppCompatActivity() {
                                 spesa["pagatoPer"] as ArrayList<String>,
                                 (spesa["totale"] as Long).toDouble()
                             )
-
-                            for(i in listTransactions.indices){
-                                if(listTransactions[i].getTitolo() == trans.getTitolo()){
-                                    Log.i("GROUP-ACT", "OnChildChange!")
-                                    listTransactions[i] = trans
-                                }
-                            }
+                            tempList.add(trans)
                         }
-                        compute()
-                        adapter.notifyDataSetChanged()
-                    }
+                    listTransactions = tempList
+                    compute()
+                    adapter.notifyDataSetChanged()
                 }
             }
 
@@ -191,7 +184,6 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
 
                 if (item?.getGroupName() == passed_group_name) {
-                    dataSnap.child("transactions")
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null){
                         for((key,value) in transactions){
@@ -202,10 +194,10 @@ class GroupActivity : AppCompatActivity() {
                                 spesa["pagatoPer"] as ArrayList<String>,
                                 (spesa["totale"] as Long).toDouble()
                             )
+                            Log.i("REMOVED", "before-->$listTransactions")
                             if(!listTransactions.contains(trans)){
                                 listTransactions.remove(trans)
                                 compute()
-                                Log.i("GROUP-ACT", "OnChildRemoved!")
                                 adapter.notifyDataSetChanged()
                             }
                         }
@@ -300,6 +292,7 @@ class GroupActivity : AppCompatActivity() {
                 //if(((n.getMemberAmount() + p.getMemberAmount()).absoluteValue).equals(0.0)){ iNeg++ }
             }
         }
+        Log.i("COMPUTE-DEBT","debtToReturn--> $debiti")
         return debiti
     }
 }

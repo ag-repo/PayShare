@@ -30,10 +30,10 @@ class SingleMemberDebtListAdapter(val context: Context, val data: MutableList<Si
             newView = LayoutInflater.from(context).inflate(R.layout.single_member_debt_list_layout, parent, false)
         }
         //arrotondo a 2 decimali dopo la virgola
-        //val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
+        val memberAmount = (data[position].getDebito()*100.0).roundToInt()/100.0
         (newView as View)?.tv_chipaga?.text = data[position].getPagante()
         (newView)?.tv_chiriceve?.text = data[position].getRicevente()
-        (newView)?.tv_debtAmount?.text = data[position].getDebito().absoluteValue.toString()
+        (newView)?.tv_debtAmount?.text = memberAmount.absoluteValue.toString()
 
         return newView
     }

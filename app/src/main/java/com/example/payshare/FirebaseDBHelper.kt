@@ -38,7 +38,7 @@ class FirebaseDBHelper {
             db.child(groupName).child("stats").setValue(list)
         }
 
-        fun saveComeSaldare(groupName: String, list: ArrayList<SingleMemberDebt>){
+        fun saveComeSaldare(groupName: String, list: MutableList<SingleMemberDebt>){
             db.child(groupName).child("saldi").setValue(list)
         }
 
