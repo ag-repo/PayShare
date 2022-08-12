@@ -1,15 +1,17 @@
 package com.example.payshare
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.payshare.FirebaseDBHelper.Companion.saveStatistics
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
-import kotlin.math.absoluteValue
+import java.security.SecureRandom
+import java.util.concurrent.ThreadLocalRandom
 
 class GroupStatsActivity : AppCompatActivity() {
 
@@ -52,6 +54,40 @@ class GroupStatsActivity : AppCompatActivity() {
             val intent = Intent(this, GroupActivity::class.java)
             intent.putExtra("group_obj", groupObj)
             startActivity(intent)
+        }
+
+        lv_comePagare.setOnItemLongClickListener{ adapterView, view, position, l ->
+            var saldo = saldiToDisplay[position]
+            val secureRandom = SecureRandom()
+            var newTransName : String = "R-" +
+                    "${saldo.getPagante()}" +
+                    "-to-${saldo.getRicevente()}" +
+                    "-${saldo.getDebito().toInt()}" +
+                    "-${secureRandom.nextInt(100)}"
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            dialogBuilder.setMessage("Vuoi saldare il debito?")
+                .setCancelable(false)
+                .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
+                    val debitTransacion = Transaction(
+                        newTransName,
+                        arrayListOf(saldiToDisplay[position].getPagante()),
+                        arrayListOf(saldiToDisplay[position].getRicevente()),
+                        saldiToDisplay[position].getDebito()
+                    )
+                    FirebaseDBHelper.setNewPayment(passed_group_name, debitTransacion)
+                    val intent = Intent(this, GroupActivity::class.java)
+                    intent.putExtra("group_obj", groupObj)
+                    startActivity(intent)
+                })
+                .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("SALDA DEBITO")
+            alert.show()
+            true
         }
 
         iv_refresh_stats.setOnClickListener{

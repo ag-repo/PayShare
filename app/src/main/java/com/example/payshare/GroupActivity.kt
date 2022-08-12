@@ -2,7 +2,6 @@ package com.example.payshare
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.DialogInterface.OnShowListener
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -129,12 +128,11 @@ class GroupActivity : AppCompatActivity() {
 
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-
                 if(item?.getGroupName() == passed_group_name) {
-                    //Log.i("ADDED-ChildItem","---> $item")
+
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-                    //Log.i("ADDED-ChildItem","---> $transactions")
                     if (transactions != null) {
+                        var tempTransactions = ArrayList<Transaction>()
                         for ((key, value) in transactions) {
                             val spesa = value as HashMap<String, Any>
                             val trans = Transaction(
@@ -143,14 +141,9 @@ class GroupActivity : AppCompatActivity() {
                                 spesa["pagatoPer"] as ArrayList<String>,
                                 (spesa["totale"] as Long).toDouble()
                             )
-
-                            //Log.i("ADDED-CheckList","---> $listTransactions")
-                            if(!listTransactions.contains(trans)){
-                                //Log.i("ListADDED", "Trans --> $trans")
-                                listTransactions.add(trans)
-                            }
-                            //Log.i("ADDED-CheckList","---> $listTransactions")
+                            tempTransactions.add(trans)
                         }
+                        listTransactions = tempTransactions
                         compute()
                         adapter.notifyDataSetChanged()
                     }
