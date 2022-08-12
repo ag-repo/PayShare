@@ -162,9 +162,10 @@ class GroupActivity : AppCompatActivity() {
                 if (item?.getGroupName() == passed_group_name) {
 
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-                    Log.i("CHANGED-ChildItem","---> $transactions")
+
                     val tempList = ArrayList<Transaction>()
-                        for((key,value) in transactions!!){
+                    if (transactions != null) {
+                        for((key,value) in transactions){
                             val spesa = value as HashMap<String,Any>
                             val trans = Transaction(
                                 spesa["titolo"] as String,
@@ -174,6 +175,7 @@ class GroupActivity : AppCompatActivity() {
                             )
                             tempList.add(trans)
                         }
+                    }
                     listTransactions = tempList
                     compute()
                     adapter.notifyDataSetChanged()
