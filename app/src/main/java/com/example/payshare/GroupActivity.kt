@@ -22,7 +22,6 @@ class GroupActivity : AppCompatActivity() {
     private lateinit var listview_payments : ListView
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
-    private val groupList: MutableList<Group> = ArrayList() //LISTA DI GRUPPO CHE PUò DIVENTARE 1 SOLO !!!!
     private var listTransactions = arrayListOf<Transaction>() //Lista delle transazioni da mostrare in ListView
     private lateinit var passed_group_name : String
     private lateinit var passed_group_members : ArrayList<String>
@@ -36,7 +35,6 @@ class GroupActivity : AppCompatActivity() {
         supportActionBar?.hide() //Tolgo barra titolo app
 
         val groupObj = intent.extras?.get("group_obj") as Group
-        Log.i("GROUPACT-Obj", "-->$groupObj")
         passed_group_name = groupObj.getGroupName() //Modifiche delle scritte della view
         passed_group_members = groupObj.getGroupMembers()
         groupName.text = passed_group_name //rimpiazzo textview con il nome del gruppo
@@ -104,6 +102,13 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
+    fun compute(){
+        statsToSave = computeStatistics(listTransactions)
+        saldiToSave = computeComeSaldare(statsToSave)
+        FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
+        FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
+    }
+
     override fun onStart() {
         super.onStart()
         val groupChildListener = getGroupsEventListener()
@@ -120,15 +125,16 @@ class GroupActivity : AppCompatActivity() {
 
     private fun getGroupsEventListener(): ChildEventListener {
         val adapter = lv_spese_adapter
+
         val listener = object : ChildEventListener{
 
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                dataSnap.child("transactions")
-                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
 
                 if(item?.getGroupName() == passed_group_name) {
-                    groupList.add(item)
+                    dataSnap.child("transactions")
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
                     if (transactions != null) {
                         for ((key, value) in transactions) {
                             val spesa = value as HashMap<String, Any>
@@ -139,27 +145,25 @@ class GroupActivity : AppCompatActivity() {
                                 (spesa["totale"] as Long).toDouble()
                             )
 
+                            Log.i("ADDED-CheckList","---> $listTransactions")
                             if(!listTransactions.contains(trans)){
-                                listTransactions.add(trans)
-                                statsToSave = computeStatistics(listTransactions)
-                                saldiToSave = computeComeSaldare(statsToSave)
-                                FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
-                                FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
-
                                 Log.i("GROUP-ACT", "OnChildAdded!")
-                                adapter.notifyDataSetChanged()
+                                listTransactions.add(trans)
                             }
                         }
+                        compute()
+                        adapter.notifyDataSetChanged()
                     }
                 }
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                dataSnap.child("transactions")
-                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-
                 if (item?.getGroupName() == passed_group_name) {
+
+                    dataSnap.child("transactions")
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+
                     if (transactions != null){
                         for((key,value) in transactions){
                             val spesa = value as HashMap<String,Any>
@@ -171,28 +175,24 @@ class GroupActivity : AppCompatActivity() {
                             )
 
                             for(i in listTransactions.indices){
-                                if(listTransactions[i].getTitolo() == trans.getTitolo())
+                                if(listTransactions[i].getTitolo() == trans.getTitolo()){
+                                    Log.i("GROUP-ACT", "OnChildChange!")
                                     listTransactions[i] = trans
+                                }
                             }
-
-                            statsToSave = computeStatistics(listTransactions)
-                            saldiToSave = computeComeSaldare(statsToSave)
-                            FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
-                            FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
-
-                            Log.i("GROUP-ACT", "OnChildChanged!")
-                            adapter.notifyDataSetChanged()
                         }
+                        compute()
+                        adapter.notifyDataSetChanged()
                     }
                 }
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
                 val item = dataSnap.getValue(Group::class.java)
-                dataSnap.child("transactions")
-                val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
 
                 if (item?.getGroupName() == passed_group_name) {
+                    dataSnap.child("transactions")
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null){
                         for((key,value) in transactions){
                             val spesa = value as HashMap<String,Any>
@@ -204,12 +204,7 @@ class GroupActivity : AppCompatActivity() {
                             )
                             if(!listTransactions.contains(trans)){
                                 listTransactions.remove(trans)
-
-                                statsToSave = computeStatistics(listTransactions)
-                                saldiToSave = computeComeSaldare(statsToSave)
-                                FirebaseDBHelper.saveStatistics(passed_group_name, statsToSave)
-                                FirebaseDBHelper.saveComeSaldare(passed_group_name, saldiToSave)
-
+                                compute()
                                 Log.i("GROUP-ACT", "OnChildRemoved!")
                                 adapter.notifyDataSetChanged()
                             }

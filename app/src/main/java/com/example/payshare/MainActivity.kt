@@ -7,22 +7,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val user = "IO"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //Tolgo barra
         supportActionBar?.hide()
 
         appEnterBtn.setOnClickListener{
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    fun getUserName():String{
-        return this.user
     }
 }
