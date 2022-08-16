@@ -82,6 +82,7 @@ class SummaryActivity : AppCompatActivity() {
 
     private fun getGroupsEventListener(): ChildEventListener {
         val adapter = lv_adapter
+        
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)

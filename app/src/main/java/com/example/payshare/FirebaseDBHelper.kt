@@ -22,6 +22,9 @@ class FirebaseDBHelper {
         }
 
         fun deleteGroup(groupName: String){
+            db.child(groupName).child("transactions").setValue(null)
+            db.child(groupName).child("stats").setValue(null)
+            db.child(groupName).child("saldi").setValue(null)
             db.child(groupName).removeValue()
         }
 
