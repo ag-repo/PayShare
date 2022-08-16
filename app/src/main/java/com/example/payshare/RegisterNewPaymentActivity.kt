@@ -40,12 +40,6 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
             }
         }
 
-        back_top.setOnClickListener{
-            val intent = Intent(this, GroupActivity::class.java)
-            intent.putExtra("group_obj",groupObj)
-            startActivity(intent)
-        }
-
         lv_pagatoPer.setOnItemClickListener{ lv_adapter, listViewItems, position, id ->
             if(!perChiPaga.contains(memberList[position])){
                 perChiPaga.add(memberList[position]) //se non contiene il nome, viene aggiunto
@@ -54,8 +48,14 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
             }
         }
 
+        back_top.setOnClickListener{
+            val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("group_obj",groupObj)
+            startActivity(intent)
+        }
+
         addNewTransactionBtn.setOnClickListener{
-            //check che titolo e quantità siano valide
+
             val titoloSpesa = paymentName1.text.toString()
             val totaleSpesa = paymentQuantity.text.toString().toDouble()
 
@@ -63,7 +63,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
                 val newTransaction = Transaction(titoloSpesa, chiPaga, perChiPaga, totaleSpesa)
                 groupObj.addNewTransaction(newTransaction)
                 FirebaseDBHelper.setNewPayment(groupObj.getGroupName(),newTransaction)
-                //Se tutto corretto, passo alla nuova activity
+
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("group_obj", groupObj)
                 startActivity(intent)

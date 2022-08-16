@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_logo_foreground"
         android:supportsRtl="true"
         android:theme="@style/CustomStyle">
-
+        <activity
+            android:name=".ModifyTransactionActivity"
+            android:exported="false" />
         <activity
             android:name=".GroupStatsActivity"
             android:exported="false" />

@@ -65,6 +65,14 @@ class GroupActivity : AppCompatActivity() {
             true
         }
 
+        listview_payments.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
+            var trans = listTransactions[position]
+            val intent = Intent(this, ModifyTransactionActivity::class.java)
+            intent.putExtra("groupObj", groupObj)
+            intent.putExtra("transaction", trans)
+            startActivity(intent)
+        }
+
         addPaymentsBtn.setOnClickListener{
             val intent = Intent(this, RegisterNewPaymentActivity::class.java)
             intent.putExtra("group_obj", groupObj)
@@ -166,16 +174,9 @@ class GroupActivity : AppCompatActivity() {
                                 t["totale"].toString().toDouble()
                             )
                             tempList.add(trans)
-                            Log.i("CHANGED-tempList","--> Templist = $tempList")
-                            /*for(i in listTransactions.indices){
-                                if(!listTransactions.contains(trans)){
-                                    listTransactions.add(trans)
-                                }
-                            }*/
                         }
                     }
                     listTransactions = tempList
-                    Log.i("CHANGED-listTrans","--> listTransactions = $tempList")
                     lv_spese_adapter.notifyDataSetChanged()
                     compute()
                 }
@@ -185,9 +186,12 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
 
                 if (item?.getGroupName() == passed_group_name) {
+
+                    val tempList = ArrayList<Transaction>()
+
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null) {
-                        val tempList = ArrayList<Transaction>()
+
                         for((key,value) in transactions){
                             val t = value as HashMap<String,Any>
                             val trans = Transaction(
@@ -198,8 +202,9 @@ class GroupActivity : AppCompatActivity() {
                             )
                             tempList.add(trans)
                         }
-                        listTransactions = tempList
+
                     }
+                    listTransactions = tempList
                     lv_spese_adapter.notifyDataSetChanged()
                     compute()
                 }
@@ -208,21 +213,25 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
 
                 if (item?.getGroupName() == passed_group_name) {
+
+                    val tempList = ArrayList<Transaction>()
+
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null) {
+
                         for((key,value) in transactions){
                             val t = value as HashMap<String,Any>
                             val trans = Transaction(
                                 t["titolo"] as String,
                                 t["pagatoDa"] as ArrayList<String>,
                                 t["pagatoPer"] as ArrayList<String>,
-                                (t["totale"] as Long).toDouble()
+                                t["totale"].toString().toDouble()
                             )
-                            if(!listTransactions.contains(trans)){
-                                listTransactions.add(trans)
-                            }
+                            tempList.add(trans)
                         }
+
                     }
+                    listTransactions = tempList
                     lv_spese_adapter.notifyDataSetChanged()
                     compute()
                 }
