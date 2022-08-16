@@ -3,6 +3,7 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_modify_transaction.*
@@ -43,13 +44,20 @@ class ModifyTransactionActivity : AppCompatActivity() {
         lv_adapter_checked.notifyDataSetInvalidated()
 
         btn_modifyTransaction.setOnClickListener {
-            val nuovoTitolo = trans_name.text.toString()
-            val nuovoTotale = trans_amount.text.toString().toDouble()
+            var nuovoTitolo = trans_name.text.toString()
+            var nuovoTotale = trans_amount.text.toString()
 
-            if(nuovoTitolo != t_title || nuovoTotale != t_totale || pagatoDaModified || pagatoPerModified) {
-                val newTransaction = Transaction(nuovoTitolo, t_pagatoDa, t_pagatoPer, nuovoTotale)
+            if(nuovoTitolo == ""){
+                nuovoTitolo = trans_name.hint.toString()
+            }
+
+            if(nuovoTotale == ""){
+                nuovoTotale = trans_amount.hint.toString()
+            }
+
+            if(nuovoTitolo != t_title || nuovoTotale.toDouble() != t_totale || pagatoDaModified || pagatoPerModified) {
+                val newTransaction = Transaction(nuovoTitolo, t_pagatoDa, t_pagatoPer, nuovoTotale.toDouble())
                 FirebaseDBHelper.modifyTransaction(groupObj.getGroupName(), t_title, t_totale, nuovoTitolo, newTransaction)
-
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("group_obj", groupObj)
                 startActivity(intent)
