@@ -51,7 +51,6 @@ class AddNewGroupActivity : AppCompatActivity() {
             //AGGIUNGO CONTROLLO SE GRUPPO GIA PRESENTE !!!!!!!!
 
             FirebaseDBHelper.setNewGroup(newGroup.getGroupName(), newGroup)
-            //richiamo SummaryActivity
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
         }

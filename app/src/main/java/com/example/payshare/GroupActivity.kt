@@ -48,7 +48,9 @@ class GroupActivity : AppCompatActivity() {
             dialogBuilder.setMessage("Confermi di volere eliminare la transazione?")
                 .setCancelable(false)
                 .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
+                    Log.i("LongClick","--> listTransaBEFORE = $listTransactions")
                     listTransactions.remove(trans)
+                    Log.i("LongClick","--> listTransaAFTER = $listTransactions")
                     FirebaseDBHelper.deleteTransaction(passed_group_name, trans.getTitolo(), trans.getTotale())
                     lv_spese_adapter.notifyDataSetChanged()
                 })
@@ -122,7 +124,6 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
-        val adapter = lv_spese_adapter
 
         val listener = object : ChildEventListener{
 
@@ -132,20 +133,18 @@ class GroupActivity : AppCompatActivity() {
 
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null) {
-                        var tempTransactions = ArrayList<Transaction>()
                         for ((key, value) in transactions) {
-                            val spesa = value as HashMap<String, Any>
+                            val t = value as HashMap<String, Any>
                             val trans = Transaction(
-                                spesa["titolo"] as String,
-                                spesa["pagatoDa"] as ArrayList<String>,
-                                spesa["pagatoPer"] as ArrayList<String>,
-                                (spesa["totale"] as Long).toDouble()
+                                t["titolo"] as String,
+                                t["pagatoDa"] as ArrayList<String>,
+                                t["pagatoPer"] as ArrayList<String>,
+                                t["totale"].toString().toDouble()
                             )
-                            tempTransactions.add(trans)
+                            listTransactions.add(trans)
                         }
-                        listTransactions = tempTransactions
+                        lv_spese_adapter.notifyDataSetChanged()
                         compute()
-                        adapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -154,24 +153,31 @@ class GroupActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item?.getGroupName() == passed_group_name) {
 
-                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-
                     val tempList = ArrayList<Transaction>()
+
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
                     if (transactions != null) {
                         for((key,value) in transactions){
-                            val spesa = value as HashMap<String,Any>
+                            val t = value as HashMap<String,Any>
                             val trans = Transaction(
-                                spesa["titolo"] as String,
-                                spesa["pagatoDa"] as ArrayList<String>,
-                                spesa["pagatoPer"] as ArrayList<String>,
-                                (spesa["totale"] as Long).toDouble()
+                                t["titolo"] as String,
+                                t["pagatoDa"] as ArrayList<String>,
+                                t["pagatoPer"] as ArrayList<String>,
+                                t["totale"].toString().toDouble()
                             )
                             tempList.add(trans)
+                            Log.i("CHANGED-tempList","--> Templist = $tempList")
+                            /*for(i in listTransactions.indices){
+                                if(!listTransactions.contains(trans)){
+                                    listTransactions.add(trans)
+                                }
+                            }*/
                         }
                     }
                     listTransactions = tempList
+                    Log.i("CHANGED-listTrans","--> listTransactions = $tempList")
+                    lv_spese_adapter.notifyDataSetChanged()
                     compute()
-                    adapter.notifyDataSetChanged()
                 }
             }
 
@@ -180,35 +186,50 @@ class GroupActivity : AppCompatActivity() {
 
                 if (item?.getGroupName() == passed_group_name) {
                     val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
-                    if (transactions != null){
+                    if (transactions != null) {
+                        val tempList = ArrayList<Transaction>()
                         for((key,value) in transactions){
-                            val spesa = value as HashMap<String,Any>
+                            val t = value as HashMap<String,Any>
                             val trans = Transaction(
-                                spesa["titolo"] as String,
-                                spesa["pagatoDa"] as ArrayList<String>,
-                                spesa["pagatoPer"] as ArrayList<String>,
-                                (spesa["totale"] as Long).toDouble()
+                                t["titolo"] as String,
+                                t["pagatoDa"] as ArrayList<String>,
+                                t["pagatoPer"] as ArrayList<String>,
+                                t["totale"].toString().toDouble()
                             )
-                            Log.i("REMOVED", "before-->$listTransactions")
+                            tempList.add(trans)
+                        }
+                        listTransactions = tempList
+                    }
+                    lv_spese_adapter.notifyDataSetChanged()
+                    compute()
+                }
+            }
+            override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
+                val item = dataSnap.getValue(Group::class.java)
+
+                if (item?.getGroupName() == passed_group_name) {
+                    val transactions = dataSnap.child("transactions").getValue<HashMap<String,Any>>()
+                    if (transactions != null) {
+                        for((key,value) in transactions){
+                            val t = value as HashMap<String,Any>
+                            val trans = Transaction(
+                                t["titolo"] as String,
+                                t["pagatoDa"] as ArrayList<String>,
+                                t["pagatoPer"] as ArrayList<String>,
+                                (t["totale"] as Long).toDouble()
+                            )
                             if(!listTransactions.contains(trans)){
-                                listTransactions.remove(trans)
-                                compute()
-                                adapter.notifyDataSetChanged()
+                                listTransactions.add(trans)
                             }
                         }
                     }
+                    lv_spese_adapter.notifyDataSetChanged()
+                    compute()
                 }
-
             }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
-            }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         }
         return listener
     }
