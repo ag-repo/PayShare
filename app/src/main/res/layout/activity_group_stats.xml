@@ -9,33 +9,6 @@
     android:padding="16dp"
     tools:context=".GroupStatsActivity">
 
-    <ListView
-        android:id="@+id/lv_groupStatisticsListView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/input_bg"
-        android:backgroundTint="@color/design_default_color_secondary_variant"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:text="Generale"
-        android:textAlignment="center"
-        android:textColor="@color/design_default_color_secondary_variant"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/lv_groupStatisticsListView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -80,22 +53,61 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="Generale"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_secondary_variant"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lv_groupStatisticsListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <ListView
+        android:id="@+id/lv_groupStatisticsListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/input_bg"
+        android:backgroundTint="@color/design_default_color_secondary_variant"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:padding="4dp"
         android:text="Come saldare"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_secondary_variant"
         android:textSize="16dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lv_groupStatisticsListView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:text="Long press sul debito per saldare"
+        android:textColor="@color/design_default_color_secondary_variant"
+        android:textSize="12dp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/lv_comePagare"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lv_groupStatisticsListView"></TextView>
-
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <ListView
         android:id="@+id/lv_comePagare"
@@ -107,6 +119,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
