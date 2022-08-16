@@ -32,6 +32,7 @@
                 android:text="Descrizione: "
                 android:textColor="@color/colorText"
                 android:textSize="5pt"
+                android:textStyle="italic"
                 android:padding="8dp"/>
 
             <TextView
@@ -50,11 +51,12 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:padding="8dp"
-        android:gravity="center"
+        android:gravity="right"
         android:layout_weight="1">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_enter_group_arrow" />
     </LinearLayout>
 

@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="4"
+            android:layout_marginLeft="8dp"
             android:layout_gravity="left">
             <TextView
                 android:id="@+id/tv_titolo_spesa"
@@ -33,7 +34,7 @@
                     android:layout_marginRight="8dp"
                     android:text="Pagato da:"
                     android:textSize="12dp"
-                    android:textStyle="bold"
+                    android:textStyle="italic"
                     android:textColor="@color/colorText"/>
                 <TextView
                     android:id="@+id/tv_pagato_da"
@@ -41,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:text="pagato_da"
                     android:textSize="12dp"
+                    android:textStyle="bold"
                     android:textColor="@color/colorText"/>
             </LinearLayout>
 
@@ -55,7 +57,7 @@
                     android:layout_marginRight="8dp"
                     android:text="Pagato per:"
                     android:textSize="12dp"
-                    android:textStyle="bold"
+                    android:textStyle="italic"
                     android:textColor="@color/colorText"/>
                 <TextView
                     android:id="@+id/tv_pagato_per"
@@ -63,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="pagato_da"
                     android:textSize="12dp"
+                    android:textStyle="bold"
                     android:textColor="@color/colorText"/>
             </LinearLayout>
 
@@ -79,8 +82,10 @@
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="transaction_amount"
                 android:textColor="@color/colorText"
+                android:textStyle="bold"
                 android:textSize="20dp"/>
         </LinearLayout>
 
