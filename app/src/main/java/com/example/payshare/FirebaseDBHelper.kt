@@ -1,15 +1,13 @@
 package com.example.payshare
 
-import android.util.Log
 import com.google.firebase.database.*
-import java.time.temporal.TemporalAmount
 import kotlin.math.absoluteValue
 
 class FirebaseDBHelper {
 
     companion object {
 
-        val db = FirebaseDatabase.getInstance("https://payshare-a08b2-default-rtdb.europe-west1.firebasedatabase.app")
+        private val db = FirebaseDatabase.getInstance("https://payshare-a08b2-default-rtdb.europe-west1.firebasedatabase.app")
                                     .reference
                                     .child("groups")
 
@@ -22,9 +20,6 @@ class FirebaseDBHelper {
         }
 
         fun deleteGroup(groupName: String){
-            db.child(groupName).child("transactions").setValue(null)
-            db.child(groupName).child("stats").setValue(null)
-            db.child(groupName).child("saldi").setValue(null)
             db.child(groupName).removeValue()
         }
 
@@ -36,7 +31,6 @@ class FirebaseDBHelper {
         fun modifyTransaction(groupName: String, oldName: String, oldAmount: Double, newName: String, transaction: Transaction){
             var transactionToFind = oldName+"-"+oldAmount.hashCode().absoluteValue.toString()
             var newTransactionName = newName+"-"+transaction.getTotale().hashCode().absoluteValue.toString()
-
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()
             db.child(groupName).child("transactions").child(newTransactionName).setValue(transaction)
         }
@@ -53,6 +47,5 @@ class FirebaseDBHelper {
         fun saveComeSaldare(groupName: String, list: MutableList<SingleMemberDebt>){
             db.child(groupName).child("saldi").setValue(list)
         }
-
     }
 }

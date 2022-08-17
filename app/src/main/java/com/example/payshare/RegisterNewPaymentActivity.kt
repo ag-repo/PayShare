@@ -61,7 +61,7 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
 
             if(titoloSpesa != "" && totaleSpesa != 0.0 && !chiPaga.isEmpty() && !perChiPaga.isEmpty()) {
                 val newTransaction = Transaction(titoloSpesa, chiPaga, perChiPaga, totaleSpesa)
-                groupObj.addNewTransaction(newTransaction)
+                //groupObj.addNewTransaction(newTransaction)
                 FirebaseDBHelper.setNewPayment(groupObj.getGroupName(),newTransaction)
 
                 val intent = Intent(this, GroupActivity::class.java)

@@ -86,6 +86,8 @@ class SummaryActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
+                Log.i("SUMMARY-childAdded","groupList--> $groupList")
+                Log.i("SUMMARY-childAdded","listData--> $listData")
                 if (item != null) {
                     groupList.add(item)                             //arraylist di group presi dal db
                     val listobj = HashMap<String,Any>()             //Rappresentazione grafica dell'oggetto
@@ -93,6 +95,8 @@ class SummaryActivity : AppCompatActivity() {
                     listobj["groupDescr"] = item.getGroupDescr()
                     listData.add(listobj)                           //Arraylist di Hashmap per la grafica
                 }
+                Log.i("SUMMARY-childAdded","groupList--> $groupList")
+                Log.i("SUMMARY-childAdded","listData--> $listData")
                 group_number.text = listData.size.toString()        //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
@@ -100,23 +104,35 @@ class SummaryActivity : AppCompatActivity() {
             override fun onChildChanged(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
+                    /*
                     for (i in groupList.indices) {
                         if(groupList[i].getGroupName() == item.getGroupName()) {
                             groupList[i] = item
                             break
                         }
                     }
+                     */
+                    if(groupList.contains(item)){
+                        groupList.remove(item)
+                    }
+                    Log.i("SUMMARY-childChanged","groupList--> $groupList")
+
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
 
-                    for (i in listData.indices) {
+                    if(listData.contains(listobj)){
+                        listData.remove(listobj)
+                    }
+                    Log.i("SUMMARY-childChanged","listData--> $listData")
+                    /*for (i in listData.indices) {
                         var obj = listData[i]["groupName"]
                         if(obj.toString() == item.getGroupName()) {
                             listData[i] = listobj
                             break
                         }
                     }
+                     */
                 }
                 group_number.text = listData.size.toString()        //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
@@ -126,16 +142,25 @@ class SummaryActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item != null) {
 
-                    for (i in groupList.indices) {
+                    /*for (i in groupList.indices) {
                         if(groupList[i].getGroupName().equals(item.getGroupName())) {
                             groupList.removeAt(i)
                             break
                         }
+                    }*/
+                    if(groupList.contains(item)){
+                        groupList.remove(item)
                     }
+
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescr()
 
+                    if(listData.contains(listobj)){
+                        listData.remove(listobj)
+                    }
+
+                    /*
                     for (i in listData.indices) {
                         var obj = listData[i]["groupName"]
                         if(obj.toString().equals(item.getGroupName())) {
@@ -143,7 +168,12 @@ class SummaryActivity : AppCompatActivity() {
                             break
                         }
                     }
+                     */
                 }
+
+                Log.i("SUMMARY-childRemoved","groupList--> $groupList")
+                Log.i("SUMMARY-childRemoved","listData--> $listData")
+
                 group_number.text = listData.size.toString() //AGGIORNO SCRITTA
                 adapter.notifyDataSetChanged()
             }
