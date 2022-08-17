@@ -88,7 +88,8 @@ class SummaryActivity : AppCompatActivity() {
                 val item = dataSnap.getValue(Group::class.java)
                 Log.i("SUMMARY-childAdded","groupList--> $groupList")
                 Log.i("SUMMARY-childAdded","listData--> $listData")
-                if (item != null) {
+                //TEMPORANEOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (item != null && item.getGroupName()!="" && item.getGroupDescr()!="") {
                     groupList.add(item)                             //arraylist di group presi dal db
                     val listobj = HashMap<String,Any>()             //Rappresentazione grafica dell'oggetto
                     listobj["groupName"] = item.getGroupName()
