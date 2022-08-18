@@ -202,13 +202,9 @@ class GroupActivity : AppCompatActivity() {
                             )
                             tempList.add(trans)
                         }
-                        //TEST TEST TEST
                         listTransactions = tempList
-                        compute()
                     }
-                    //listTransactions = tempList
                     lv_spese_adapter.notifyDataSetChanged()
-                    //compute()
                 }
             }
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {

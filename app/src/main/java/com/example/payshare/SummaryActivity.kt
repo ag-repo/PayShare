@@ -54,7 +54,7 @@ class SummaryActivity : AppCompatActivity() {
             var obj = listData[position]["groupName"] //nome del gruppo
             var groupObj = Group()
             for(i in groupList.indices){
-                if(groupList[i].getGroupName().equals(obj)){
+                if(groupList[i].getGroupName() == obj){
                     groupObj = groupList[i]
                 }
             }
@@ -66,7 +66,6 @@ class SummaryActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         val groupChildListener = getGroupsEventListener()
         groupReference!!.addChildEventListener(groupChildListener)
         this.groupChildListener = groupChildListener
@@ -74,10 +73,7 @@ class SummaryActivity : AppCompatActivity() {
 
     override fun onStop(){
         super.onStop()
-
-        if(groupChildListener != null){
-            groupReference!!.removeEventListener(groupChildListener)
-        }
+        groupReference!!.removeEventListener(groupChildListener)
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
