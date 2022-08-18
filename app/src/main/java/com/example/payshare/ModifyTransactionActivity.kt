@@ -3,13 +3,11 @@ package com.example.payshare
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_modify_transaction.*
 import kotlinx.android.synthetic.main.activity_modify_transaction.lv_pagatoDa
 import kotlinx.android.synthetic.main.activity_modify_transaction.lv_pagatoPer
-import kotlinx.android.synthetic.main.activity_register_new_payment.*
 
 class ModifyTransactionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,46 +16,47 @@ class ModifyTransactionActivity : AppCompatActivity() {
         supportActionBar?.hide() //Tolgo barra titolo app
 
         val groupObj = intent.extras?.get("groupObj") as Group
-        val passed_transaction = intent.extras?.get("transaction") as Transaction
+        val passedTransaction = intent.extras?.get("transaction") as Transaction
 
         val members = groupObj.getGroupMembers()
-        transaction_name.text = passed_transaction.getTitolo()
-        val t_title = passed_transaction.getTitolo()
-        trans_name.hint = t_title
-        val t_totale = passed_transaction.getTotale()
-        trans_amount.hint = t_totale.toString()
-        val t_pagatoDa = passed_transaction.getPagatoDa()
-        val t_pagatoPer = passed_transaction.getPagatoPer()
+        val tTitle = passedTransaction.getTitle()
+        val tTotal = passedTransaction.getTotal()
+        val tPayedBy = passedTransaction.getPayedBy()
+        val tPayedFor = passedTransaction.getPayedFor()
 
-        var pagatoDaModified = false
-        var pagatoPerModified = false
+        transaction_name.text = passedTransaction.getTitle()
+        trans_name.hint = tTitle
+        trans_amount.hint = tTotal.toString()
 
-        val lv_adapter_checked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,members)
-        lv_pagatoDa.adapter = lv_adapter_checked
-        lv_pagatoPer.adapter = lv_adapter_checked
+        var payedByModified = false
+        var payedForModified = false
 
-        for(i in members.indices){//Pre-seleziono i membri che erano memorizzati nella transazione
-            if(t_pagatoDa.contains(members[i])){ lv_pagatoDa.setItemChecked(i, true) }
-            if(t_pagatoPer.contains(members[i])){ lv_pagatoPer.setItemChecked(i, true) }
+        val lvAdapterChecked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,members)
+        lv_pagatoDa.adapter = lvAdapterChecked
+        lv_pagatoPer.adapter = lvAdapterChecked
+
+        for(i in members.indices){      //Pre-seleziono i membri che erano memorizzati nella transazione
+            if(tPayedBy.contains(members[i])){ lv_pagatoDa.setItemChecked(i, true) }
+            if(tPayedFor.contains(members[i])){ lv_pagatoPer.setItemChecked(i, true) }
         }
 
-        lv_adapter_checked.notifyDataSetInvalidated()
+        lvAdapterChecked.notifyDataSetInvalidated()
 
         btn_modifyTransaction.setOnClickListener {
-            var nuovoTitolo = trans_name.text.toString()
-            var nuovoTotale = trans_amount.text.toString()
+            var newTitle = trans_name.text.toString()
+            var newTotal = trans_amount.text.toString()
 
-            if(nuovoTitolo == ""){
-                nuovoTitolo = trans_name.hint.toString()
+            if(newTitle == ""){
+                newTitle = trans_name.hint.toString()
             }
 
-            if(nuovoTotale == ""){
-                nuovoTotale = trans_amount.hint.toString()
+            if(newTotal == ""){
+                newTotal = trans_amount.hint.toString()
             }
 
-            if(nuovoTitolo != t_title || nuovoTotale.toDouble() != t_totale || pagatoDaModified || pagatoPerModified) {
-                val newTransaction = Transaction(nuovoTitolo, t_pagatoDa, t_pagatoPer, nuovoTotale.toDouble())
-                FirebaseDBHelper.modifyTransaction(groupObj.getGroupName(), t_title, t_totale, nuovoTitolo, newTransaction)
+            if(newTitle != tTitle || newTotal.toDouble() != tTotal || payedByModified || payedForModified) {
+                val newTransaction = Transaction(newTitle, tPayedBy, tPayedFor, newTotal.toDouble())
+                FirebaseDBHelper.modifyTransaction(groupObj.getGroupName(), tTitle, tTotal, newTitle, newTransaction)
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("group_obj", groupObj)
                 startActivity(intent)
@@ -67,21 +66,21 @@ class ModifyTransactionActivity : AppCompatActivity() {
         }
 
         lv_pagatoDa.setOnItemClickListener { lv_adapter, listViewItems, position, id ->
-            if(!t_pagatoDa.contains(members[position])){
-                t_pagatoDa.add(members[position]) //se non contiene il nome, viene aggiunto
+            if(!tPayedBy.contains(members[position])){
+                tPayedBy.add(members[position]) //se non contiene il nome, viene aggiunto
             } else {
-                t_pagatoDa.remove(members[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
+                tPayedBy.remove(members[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
             }
-            pagatoDaModified = true
+            payedByModified = true
         }
 
         lv_pagatoPer.setOnItemClickListener{ lv_adapter, listViewItems, position, id ->
-            if(!t_pagatoPer.contains(members[position])){
-                t_pagatoPer.add(members[position]) //se non contiene il nome, viene aggiunto
+            if(!tPayedFor.contains(members[position])){
+                tPayedFor.add(members[position]) //se non contiene il nome, viene aggiunto
             } else {
-                t_pagatoPer.remove(members[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
+                tPayedFor.remove(members[position]) //se viene cliccato nuovamente, viene deselezionato ed elimanato dalla lista
             }
-            pagatoPerModified = true
+            payedForModified = true
         }
 
         back_to_group_act.setOnClickListener{

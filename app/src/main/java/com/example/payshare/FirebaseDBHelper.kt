@@ -30,13 +30,13 @@ class FirebaseDBHelper {
 
         fun modifyTransaction(groupName: String, oldName: String, oldAmount: Double, newName: String, transaction: Transaction){
             var transactionToFind = oldName+"-"+oldAmount.hashCode().absoluteValue.toString()
-            var newTransactionName = newName+"-"+transaction.getTotale().hashCode().absoluteValue.toString()
+            var newTransactionName = newName+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()
             db.child(groupName).child("transactions").child(newTransactionName).setValue(transaction)
         }
 
         fun setNewPayment(groupName: String, transaction: Transaction){
-            var transName = transaction.getTitolo()+"-"+transaction.getTotale().hashCode().absoluteValue.toString()
+            var transName = transaction.getTitle()+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transName).setValue(transaction)
         }
 
@@ -44,7 +44,7 @@ class FirebaseDBHelper {
             db.child(groupName).child("stats").setValue(list)
         }
 
-        fun saveComeSaldare(groupName: String, list: MutableList<SingleMemberDebt>){
+        fun saveHowToPay(groupName: String, list: MutableList<SingleMemberDebt>){
             db.child(groupName).child("saldi").setValue(list)
         }
     }

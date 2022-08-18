@@ -28,10 +28,10 @@ class TransactionsListAdapter(val context: Context, val data:ArrayList<Transacti
         }
         Log.i("TransactionListAdapt","--> $data")
         val transaction = data[position]
-        (newView as View)?.tv_titolo_spesa?.text = transaction.getTitolo()
+        (newView as View)?.tv_titolo_spesa?.text = transaction.getTitle()
         newView?.tv_pagato_da?.text = transaction.getPagatoDaToString()
         newView?.tv_pagato_per?.text = transaction.getPagatoPerToString()
-        newView?.tv_amount?.text = transaction.getTotale().toString()
+        newView?.tv_amount?.text = transaction.getTotal().toString()
         return newView
     }
 

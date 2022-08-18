@@ -1,7 +1,6 @@
 package com.example.payshare
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,20 +10,18 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
 import java.security.SecureRandom
-import java.util.concurrent.ThreadLocalRandom
 
 class GroupStatsActivity : AppCompatActivity() {
 
-    private lateinit var lv_stats_adapter : SingleMemberStatsListAdapter
-    private lateinit var lv_debt_adapter : SingleMemberDebtListAdapter
-    private lateinit var listview_stats : ListView
-    private lateinit var listview_debt : ListView
-    private lateinit var passed_group_name : String
+    private lateinit var lvStatsAdapter : SingleMemberStatsListAdapter
+    private lateinit var lvDebtAdapter : SingleMemberDebtListAdapter
+    private lateinit var lvStats : ListView
+    private lateinit var lvDebt : ListView
+    private lateinit var passedGroupName: String
     private lateinit var groupObj : Group
     private var membersToDisplay = ArrayList<String>()          //valori presi dal gruppo passato per intent
-    private var listTransactions = arrayListOf<Transaction>()   //valori presi da DB tramite listeners
     private var statsToDisplay = mutableListOf<SingleMemberStat>()  //calcolate in base alle transazioni ricevute
-    private var saldiToDisplay = mutableListOf<SingleMemberDebt>()  //COME SALDARE --> DA FARE
+    private var saldiToDisplay = mutableListOf<SingleMemberDebt>()  //calcola come saldare i debiti
 
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
     private lateinit var groupChildListener: ChildEventListener
@@ -35,20 +32,20 @@ class GroupStatsActivity : AppCompatActivity() {
         supportActionBar?.hide() //Tolgo barra nome app
 
         groupObj = intent.extras?.get("group_obj") as Group
-        passed_group_name = groupObj.getGroupName()
+        passedGroupName = groupObj.getGroupName()
         membersToDisplay = groupObj.getGroupMembers()
-        group_stats_name.text = passed_group_name //rimpiazzo nome gruppo nella view
+        group_stats_name.text = passedGroupName //rimpiazzo nome gruppo nella view
 
-        lv_stats_adapter = SingleMemberStatsListAdapter(this,statsToDisplay)
-        lv_debt_adapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
-        listview_stats = lv_groupStatisticsListView
-        listview_debt = lv_comePagare
-        listview_stats.adapter = lv_stats_adapter
-        listview_debt.adapter = lv_debt_adapter
+        lvStatsAdapter = SingleMemberStatsListAdapter(this,statsToDisplay)
+        lvDebtAdapter = SingleMemberDebtListAdapter(this,saldiToDisplay)
+        lvStats = lv_groupStatisticsListView
+        lvDebt = lv_comePagare
+        lvStats.adapter = lvStatsAdapter
+        lvDebt.adapter = lvDebtAdapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
 
-        lv_stats_adapter.notifyDataSetChanged()
+        lvStatsAdapter.notifyDataSetChanged()
 
         back_to_group.setOnClickListener{
             val intent = Intent(this, GroupActivity::class.java)
@@ -60,29 +57,29 @@ class GroupStatsActivity : AppCompatActivity() {
             var saldo = saldiToDisplay[position]
             val secureRandom = SecureRandom()
             var newTransName : String = "R-" +
-                    "${saldo.getPagante()}" +
-                    "-to-${saldo.getRicevente()}" +
-                    "-${saldo.getDebito().toInt()}" +
+                    "${saldo.getWhoPay()}" +
+                    "-to-${saldo.getWhoReceive()}" +
+                    "-${saldo.getDebt().toInt()}" +
                     "-${secureRandom.nextInt(100)}"
             val dialogBuilder = AlertDialog.Builder(this)
 
             dialogBuilder.setMessage("Vuoi saldare il debito?")
                 .setCancelable(false)
-                .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
-                    val debitTransacion = Transaction(
+                .setPositiveButton("SI") { dialog, id ->
+                    val debitTrans = Transaction(
                         newTransName,
-                        arrayListOf(saldiToDisplay[position].getPagante()),
-                        arrayListOf(saldiToDisplay[position].getRicevente()),
-                        saldiToDisplay[position].getDebito()
+                        arrayListOf(saldiToDisplay[position].getWhoPay()),
+                        arrayListOf(saldiToDisplay[position].getWhoReceive()),
+                        saldiToDisplay[position].getDebt()
                     )
-                    FirebaseDBHelper.setNewPayment(passed_group_name, debitTransacion)
+                    FirebaseDBHelper.setNewPayment(passedGroupName, debitTrans)
                     val intent = Intent(this, GroupActivity::class.java)
                     intent.putExtra("group_obj", groupObj)
                     startActivity(intent)
-                })
-                .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
+                }
+                .setNegativeButton("NO") { dialog, id ->
                     dialog.cancel()
-                })
+                }
 
             val alert = dialogBuilder.create()
             alert.setTitle("SALDA DEBITO")
@@ -104,18 +101,15 @@ class GroupStatsActivity : AppCompatActivity() {
 
     override fun onStop(){
         super.onStop()
-        if(groupChildListener != null){
-            groupReference!!.removeEventListener(groupChildListener)
-        }
+        groupReference!!.removeEventListener(groupChildListener)
     }
 
     private fun getGroupsEventListener(): ChildEventListener{
 
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
-
                 val item = dataSnap.getValue(Group::class.java)
-                if (item!!.getGroupName() == passed_group_name) {
+                if (item!!.getGroupName() == passedGroupName) {
 
                     val stats = dataSnap.child("stats").getValue<ArrayList<SingleMemberStat>>()
                     if(stats != null){
@@ -125,7 +119,7 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    lv_stats_adapter.notifyDataSetChanged()
+                    lvStatsAdapter.notifyDataSetChanged()
 
                     val saldi = dataSnap.child("saldi").getValue<ArrayList<SingleMemberDebt>>()
                     if(saldi != null){
@@ -133,43 +127,43 @@ class GroupStatsActivity : AppCompatActivity() {
                             saldiToDisplay.add(saldi[i])
                         }
                     }
-                    lv_debt_adapter.notifyDataSetChanged()
+                    lvDebtAdapter.notifyDataSetChanged()
                 }
             }
 
             override fun onChildChanged(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item!!.getGroupName() == passed_group_name) {
+                if (item!!.getGroupName() == passedGroupName) {
 
                     val stats = dataSnap.child("stats").getValue<MutableList<SingleMemberStat>>()
                     if (stats != null) {
                         statsToDisplay = stats
-                        lv_stats_adapter.notifyDataSetChanged()
+                        lvStatsAdapter.notifyDataSetChanged()
                     }
 
                     val saldi = dataSnap.child("saldi").getValue<MutableList<SingleMemberDebt>>()
                     if (saldi != null) {
                         saldiToDisplay = saldi
                     }
-                    lv_debt_adapter.notifyDataSetChanged()
+                    lvDebtAdapter.notifyDataSetChanged()
                 }
             }
 
             override fun onChildRemoved(dataSnap: DataSnapshot) {
                 val item = dataSnap.getValue(Group::class.java)
-                if (item!!.getGroupName() == passed_group_name) {
+                if (item!!.getGroupName() == passedGroupName) {
 
                     val stats = dataSnap.child("stats").getValue<MutableList<SingleMemberStat>>()
                     if (stats != null) {
                         statsToDisplay = stats
                     }
-                    lv_stats_adapter.notifyDataSetChanged()
+                    lvStatsAdapter.notifyDataSetChanged()
 
                     val saldi = dataSnap.child("saldi").getValue<MutableList<SingleMemberDebt>>()
                     if (saldi != null) {
                         saldiToDisplay = saldi
                     }
-                    lv_debt_adapter.notifyDataSetChanged()
+                    lvDebtAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -180,7 +174,6 @@ class GroupStatsActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         }
         return listener
     }

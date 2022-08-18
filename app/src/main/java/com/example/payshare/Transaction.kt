@@ -3,27 +3,27 @@ package com.example.payshare
 import java.io.Serializable
 
 data class Transaction(
-    private var titolo: String,
-    private var pagatoDa: ArrayList<String>,
-    private var pagatoPer: ArrayList<String>,
-    private var totale: Double) : Serializable {
+    private var title: String,
+    private var payedBy: ArrayList<String>,
+    private var payedFor: ArrayList<String>,
+    private var total: Double) : Serializable {
 
     constructor() : this("", arrayListOf(), arrayListOf(), 0.0,)
 
     fun set(transaction: Transaction){
-        titolo = transaction.titolo
-        pagatoDa = transaction.pagatoDa
-        pagatoPer = transaction.pagatoPer
-        totale = transaction.totale
+        title = transaction.title
+        payedBy = transaction.payedBy
+        payedFor = transaction.payedFor
+        total = transaction.total
     }
 
     fun getPagatoDaToString(): String {
         val builder = StringBuilder()
-        for(i in pagatoDa.indices){
-            if(i == pagatoDa.size-1){
-                builder.append(pagatoDa[i])
+        for(i in payedBy.indices){
+            if(i == payedBy.size-1){
+                builder.append(payedBy[i])
             } else {
-                builder.append(pagatoDa[i] + ", ")
+                builder.append(payedBy[i] + ", ")
             }
         }
         return builder.toString()
@@ -31,30 +31,30 @@ data class Transaction(
 
     fun getPagatoPerToString(): String {
         val builder = StringBuilder()
-        for(i in pagatoPer.indices){
-            if(i == pagatoPer.size-1){
-                builder.append(pagatoPer[i])
+        for(i in payedFor.indices){
+            if(i == payedFor.size-1){
+                builder.append(payedFor[i])
             } else {
-                builder.append(pagatoPer[i] + ", ")
+                builder.append(payedFor[i] + ", ")
             }
         }
         return builder.toString()
     }
 
-    fun getTitolo():String{
-        return this.titolo
+    fun getTitle():String{
+        return this.title
     }
 
-    fun getPagatoDa():ArrayList<String>{
-        return this.pagatoDa
+    fun getPayedBy():ArrayList<String>{
+        return this.payedBy
     }
 
-    fun getPagatoPer():ArrayList<String>{
-        return this.pagatoPer
+    fun getPayedFor():ArrayList<String>{
+        return this.payedFor
     }
 
-    fun getTotale():Double{
-        return this.totale
+    fun getTotal():Double{
+        return this.total
     }
 
 }

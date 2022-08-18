@@ -12,6 +12,7 @@ import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class SingleMemberStatsListAdapter(private val context: Context, private var statList: MutableList<SingleMemberStat>): BaseAdapter() {
+
     override fun getCount(): Int {
         return statList.size
     }

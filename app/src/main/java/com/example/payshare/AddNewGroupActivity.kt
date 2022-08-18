@@ -18,9 +18,7 @@ class AddNewGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_group)
-
-        //Tolgo barra
-        supportActionBar?.hide()
+        supportActionBar?.hide() //Tolgo barra
 
         memberAdapter = GroupMemberListAdapter(this, tempGroupMemberList)
         groupMembersLayout.adapter = memberAdapter
@@ -31,25 +29,21 @@ class AddNewGroupActivity : AppCompatActivity() {
             memberAdapter.notifyDataSetChanged()
         }
 
-        //se nome non presente lo aggiungo, altrimenti Toast con notifica
         addMemberBtn.setOnClickListener{
             if(!tempGroupMemberList.contains(et_newMember.text.toString())){
                 tempGroupMemberList.add(et_newMember.text.toString())
-                //inserire autocancellazione della edit text quando inserisce membro
                 et_newMember.text.clear()
                 groupMembersLayout.invalidateViews()
             } else {
                 Toast.makeText(this, "Nome già presente",Toast.LENGTH_LONG).show()
+                //se nome non presente lo aggiungo, altrimenti Toast con notifica
             }
         }
 
         //add the new group button
         addGroupBtn.setOnClickListener{
-            //Creo oggetto gruppo e lo aggiungo su Firebase
             val newGroup = Group(et_nomeGruppo.text.toString(), et_descrizione.text.toString(), tempGroupMemberList)
-
             //AGGIUNGO CONTROLLO SE GRUPPO GIA PRESENTE !!!!!!!!
-
             FirebaseDBHelper.setNewGroup(newGroup.getGroupName(), newGroup)
             val intent = Intent(this, SummaryActivity::class.java)
             startActivity(intent)
