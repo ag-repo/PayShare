@@ -86,10 +86,6 @@ class GroupStatsActivity : AppCompatActivity() {
             alert.show()
             true
         }
-
-        iv_refresh_stats.setOnClickListener{
-            Log.i("STATS-TO-DISPLAY", "INUTILE !!!!!!!!!!!")
-        }
     }
 
     override fun onStart() {

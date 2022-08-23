@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.transactions_list_layout.view.*
+import kotlin.math.roundToInt
 
 class TransactionsListAdapter(val context: Context, val data:ArrayList<Transaction>): BaseAdapter() {
     override fun getCount(): Int {
@@ -26,12 +27,12 @@ class TransactionsListAdapter(val context: Context, val data:ArrayList<Transacti
         if(newView == null){
             newView = LayoutInflater.from(context).inflate(R.layout.transactions_list_layout, parent, false)
         }
-        Log.i("TransactionListAdapt","--> $data")
         val transaction = data[position]
+        val amount = (data[position].getTotal()*100.0).roundToInt()/100.0
         (newView as View)?.tv_titolo_spesa?.text = transaction.getTitle()
         newView?.tv_pagato_da?.text = transaction.getPagatoDaToString()
         newView?.tv_pagato_per?.text = transaction.getPagatoPerToString()
-        newView?.tv_amount?.text = transaction.getTotal().toString()
+        newView?.tv_amount?.text = amount.toString()
         return newView
     }
 

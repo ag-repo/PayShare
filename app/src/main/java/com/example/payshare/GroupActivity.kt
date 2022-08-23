@@ -48,9 +48,7 @@ class GroupActivity : AppCompatActivity() {
             dialogBuilder.setMessage("Confermi di volere eliminare la transazione?")
                 .setCancelable(false)
                 .setPositiveButton("SI") { dialog, id ->
-                    Log.i("LongClick", "--> listTransaBEFORE = $listTransactions")
                     listTransactions.remove(trans)
-                    Log.i("LongClick", "--> listTransaAFTER = $listTransactions")
                     FirebaseDBHelper.deleteTransaction(
                         passedGroupName,
                         trans.getTitle(),
@@ -98,14 +96,14 @@ class GroupActivity : AppCompatActivity() {
             val dialogBuilder = AlertDialog.Builder(this)
             dialogBuilder.setMessage("Confermi di volere eliminare il gruppo?")
                 .setCancelable(false)
-                .setPositiveButton("SI", DialogInterface.OnClickListener { dialog, id ->
+                .setPositiveButton("SI") { dialog, id ->
                     FirebaseDBHelper.deleteGroup(passedGroupName)
                     val intent = Intent(this, SummaryActivity::class.java)
                     startActivity(intent)
-                })
-                .setNegativeButton("NO", DialogInterface.OnClickListener { dialog, id ->
+                }
+                .setNegativeButton("NO") { dialog, id ->
                     dialog.cancel()
-                })
+                }
 
             val alert = dialogBuilder.create()
             alert.setTitle("Elimina gruppo")
@@ -203,6 +201,7 @@ class GroupActivity : AppCompatActivity() {
                     lvPaymentsAdapter.notifyDataSetChanged()
                 }
             }
+
             override fun onChildMoved(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item?.getGroupName() == passedGroupName) {
@@ -226,6 +225,7 @@ class GroupActivity : AppCompatActivity() {
                     compute()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }

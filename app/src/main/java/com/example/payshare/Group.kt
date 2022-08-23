@@ -30,4 +30,16 @@ data class Group(
     fun getGroupMembers(): ArrayList<String> {
         return this.groupMembers
     }
+
+    fun getGroupMembersToString(): String {
+        val builder = StringBuilder()
+        for(i in groupMembers.indices){
+            if(i == groupMembers.size-1){
+                builder.append(groupMembers[i])
+            } else {
+                builder.append(groupMembers[i] + ", ")
+            }
+        }
+        return builder.toString()
+    }
 }

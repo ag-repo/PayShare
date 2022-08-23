@@ -74,6 +74,7 @@ class SummaryActivity : AppCompatActivity() {
                     val listobj = HashMap<String,Any>()             //Rappresentazione grafica dell'oggetto
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescription()
+                    listobj["groupMembers"] = item.getGroupMembersToString()
                     listData.add(listobj)                           //Arraylist di Hashmap per la grafica
                 }
                 group_number.text = listData.size.toString()        //AGGIORNO SCRITTA
@@ -89,6 +90,7 @@ class SummaryActivity : AppCompatActivity() {
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescription()
+                    listobj["groupMembers"] = item.getGroupMembersToString()
                     if(listData.contains(listobj)){
                         listData.remove(listobj)
                     }
@@ -106,6 +108,7 @@ class SummaryActivity : AppCompatActivity() {
                     val listobj = HashMap<String,Any>()
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescription()
+                    listobj["groupMembers"] = item.getGroupMembersToString()
                     if(listData.contains(listobj)){
                         listData.remove(listobj)
                     }

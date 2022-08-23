@@ -30,6 +30,7 @@ class GroupsListAdapter(val context: Context, val data: ArrayList<HashMap<String
         val group = data[position]
         (newView as View).tv_groupName?.text = group["groupName"].toString()
         newView.tv_groupDescr?.text = group["groupDescr"].toString()
+        newView.tv_g_members?.text = group["groupMembers"].toString()
         return newView
     }
 }
