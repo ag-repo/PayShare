@@ -24,7 +24,6 @@ class SummaryActivity : AppCompatActivity() {
         supportActionBar?.hide() //Tolgo barra titolo app
 
         lvAdapter = GroupsListAdapter(this, listData)
-        
         listViewItems = groupListView
         listViewItems.adapter = lvAdapter
 
@@ -70,15 +69,11 @@ class SummaryActivity : AppCompatActivity() {
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
-                Log.i("SUMMARY-ADDED","dataSnap --> $dataSnap")
                 if (item != null) {
-                    Log.i("SUMMARY-ADDED","item --> $item")
                     groupList.add(item)                             //arraylist di group presi dal db
                     val listobj = HashMap<String,Any>()             //Rappresentazione grafica dell'oggetto
                     listobj["groupName"] = item.getGroupName()
                     listobj["groupDescr"] = item.getGroupDescription()
-                    Log.i("SUMMARY-ADDED","groupName --> ${listobj["groupName"]}")
-                    Log.i("SUMMARY-ADDED","groupDescr --> ${listobj["groupDescr"]}")
                     listData.add(listobj)                           //Arraylist di Hashmap per la grafica
                 }
                 group_number.text = listData.size.toString()        //AGGIORNO SCRITTA

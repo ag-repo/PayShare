@@ -146,10 +146,10 @@ class GroupActivity : AppCompatActivity() {
                         for ((key, value) in transactions) {
                             val t = value as HashMap<String, Any>
                             val trans = Transaction(
-                                t["titolo"] as String,
-                                t["pagatoDa"] as ArrayList<String>,
-                                t["pagatoPer"] as ArrayList<String>,
-                                t["totale"].toString().toDouble()
+                                t["title"] as String,
+                                t["payedBy"] as ArrayList<String>,
+                                t["payedFor"] as ArrayList<String>,
+                                t["total"].toString().toDouble()
                             )
                             listTransactions.add(trans)
                         }
@@ -168,10 +168,10 @@ class GroupActivity : AppCompatActivity() {
                         for((key,value) in transactions){
                             val t = value as HashMap<String,Any>
                             val trans = Transaction(
-                                t["titolo"] as String,
-                                t["pagatoDa"] as ArrayList<String>,
-                                t["pagatoPer"] as ArrayList<String>,
-                                t["totale"].toString().toDouble()
+                                t["title"] as String,
+                                t["payedBy"] as ArrayList<String>,
+                                t["payedFor"] as ArrayList<String>,
+                                t["total"].toString().toDouble()
                             )
                             tempList.add(trans)
                         }
@@ -191,10 +191,10 @@ class GroupActivity : AppCompatActivity() {
                         for((key,value) in transactions){
                             val t = value as HashMap<String,Any>
                             val trans = Transaction(
-                                t["titolo"] as String,
-                                t["pagatoDa"] as ArrayList<String>,
-                                t["pagatoPer"] as ArrayList<String>,
-                                t["totale"].toString().toDouble()
+                                t["title"] as String,
+                                t["payedBy"] as ArrayList<String>,
+                                t["payedFor"] as ArrayList<String>,
+                                t["total"].toString().toDouble()
                             )
                             tempList.add(trans)
                         }
@@ -212,10 +212,10 @@ class GroupActivity : AppCompatActivity() {
                         for((key,value) in transactions){
                             val t = value as HashMap<String,Any>
                             val trans = Transaction(
-                                t["titolo"] as String,
-                                t["pagatoDa"] as ArrayList<String>,
-                                t["pagatoPer"] as ArrayList<String>,
-                                t["totale"].toString().toDouble()
+                                t["title"] as String,
+                                t["payedBy"] as ArrayList<String>,
+                                t["payedFor"] as ArrayList<String>,
+                                t["total"].toString().toDouble()
                             )
                             tempList.add(trans)
                         }
@@ -272,6 +272,8 @@ class GroupActivity : AppCompatActivity() {
 
     //calcola come saldare i debiti attuali
     private fun computeComeSaldare(listDebt: MutableList<SingleMemberStat>): ArrayList<SingleMemberDebt>{
+
+        Log.i("COMPUTE-SALDARE","--------> ${listDebt}")
         var debts = ArrayList<SingleMemberDebt>()          //variabile da ritornare
         var membersPos = ArrayList<SingleMemberStat>()       //lista dei membri in positivo
         var membersNeg = ArrayList<SingleMemberStat>()       //lista dei membri in negativo

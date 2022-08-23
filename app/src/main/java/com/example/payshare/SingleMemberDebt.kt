@@ -1,24 +1,24 @@
 package com.example.payshare
 
-data class SingleMemberDebt(private var ricevente: String, private var pagante: String, private var debito: Double){
+data class SingleMemberDebt(private var whoReceive: String, private var whoPay: String, private var debt: Double){
 
     constructor() : this("", "", 0.0)
 
     fun set(debt: SingleMemberDebt){
-        ricevente = debt.ricevente
-        pagante = debt.pagante
-        debito = debt.debito
+        whoReceive = debt.whoReceive
+        whoPay = debt.whoPay
+        this.debt = debt.debt
     }
 
     fun getWhoPay(): String{
-        return this.pagante
+        return this.whoPay
     }
 
     fun getWhoReceive(): String{
-        return this.ricevente
+        return this.whoReceive
     }
 
     fun getDebt(): Double{
-        return this.debito
+        return this.debt
     }
 }
