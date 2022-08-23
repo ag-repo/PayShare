@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 
 class GroupActivity : AppCompatActivity() {
@@ -245,8 +246,8 @@ class GroupActivity : AppCompatActivity() {
         }
 
         for(transaction in listTransactions.indices){
-            val splittedAmount = listTransactions[transaction].getTotal() / listTransactions[transaction].getPayedBy().size
-            val splittedDebt = listTransactions[transaction].getTotal() / listTransactions[transaction].getPayedFor().size
+            val splittedAmount = ((listTransactions[transaction].getTotal() / listTransactions[transaction].getPayedBy().size)*100.0).roundToInt()/100.0
+            val splittedDebt = ((listTransactions[transaction].getTotal() / listTransactions[transaction].getPayedFor().size)*100.0).roundToInt()/100.0
             val pagatoDa = listTransactions[transaction].getPayedBy()
             val pagatoPer = listTransactions[transaction].getPayedFor()
 
@@ -264,7 +265,7 @@ class GroupActivity : AppCompatActivity() {
         }
 
         for(i in passedGroupMembers.indices){
-            data.add(SingleMemberStat(passedGroupMembers[i], tempStat[passedGroupMembers[i]]!!, tempSingleAmount[passedGroupMembers[i]]!!))
+            data.add(SingleMemberStat(passedGroupMembers[i], tempStat[passedGroupMembers[i]]!!, ((tempSingleAmount[passedGroupMembers[i]]!!)*100.0).roundToInt()/100.0))
         }
         Log.i("COMPUTE-STATS","dataToReturn--> $data")
         return data
@@ -298,11 +299,11 @@ class GroupActivity : AppCompatActivity() {
             val n = membersNeg[iNeg]                                 //n è un SingleMemberStat con amount negativo
 
             if(p.getMemberAmount() >= n.getMemberAmount().absoluteValue){           //se amount positivo >= amount negativo
-                debts.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), n.getMemberAmount().absoluteValue))   //aggiungo a debiti un debito da pagare
+                debts.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), ((n.getMemberAmount().absoluteValue)*100.0).roundToInt()/100.0))  //aggiungo a debiti un debito da pagare
                 iNeg ++                                                             //aumento i negativi per andare sul prossimo dato che ho saldato il primo della lista
                 p.setAmount(p.getMemberAmount() + n.getMemberAmount())              //setto il nuovo debito da saldare per il positivo togliendo l'amount del negativo
             } else {
-                debts.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), p.getMemberAmount().absoluteValue))   //aggiungo a debiti un debito da pagare
+                debts.add(SingleMemberDebt(p.getMemberName(), n.getMemberName(), ((p.getMemberAmount().absoluteValue)*100.0).roundToInt()/100.0))   //aggiungo a debiti un debito da pagare
                 iPos ++                                                             //aumento i positivi perchè sicuramente ho saldato il debito
                 membersNeg[iNeg].setAmount((n.getMemberAmount() + p.getMemberAmount())) //setto il nuovo debito da saldare per il negativo
             }
@@ -311,3 +312,7 @@ class GroupActivity : AppCompatActivity() {
         return debts
     }
 }
+
+//arrotondo a 2 cifre decimali
+//splittedAmount = (splittedAmount*100.0).roundToInt()/100.0
+//splittedDebt = (splittedDebt*100.0).roundToInt()/100.0
