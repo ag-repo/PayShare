@@ -110,9 +110,7 @@ class GroupStatsActivity : AppCompatActivity() {
             override fun onChildAdded(dataSnap: DataSnapshot, previousChildName: String?) {
                 val item = dataSnap.getValue(Group::class.java)
                 if (item!!.getGroupName() == passedGroupName) {
-                    Log.i("G-STAT-ADDED","item---> $item")
                     val stats = dataSnap.child("stats").getValue<ArrayList<SingleMemberStat>>()
-                    Log.i("G-STAT-ADDED","stats-DataSnap---> $stats")
                     if(stats != null){
                         for(i in stats.indices){
                             if(!statsToDisplay.contains(stats[i])){
@@ -120,17 +118,16 @@ class GroupStatsActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Log.i("G-STAT-ADDED","statsToDisplay---> $statsToDisplay")
                     lvStatsAdapter.notifyDataSetChanged()
 
                     val saldi = dataSnap.child("saldi").getValue<ArrayList<SingleMemberDebt>>()
-                    Log.i("G-STAT-ADDED","saldi-DataSnap---> $saldi")
                     if(saldi != null){
                         for(i in saldi.indices){
-                            saldiToDisplay.add(saldi[i])
+                            if(saldi[i].getDebt() != 0.0){
+                                saldiToDisplay.add(saldi[i])
+                            }
                         }
                     }
-                    Log.i("G-STAT-ADDED","saldiToDisplay---> $saldiToDisplay")
                     lvDebtAdapter.notifyDataSetChanged()
                 }
             }
@@ -147,7 +144,11 @@ class GroupStatsActivity : AppCompatActivity() {
 
                     val saldi = dataSnap.child("saldi").getValue<MutableList<SingleMemberDebt>>()
                     if (saldi != null) {
-                        saldiToDisplay = saldi
+                        for(i in saldi.indices){
+                            if(saldi[i].getDebt() != 0.0){
+                                saldiToDisplay.add(saldi[i])
+                            }
+                        }
                     }
                     lvDebtAdapter.notifyDataSetChanged()
                 }
@@ -165,7 +166,11 @@ class GroupStatsActivity : AppCompatActivity() {
 
                     val saldi = dataSnap.child("saldi").getValue<MutableList<SingleMemberDebt>>()
                     if (saldi != null) {
-                        saldiToDisplay = saldi
+                        for(i in saldi.indices){
+                            if(saldi[i].getDebt() != 0.0){
+                                saldiToDisplay.add(saldi[i])
+                            }
+                        }
                     }
                     lvDebtAdapter.notifyDataSetChanged()
                 }
