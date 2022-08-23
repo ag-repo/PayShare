@@ -18,6 +18,7 @@
             android:exported="false" />
         <activity
             android:name=".AddNewGroupActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".GroupActivity"

@@ -4,18 +4,18 @@ import java.io.Serializable
 
 data class Group(
     private var groupName: String,
-    private var groupDescription: String,
+    private var groupDescr: String,
     private var groupMembers: ArrayList<String>) : Serializable{
 
     constructor() : this("", "", arrayListOf())
 
     override fun toString(): String {
-        return groupName + " - " + groupDescription + " num partecipanti: " + groupMembers.size
+        return groupName + " - " + groupDescr + " num partecipanti: " + groupMembers.size
     }
 
     fun set(item: Group){
         groupName = item.groupName
-        groupDescription = item.groupDescription
+        groupDescr = item.groupDescr
         groupMembers = item.groupMembers
     }
 
@@ -24,7 +24,7 @@ data class Group(
     }
 
     fun getGroupDescription(): String {
-        return this.groupDescription
+        return this.groupDescr
     }
 
     fun getGroupMembers(): ArrayList<String> {
