@@ -12,10 +12,10 @@ import kotlinx.android.synthetic.main.activity_summary.*
 class SummaryActivity : AppCompatActivity() {
 
     private var groupReference: DatabaseReference? = FirebaseDatabase.getInstance().reference.child("groups")
-    lateinit var lv_adapter : SimpleAdapter
+    private lateinit var lvAdapter : GroupsListAdapter
     private lateinit var groupChildListener: ChildEventListener
     private lateinit var listViewItems : ListView
-    private val groupList: MutableList<Group> = ArrayList()     //Lista dei gruppi salvati
+    private val groupList: MutableList<Group> = mutableListOf()    //Lista dei gruppi salvati
     private var listData = arrayListOf<HashMap<String,Any>>()   //Lista gruppi da mostrare su ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,16 +23,10 @@ class SummaryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_summary)
         supportActionBar?.hide() //Tolgo barra titolo app
 
-        lv_adapter = SimpleAdapter( //Inizializzo listview
-            this,
-            listData,
-            R.layout.summary_list_group_item_layout,
-            arrayOf("groupName", "groupDescr"),
-            intArrayOf(R.id.tv_groupName, R.id.tv_groupDescr)
-        )
+        lvAdapter = GroupsListAdapter(this, listData)
         
         listViewItems = groupListView
-        listViewItems.adapter = lv_adapter
+        listViewItems.adapter = lvAdapter
 
         FirebaseDBHelper.setListeners(getGroupsEventListener())
 
@@ -71,7 +65,7 @@ class SummaryActivity : AppCompatActivity() {
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
-        val adapter = lv_adapter
+        val adapter = lvAdapter
         
         val listener = object : ChildEventListener{
             override fun onChildAdded(dataSnap: DataSnapshot, previousGroupName: String?) {
