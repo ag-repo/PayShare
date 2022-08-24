@@ -31,7 +31,7 @@ class ModifyTransactionActivity : AppCompatActivity() {
         var payedByModified = false
         var payedForModified = false
 
-        val lvAdapterChecked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,members)
+        val lvAdapterChecked = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice,members)
         lv_pagatoDa.adapter = lvAdapterChecked
         lv_pagatoPer.adapter = lvAdapterChecked
 

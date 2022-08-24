@@ -45,6 +45,7 @@ class GroupActivity : AppCompatActivity() {
 
         lvPayments.setOnItemLongClickListener { adapterView, view, position, l ->
             var trans = listTransactions[position]
+
             val dialogBuilder = AlertDialog.Builder(this)
             dialogBuilder.setMessage("Confermi di volere eliminare la transazione?")
                 .setCancelable(false)
@@ -69,10 +70,24 @@ class GroupActivity : AppCompatActivity() {
 
         lvPayments.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
             var trans = listTransactions[position]
-            val intent = Intent(this, ModifyTransactionActivity::class.java)
-            intent.putExtra("groupObj", groupObj)
-            intent.putExtra("transaction", trans)
-            startActivity(intent)
+            var firstLetter = trans.getTitle()[0].toString()
+
+            if(firstLetter=="R"){
+                val dialogBuilder = AlertDialog.Builder(this)
+                dialogBuilder.setMessage("I rimborsi non possono essere modificati, solo eliminati")
+                    .setCancelable(false)
+                    .setNeutralButton("OK") { dialog, id ->
+                        dialog.cancel()
+                    }
+                val alert = dialogBuilder.create()
+                alert.setTitle("Attenzione")
+                alert.show()
+            } else {
+                val intent = Intent(this, ModifyTransactionActivity::class.java)
+                intent.putExtra("groupObj", groupObj)
+                intent.putExtra("transaction", trans)
+                startActivity(intent)
+            }
         }
 
         addPaymentsBtn.setOnClickListener{

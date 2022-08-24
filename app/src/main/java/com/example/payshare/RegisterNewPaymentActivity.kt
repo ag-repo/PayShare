@@ -1,11 +1,17 @@
 package com.example.payshare
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_register_new_payment.*
+import kotlinx.android.synthetic.main.activity_register_new_payment.view.*
 import kotlinx.android.synthetic.main.activity_register_new_payment.paymentName as paymentName1
 
 
@@ -24,7 +30,8 @@ class RegisterNewPaymentActivity : AppCompatActivity() {
         var membersList =  groupObj.getGroupMembers()
 
         //Adapter multiple choice per selezionare chi paga e per chi
-        val lv_adapter_checked = ArrayAdapter(this, android.R.layout.simple_list_item_checked,membersList)
+        val lv_adapter_checked = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice,membersList)
+
         lv_pagatoDa.adapter = lv_adapter_checked
         lv_pagatoPer.adapter = lv_adapter_checked
         lv_adapter_checked.notifyDataSetInvalidated()
