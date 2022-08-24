@@ -2,12 +2,10 @@ package com.example.payshare
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_summary.*
-
 
 class SummaryActivity : AppCompatActivity() {
 

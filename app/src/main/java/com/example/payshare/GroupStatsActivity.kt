@@ -10,6 +10,9 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GroupStatsActivity : AppCompatActivity() {
 
@@ -58,9 +61,9 @@ class GroupStatsActivity : AppCompatActivity() {
             val secureRandom = SecureRandom()
             var newTransName : String = "R-" +
                     "${saldo.getWhoPay()}" +
-                    "-to-${saldo.getWhoReceive()}" +
+                    "-${saldo.getWhoReceive()}" +
                     "-${saldo.getDebt().toInt()}" +
-                    "-${secureRandom.nextInt(100)}"
+                    "-${getTimestampForDebt()}"
             val dialogBuilder = AlertDialog.Builder(this)
 
             dialogBuilder.setMessage("Vuoi saldare il debito?")
@@ -86,6 +89,13 @@ class GroupStatsActivity : AppCompatActivity() {
             alert.show()
             true
         }
+    }
+
+    fun getTimestampForDebt():String{
+        val simpleDate = SimpleDateFormat("hh:mm:ss")
+        val currentDate = simpleDate.format(Date())
+
+        return currentDate.toString()
     }
 
     override fun onStart() {
