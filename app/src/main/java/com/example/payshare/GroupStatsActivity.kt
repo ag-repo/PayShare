@@ -3,13 +3,11 @@ package com.example.payshare
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_group_stats.*
-import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,12 +55,10 @@ class GroupStatsActivity : AppCompatActivity() {
         }
 
         lv_comePagare.setOnItemLongClickListener{ adapterView, view, position, l ->
-            var saldo = saldiToDisplay[position]
-            val secureRandom = SecureRandom()
-            var newTransName : String = "R-" +
-                    "${saldo.getWhoPay()}" +
-                    "-${saldo.getWhoReceive()}" +
-                    "-${saldo.getDebt().toInt()}" +
+            val saldo = saldiToDisplay[position]
+            val newTransName : String = "R-" +
+                    saldo.getWhoPay() +
+                    "-${saldo.getWhoReceive()}"+
                     "-${getTimestampForDebt()}"
             val dialogBuilder = AlertDialog.Builder(this)
 
@@ -91,10 +87,9 @@ class GroupStatsActivity : AppCompatActivity() {
         }
     }
 
-    fun getTimestampForDebt():String{
+    private fun getTimestampForDebt():String{
         val simpleDate = SimpleDateFormat("hh:mm:ss")
         val currentDate = simpleDate.format(Date())
-
         return currentDate.toString()
     }
 
