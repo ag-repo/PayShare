@@ -21,7 +21,7 @@ class GroupMemberListAdapter (val context:Context, private val data:ArrayList<St
         return (data[position]).hashCode().toLong()
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var newView = convertView
         if(newView == null){
             newView = LayoutInflater.from(context).inflate(R.layout.members_list_add_group_layout, parent, false)

@@ -36,7 +36,7 @@ class SummaryActivity : AppCompatActivity() {
 
         //listener per apertura del gruppo selezionato nella listview
         listViewItems.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
-            var obj = listData[position]["groupName"] //nome del gruppo
+            val obj = listData[position]["groupName"] //nome del gruppo
             var groupObj = Group()
             for(i in groupList.indices){
                 if(groupList[i].getGroupName() == obj){

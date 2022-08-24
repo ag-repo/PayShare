@@ -1,7 +1,6 @@
 package com.example.payshare
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +28,10 @@ class TransactionsListAdapter(val context: Context, val data:ArrayList<Transacti
         }
         val transaction = data[position]
         val amount = (data[position].getTotal()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_titolo_spesa?.text = transaction.getTitle()
-        newView?.tv_pagato_da?.text = transaction.getPagatoDaToString()
-        newView?.tv_pagato_per?.text = transaction.getPagatoPerToString()
-        newView?.tv_amount?.text = amount.toString()
+        (newView as View).tv_titolo_spesa?.text = transaction.getTitle()
+        newView.tv_pagato_da?.text = transaction.getPagatoDaToString()
+        newView.tv_pagato_per?.text = transaction.getPagatoPerToString()
+        newView.tv_amount?.text = amount.toString()
         return newView
     }
 

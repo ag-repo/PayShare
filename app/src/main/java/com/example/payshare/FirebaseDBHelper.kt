@@ -1,7 +1,6 @@
 package com.example.payshare
 
 import com.google.firebase.database.*
-import java.util.*
 import kotlin.math.absoluteValue
 
 class FirebaseDBHelper {
@@ -25,19 +24,19 @@ class FirebaseDBHelper {
         }
 
         fun deleteTransaction(groupName: String, transName: String, transactionAmount: Double){
-            var transactionToFind = transName+"-"+transactionAmount.hashCode().absoluteValue.toString()
+            val transactionToFind = transName+"-"+transactionAmount.hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()
         }
 
         fun modifyTransaction(groupName: String, oldName: String, oldAmount: Double, newName: String, transaction: Transaction){
-            var transactionToFind = oldName+"-"+oldAmount.hashCode().absoluteValue.toString()
-            var newTransactionName = newName+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
+            val transactionToFind = oldName+"-"+oldAmount.hashCode().absoluteValue.toString()
+            val newTransactionName = newName+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transactionToFind).removeValue()
             db.child(groupName).child("transactions").child(newTransactionName).setValue(transaction)
         }
 
         fun setNewPayment(groupName: String, transaction: Transaction){
-            var transName = transaction.getTitle()+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
+            val transName = transaction.getTitle()+"-"+transaction.getTotal().hashCode().absoluteValue.toString()
             db.child(groupName).child("transactions").child(transName).setValue(transaction)
         }
 

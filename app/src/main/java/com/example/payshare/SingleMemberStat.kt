@@ -16,14 +16,6 @@ data class SingleMemberStat(private var memberName: String, private var memberAm
         this.memberAmount = amount
     }
 
-    fun setName(name: String){
-        this.memberName = name
-    }
-
-    fun setSingleMemberTotal(amount: Double){
-        this.singleMemberTotal = amount
-    }
-
     fun getMemberName(): String{
         return this.memberName
     }

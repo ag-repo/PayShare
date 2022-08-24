@@ -1,7 +1,6 @@
 package com.example.payshare
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +29,9 @@ class SingleMemberDebtListAdapter(val context: Context, val data: MutableList<Si
         }
         //arrotondo a 2 decimali dopo la virgola
         val memberAmount = (data[position].getDebt()*100.0).roundToInt()/100.0
-        (newView as View)?.tv_chipaga?.text = data[position].getWhoPay()
-        (newView)?.tv_chiriceve?.text = data[position].getWhoReceive()
-        (newView)?.tv_debtAmount?.text = memberAmount.absoluteValue.toString()
+        (newView as View).tv_chipaga?.text = data[position].getWhoPay()
+        (newView).tv_chiriceve?.text = data[position].getWhoReceive()
+        (newView).tv_debtAmount?.text = memberAmount.absoluteValue.toString()
         return newView
     }
 

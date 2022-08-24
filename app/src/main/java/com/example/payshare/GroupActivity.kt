@@ -1,7 +1,6 @@
 package com.example.payshare
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -41,10 +40,10 @@ class GroupActivity : AppCompatActivity() {
         lvPaymentsAdapter = TransactionsListAdapter(this, listTransactions)  //inizializzo la listview
         lvPayments = group_list_view
         lvPayments.adapter = lvPaymentsAdapter
-        FirebaseDBHelper.setListeners(getGroupsEventListener());
+        FirebaseDBHelper.setListeners(getGroupsEventListener())
 
         lvPayments.setOnItemLongClickListener { adapterView, view, position, l ->
-            var trans = listTransactions[position]
+            val trans = listTransactions[position]
 
             val dialogBuilder = AlertDialog.Builder(this)
             dialogBuilder.setMessage("Confermi di volere eliminare la transazione?")
@@ -69,8 +68,8 @@ class GroupActivity : AppCompatActivity() {
         }
 
         lvPayments.setOnItemClickListener{ lv_adapter,listViewItems, position, id ->
-            var trans = listTransactions[position]
-            var firstLetter = trans.getTitle()[0].toString()
+            val trans = listTransactions[position]
+            val firstLetter = trans.getTitle()[0].toString()
 
             if(firstLetter=="R"){
                 val dialogBuilder = AlertDialog.Builder(this)
@@ -143,9 +142,7 @@ class GroupActivity : AppCompatActivity() {
 
     override fun onStop(){
         super.onStop()
-        if(groupChildListener != null){
-            groupReference!!.removeEventListener(groupChildListener)
-        }
+        groupReference!!.removeEventListener(groupChildListener)
     }
 
     private fun getGroupsEventListener(): ChildEventListener {
@@ -251,9 +248,9 @@ class GroupActivity : AppCompatActivity() {
 
     //calcola quanto ogni partecipante è in positivo o negativo e la sua spesa totale individuale
     private fun computeStatistics(listTransactions: MutableList<Transaction>): ArrayList<SingleMemberStat>{
-        var data =  ArrayList<SingleMemberStat>()
-        var tempStat = HashMap<String,Double>()
-        var tempSingleAmount = HashMap<String,Double>()
+        val data =  ArrayList<SingleMemberStat>()
+        val tempStat = HashMap<String,Double>()
+        val tempSingleAmount = HashMap<String,Double>()
 
         for(i in passedGroupMembers.indices){      //inizializzo hashmap con nomi partecipanti
             tempStat[passedGroupMembers[i]] = 0.0
@@ -290,9 +287,9 @@ class GroupActivity : AppCompatActivity() {
     private fun computeComeSaldare(listDebt: MutableList<SingleMemberStat>): ArrayList<SingleMemberDebt>{
 
         Log.i("COMPUTE-SALDARE","--------> ${listDebt}")
-        var debts = ArrayList<SingleMemberDebt>()          //variabile da ritornare
-        var membersPos = ArrayList<SingleMemberStat>()       //lista dei membri in positivo
-        var membersNeg = ArrayList<SingleMemberStat>()       //lista dei membri in negativo
+        val debts = ArrayList<SingleMemberDebt>()          //variabile da ritornare
+        val membersPos = ArrayList<SingleMemberStat>()       //lista dei membri in positivo
+        val membersNeg = ArrayList<SingleMemberStat>()       //lista dei membri in negativo
         var iPos = 0                                        //counter per il while membri in positivo
         var iNeg = 0                                        //counter per il while membri in positivo
 
