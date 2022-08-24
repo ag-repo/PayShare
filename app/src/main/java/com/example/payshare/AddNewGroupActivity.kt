@@ -30,7 +30,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         }
 
         addMemberBtn.setOnClickListener{
-            if(!tempGroupMemberList.contains(et_newMember.text.toString())){
+            if(!tempGroupMemberList.contains(et_newMember.text.toString()) && et_newMember.text.toString()!=""){
                 tempGroupMemberList.add(et_newMember.text.toString())
                 et_newMember.text.clear()
                 groupMembersLayout.invalidateViews()

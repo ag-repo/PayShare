@@ -33,7 +33,7 @@
                 android:textColor="@color/colorText"
                 android:textSize="5pt"
                 android:textStyle="italic"
-                android:padding="8dp"/>
+                android:padding="4dp"/>
 
             <TextView
                 android:id="@+id/tv_groupDescr"
@@ -43,7 +43,7 @@
                 android:textColor="@color/colorText"
                 android:textStyle="bold"
                 android:textSize="5pt"
-                android:padding="8dp"/>
+                android:padding="4dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -58,7 +58,7 @@
                 android:textColor="@color/colorText"
                 android:textSize="5pt"
                 android:textStyle="italic"
-                android:padding="8dp"/>
+                android:padding="4dp"/>
 
             <TextView
                 android:id="@+id/tv_g_members"
@@ -68,7 +68,7 @@
                 android:textColor="@color/colorText"
                 android:textStyle="bold"
                 android:textSize="5pt"
-                android:padding="8dp"/>
+                android:padding="4dp"/>
         </LinearLayout>
 
     </LinearLayout>
