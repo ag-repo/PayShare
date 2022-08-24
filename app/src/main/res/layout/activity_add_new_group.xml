@@ -36,12 +36,14 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
             android:backgroundTint="@color/design_default_color_secondary_variant"
-            android:hint="Nome grouppo"
+            android:hint="@string/n_g"
             android:paddingLeft="24dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textColor="@color/colorText"
-            android:textColorHint="@color/colorText" />
+            android:textColorHint="@color/colorText"
+            android:autofillHints=""
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/et_descrizione"
@@ -50,7 +52,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/input_bg"
             android:backgroundTint="@color/design_default_color_secondary_variant"
-            android:hint="Descrizione"
+            android:hint="@string/descr"
             android:paddingLeft="24dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
@@ -60,7 +62,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_nomeGruppo" />
+            app:layout_constraintTop_toBottomOf="@+id/et_nomeGruppo"
+            android:autofillHints=""
+            android:inputType="text" />
     </LinearLayout>
 
     <LinearLayout
@@ -78,10 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:text="Inserisci i partecipanti"
+            android:text="@string/add_part"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/design_default_color_secondary_variant" />
 
         <LinearLayout
@@ -96,13 +100,15 @@
                 android:layout_gravity="center"
                 android:background="@drawable/input_bg"
                 android:backgroundTint="@color/design_default_color_secondary_variant"
-                android:hint="Aggiungi membro"
+                android:hint="@string/add_memb"
                 android:paddingLeft="24dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorText"
-                android:textColorHint="@color/colorText" />
+                android:textColorHint="@color/colorText"
+                android:autofillHints=""
+                android:inputType="text" />
 
             <Button
                 android:id="@+id/addMemberBtn"
@@ -113,7 +119,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
-                android:text="AGGIUNGI MEMBRO" />
+                android:text="@string/add_m_button" />
         </LinearLayout>
     </LinearLayout>
 
@@ -135,7 +141,7 @@
             android:backgroundTint="@color/design_default_color_secondary_variant"
             android:minHeight="400dp"
             android:orientation="vertical"
-            android:padding="16dp"></ListView>
+            android:padding="16dp"/>
 
         <Button
             android:id="@+id/addGroupBtn"
@@ -144,7 +150,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
-            android:text="Aggiungi gruppo" />
+            android:text="@string/add_g_button" />
 
         <Button
             android:id="@+id/back_to_summary_btn"
@@ -153,8 +159,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
-            android:text="ANNULLA" />
-
+            android:text="@string/ann" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

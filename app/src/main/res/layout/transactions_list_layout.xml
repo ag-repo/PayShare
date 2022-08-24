@@ -4,22 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_gravity="left">
+            android:layout_marginStart="8dp"
+            android:layout_gravity="start">
             <TextView
                 android:id="@+id/tv_titolo_spesa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="titolo_spesa"
-                android:textSize="16dp"
+                android:text="@string/pay_title"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorText"/>
 
@@ -31,17 +32,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="Pagato da:"
-                    android:textSize="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/payed_by"
+                    android:textSize="12sp"
                     android:textStyle="italic"
                     android:textColor="@color/colorText"/>
                 <TextView
                     android:id="@+id/tv_pagato_da"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="pagato_da"
-                    android:textSize="12dp"
+                    android:text="@string/p_b"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorText"/>
             </LinearLayout>
@@ -54,17 +55,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="Pagato per:"
-                    android:textSize="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/payed_for"
+                    android:textSize="12sp"
                     android:textStyle="italic"
                     android:textColor="@color/colorText"/>
                 <TextView
                     android:id="@+id/tv_pagato_per"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="pagato_da"
-                    android:textSize="12dp"
+                    android:text="@string/pay_by"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorText"/>
             </LinearLayout>
@@ -75,17 +76,17 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:layout_weight="3"
-            android:gravity="right">
+            android:gravity="end">
 
             <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="transaction_amount"
+                android:text="@string/t_amt"
                 android:textColor="@color/colorText"
                 android:textStyle="bold"
-                android:textSize="20dp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
 
 </LinearLayout>

@@ -41,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="6"
-            android:text="nome_transazione"
+            android:text="@string/name_trans"
             android:textAlignment="center"
             android:textColor="@color/design_default_color_on_primary"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_modifyTransaction"
@@ -53,7 +53,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@drawable/button_bg"
-            android:text="MODIFICA" />
+            android:text="@string/modify" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,11 +74,13 @@
             android:ems="10"
             android:hint="@string/newpay_name"
             android:inputType="textPersonName"
-            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="0dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textColor="@color/design_default_color_on_primary"
-            android:textColorHint="@color/design_default_color_on_primary" />
+            android:textColorHint="@color/design_default_color_on_primary"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/trans_amount"
@@ -90,11 +92,13 @@
             android:ems="10"
             android:hint="@string/newpay_quant"
             android:inputType="number"
-            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="0dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:textColor="@color/design_default_color_on_primary"
-            android:textColorHint="@color/design_default_color_on_primary" />
+            android:textColorHint="@color/design_default_color_on_primary"
+            android:autofillHints="" />
     </LinearLayout>
 
     <LinearLayout

@@ -9,7 +9,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,15 +19,15 @@
         android:layout_weight="1"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_gravity="left">
+        android:layout_marginStart="8dp"
+        android:layout_gravity="start">
         <TextView
             android:id="@+id/tv_nomePartecipante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="NOME_PARTECIPANTE"
-            android:textSize="16dp"
+            android:text="@string/name_part"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/colorText"/>
         <LinearLayout
@@ -36,18 +37,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Totale personale: "
-                android:textSize="12dp"
+                android:text="@string/tot_p"
+                android:textSize="12sp"
                 android:textColor="@color/colorText"/>
 
             <TextView
                 android:id="@+id/tv_personal_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="personal_amount"
-                android:textSize="12dp"
+                android:text="@string/pers_am"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText"
+                android:layout_marginStart="8dp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -56,18 +58,18 @@
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:gravity="right">
+        android:layout_marginEnd="8dp"
+        android:gravity="end">
 
         <TextView
             android:id="@+id/tv_statsAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="single_amount"
+            android:text="@string/s_am"
             android:textStyle="bold"
             android:textColor="@color/colorText"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
     </LinearLayout>
 
 </LinearLayout>

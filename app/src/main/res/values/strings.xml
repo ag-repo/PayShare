@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">PayShare</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="summary_top_frag_text">NOME DELLO USER</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="newpay_name">Titolo</string>
     <string name="newpay_quant">Quantità</string>
@@ -12,4 +10,45 @@
     <string name="lv_group_name_placeholder">nome_gruppo</string>
     <string name="lv_group_descr_placeholder">descrizione_gruppo</string>
     <string name="add_new_gr">Aggiungi un nuovo gruppo</string>
+    <string name="n_g">Nome grouppo</string>
+    <string name="descr">Descrizione</string>
+    <string name="add_part">Inserisci i partecipanti</string>
+    <string name="add_memb">Aggiungi membro</string>
+    <string name="add_m_button">AGGIUNGI MEMBRO</string>
+    <string name="add_g_button">Aggiungi gruppo</string>
+    <string name="ann">ANNULLA</string>
+    <string name="namegroup">N_G</string>
+    <string name="long_press">Long press sulla spesa per eliminarla</string>
+    <string name="single_press">Single press sulla spesa per modificarla</string>
+    <string name="n_s">NUOVA SPESA</string>
+    <string name="stats">STATISTICHE</string>
+    <string name="g_name">group_name</string>
+    <string name="general">Generale</string>
+    <string name="c_s">Come saldare</string>
+    <string name="long_pr">Long press sul debito per saldare</string>
+    <string name="app_enter">ENTRA</string>
+    <string name="name_trans">nome_transazione</string>
+    <string name="modify">MODIFICA</string>
+    <string name="n_pay">Nuova spesa</string>
+    <string name="add">ADD</string>
+    <string name="g_number">Gruppi creati:</string>
+    <string name="g_numb">n_gruppi</string>
+    <string name="new_g">ADD GROUP</string>
+    <string name="memb_name">nember_name</string>
+    <string name="who_pay">chi paga</string>
+    <string name="deve_a"> deve a </string>
+    <string name="who_rec">chi riceve</string>
+    <string name="t_amount">transaction_amount</string>
+    <string name="name_part">NOME_PARTECIPANTE</string>
+    <string name="tot_p">Totale personale:</string>
+    <string name="pers_am">personal_amount</string>
+    <string name="s_am">single_amount</string>
+    <string name="desc_single">Descrizione:</string>
+    <string name="pay_title">titolo_spesa</string>
+    <string name="payed_by">Pagato da:</string>
+    <string name="p_b">pagato_da</string>
+    <string name="payed_for">Pagato per:</string>
+    <string name="pay_by">pagato_da</string>
+    <string name="t_amt">transaction_amount</string>
+    <string name="m">Membri:</string>
 </resources>

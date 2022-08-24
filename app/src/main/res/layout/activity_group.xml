@@ -47,29 +47,29 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="N_G"
+                android:text="@string/namegroup"
                 android:textColor="@color/colorText"
                 android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="Long press sulla spesa per eliminarla"
+                android:text="@string/long_press"
                 android:textColor="@color/colorText"
                 android:textStyle="italic"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="Single press sulla spesa per modificarla"
+                android:text="@string/single_press"
                 android:textColor="@color/colorText"
                 android:textStyle="italic"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <ImageView
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="8dp"
-            android:text="NUOVA SPESA"
+            android:text="@string/n_s"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/groupStatsBtn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:baselineAlignBottom="true"
-            android:text="STATISTICHE"
+            android:text="@string/stats"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

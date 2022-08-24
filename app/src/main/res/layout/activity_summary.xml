@@ -46,19 +46,20 @@
                 android:id="@+id/topGroupCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:textSize="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="0dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorText"
-                android:text="Gruppi creati: " />
+                android:text="@string/g_number" />
 
             <TextView
                 android:id="@+id/group_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="@color/colorText"
-                android:text="n_gruppi"/>
+                android:text="@string/g_numb"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -89,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="ADD GROUP" />
+            android:text="@string/new_g" />
 
     </LinearLayout>
 

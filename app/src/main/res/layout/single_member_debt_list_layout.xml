@@ -4,40 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_gravity="left">
+        android:layout_gravity="start">
         <TextView
             android:id="@+id/tv_chipaga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="chi paga"
-            android:textSize="16dp"
+            android:text="@string/who_pay"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/colorText"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" deve a "
+            android:text="@string/deve_a"
             android:textStyle="italic"
-            android:textSize="16dp"
-            android:textColor="@color/colorText"/>
+            android:textSize="16sp"
+            android:textColor="@color/colorText"
+            android:layout_marginStart="8dp"/>
 
         <TextView
             android:id="@+id/tv_chiriceve"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="chi riceve"
+            android:layout_marginStart="8dp"
+            android:text="@string/who_rec"
             android:textStyle="bold"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/colorText"/>
     </LinearLayout>
 
@@ -45,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        android:layout_marginRight="8dp"
-        android:gravity="right">
+        android:layout_marginEnd="8dp"
+        android:gravity="end">
 
         <TextView
             android:id="@+id/tv_debtAmount"
@@ -54,10 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
-            android:text="transaction_amount"
+            android:text="@string/t_amount"
             android:textColor="@color/colorText"
             android:textStyle="bold"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
     </LinearLayout>
 
 </LinearLayout>

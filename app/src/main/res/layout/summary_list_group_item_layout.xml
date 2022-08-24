@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descrizione: "
+                android:text="@string/desc_single"
                 android:textColor="@color/colorText"
                 android:textSize="5pt"
                 android:textStyle="italic"
@@ -54,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Membri:"
+                android:text="@string/m"
                 android:textColor="@color/colorText"
                 android:textSize="5pt"
                 android:textStyle="italic"
@@ -77,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:padding="8dp"
-        android:gravity="right"
+        android:gravity="end"
         android:layout_weight="1">
         <ImageView
             android:layout_width="40dp"
