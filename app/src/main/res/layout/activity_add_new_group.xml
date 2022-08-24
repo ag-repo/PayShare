@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Aggiungi un nuovo gruppo"
-            android:textSize="16dp"
+            android:text="@string/add_new_gr"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/design_default_color_secondary_variant" />

@@ -11,4 +11,5 @@
     <string name="newpay_addspesa">Aggiungi spesa</string>
     <string name="lv_group_name_placeholder">nome_gruppo</string>
     <string name="lv_group_descr_placeholder">descrizione_gruppo</string>
+    <string name="add_new_gr">Aggiungi un nuovo gruppo</string>
 </resources>
